@@ -2,8 +2,8 @@
 
 namespace LaravelCommon\ViewModels;
 
-use Ci4Orm\Entities\EntityList;
-use Ci4Orm\Interfaces\IEntity;
+use LaravelCommon\Entities\EntityList;
+use LaravelCommon\Interfaces\IEntity;
 
 abstract class AbstractViewModel
 {
