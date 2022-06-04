@@ -7,10 +7,6 @@ use LaravelCommon\ViewModels\AbstractViewModel;
 
 class BaseResponse implements ResponseInterface
 {
-    /**
-     * @var
-     */
-    protected $response;
 
     /**
      * @var string
@@ -34,7 +30,6 @@ class BaseResponse implements ResponseInterface
 
     public function __construct(string $message, int $code, $reponseCode, $data = null)
     {
-         $this->response    = \Config\Services::response();
          $this->message     = $message;
          $this->data        = $data;
          $this->code        = $code;
@@ -60,7 +55,7 @@ class BaseResponse implements ResponseInterface
             'Response' => $this->reponseCode,
         ];
 
-        return $this->response->setStatusCode($this->code)->setJSON($json);
+        return response()->json($json, $this->code);
     }
 
     private function proceededData()
