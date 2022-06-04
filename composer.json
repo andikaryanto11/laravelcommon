@@ -19,7 +19,7 @@
     ],
     "autoload": {
 		"psr-4": {
-			"Larave;Common\\": "src/"
+			"LaravelCommon\\": "src/"
 		}
 	}
 }
