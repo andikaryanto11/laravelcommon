@@ -4,8 +4,9 @@ namespace LaravelCommon\Responses;
 
 use LaravelCommon\ViewModels\AbstractCollection;
 use LaravelCommon\ViewModels\AbstractViewModel;
+use Symfony\Component\HttpFoundation\Response;
 
-class BaseResponse implements ResponseInterface
+class BaseResponse extends Response implements ResponseInterface
 {
 
     /**
@@ -34,6 +35,7 @@ class BaseResponse implements ResponseInterface
          $this->data        = $data;
          $this->code        = $code;
          $this->reponseCode = $reponseCode;
+         parent::__construct();
     }
 
     /**
