@@ -25,7 +25,14 @@ class Request extends HttpRequest {
         parent::__construct();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return 
+     */
     public function getToken(){
+        $accpet = $this->query; 
+        $gt = $_GET; 
         if($this->hasHeader('Authorization')){
             $authorization = $this->header('Authorization');
             $param = [
