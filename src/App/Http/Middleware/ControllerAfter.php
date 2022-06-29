@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use LaravelCommon\Responses\BaseResponse;
 
-class ControllerReturn
+class ControllerAfter
 {
     /**
      * Handle an incoming request.

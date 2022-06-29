@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCommon\Database\Schema;
+namespace LaravelCommon\System\Database\Schema;
 
 use Illuminate\Database\Schema\Blueprint as SchemaBlueprint;
 use Illuminate\Database\Schema\ColumnDefinition;

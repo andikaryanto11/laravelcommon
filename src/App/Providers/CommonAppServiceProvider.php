@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use LaravelCommon\Database\Schema\Blueprint as SchemaBlueprint;
 use LaravelCommon\Http\Request\Request as RequestRequest;
 
-class AppServiceProvider extends ServiceProvider
+class CommonAppServiceProvider extends ServiceProvider
 {
     public $bindings = [
         Request::class => RequestRequest::class,
@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->loadMigrationsFrom(__DIR__ . '../../Database/migrations');
     }
 
     /**
