@@ -5,8 +5,8 @@ namespace LaravelCommon\App\Providers;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use LaravelCommon\Database\Schema\Blueprint as SchemaBlueprint;
-use LaravelCommon\Http\Request\Request as RequestRequest;
+use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
+use LaravelCommon\System\Http\Request\Request as RequestRequest;
 
 class CommonAppServiceProvider extends ServiceProvider
 {
@@ -23,7 +23,6 @@ class CommonAppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->loadMigrationsFrom(__DIR__ . '../../Database/migrations');
     }
 
     /**
@@ -34,5 +33,9 @@ class CommonAppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $this->loadMigrationsFrom(__DIR__ . '/../../Database/migrations');
+        $this->publishes([
+            __DIR__.'/../../Config/entity.php' => config_path('entity.php'),
+        ], 'entity-config');
     }
 }

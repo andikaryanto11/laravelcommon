@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\System\Http\Request;
 
-use App\Repositories\User\TokenRepository;
+use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
 
 class Request extends HttpRequest {
