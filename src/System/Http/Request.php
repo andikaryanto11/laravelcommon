@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCommon\System\Http\Request;
+namespace LaravelCommon\System\Http;
 
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
