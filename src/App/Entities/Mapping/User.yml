@@ -7,14 +7,14 @@ LaravelCommon\App\Entities\User:
         isEntity: false
         field: id
     groupuser: 
-        type: App\Entities\Groupuser
+        type: LaravelCommon\App\Entities\Groupuser
         isEntity: true
         foreignKey: groupuser_id
         relationType: one_to_many
         inversedBy: users
         field: groupuser_id
     tokens: 
-        type: App\Entities\User\Token
+        type: LaravelCommon\App\Entities\User\Token
         isEntity: true
         relationType: many_to_one
         mappedBy: user

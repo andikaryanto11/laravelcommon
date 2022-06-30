@@ -7,7 +7,7 @@ LaravelCommon\App\Entities\User\Token:
       isEntity: false
       field: id
     user: 
-      type: App\Entities\User
+      type: LaravelCommon\App\Entities\User
       isEntity: true
       foreignKey: user_id
       relationType: one_to_many

@@ -30,7 +30,7 @@ class Groupuser extends BaseEntity
     /**
      * @return ?int
      */
-    public function getId(): ?int
+    protected function getId(): ?int
     {
         return $this->id;
     }
@@ -39,7 +39,7 @@ class Groupuser extends BaseEntity
      * @param int $Id
      * @return $this
      */
-    public function setId(int $id)
+    protected function setId(int $id)
     {
         $this->id = $id;
         return $this;
@@ -48,7 +48,7 @@ class Groupuser extends BaseEntity
     /**
      * @return ?EntityList
      */
-    public function getUsers(): ?EntityList
+    protected function getUsers(): ?EntityList
     {
         return $this->users;
     }
@@ -57,7 +57,7 @@ class Groupuser extends BaseEntity
      * @param EntityList $Users
      * @return Groupuser
      */
-    public function setUsers(EntityList $users): Groupuser
+    protected function setUsers(EntityList $users): Groupuser
     {
         $this->users = $users;
         return $this;
@@ -66,7 +66,7 @@ class Groupuser extends BaseEntity
     /**
      * @return ?string
      */
-    public function getGroupname(): ?string
+    protected function getGroupname(): ?string
     {
         return $this->groupname;
     }
@@ -75,7 +75,7 @@ class Groupuser extends BaseEntity
      * @param string $groupname
      * @return Groupuser
      */
-    public function setGroupname(string $groupname): Groupuser
+    protected function setGroupname(string $groupname): Groupuser
     {
         $this->groupname = $groupname;
         return $this;
@@ -84,7 +84,7 @@ class Groupuser extends BaseEntity
     /**
      * @return ?string
      */
-    public function getDescription(): ?string
+    protected function getDescription(): ?string
     {
         return $this->description;
     }
@@ -93,7 +93,7 @@ class Groupuser extends BaseEntity
      * @param string $description
      * @return Groupuser
      */
-    public function setDescription(string $description): Groupuser
+    protected function setDescription(string $description): Groupuser
     {
         $this->description = $description;
         return $this;

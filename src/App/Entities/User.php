@@ -43,7 +43,7 @@ class User extends BaseEntity
     /**
      * @return ?int
      */
-    public function getId(): ?int
+    protected function getId(): ?int
     {
         return $this->id;
     }
@@ -52,7 +52,7 @@ class User extends BaseEntity
      * @param int $id
      * @return User
      */
-    public function setId(int $id): User
+    protected function setId(int $id): User
     {
         $this->id = $id;
         return $this;
@@ -61,7 +61,7 @@ class User extends BaseEntity
     /**
      * @return ?Groupuser
      */
-    public function getGroupuser(): ?Groupuser
+    protected function getGroupuser(): ?Groupuser
     {
         return $this->groupuser;
     }
@@ -70,7 +70,7 @@ class User extends BaseEntity
      * @param Groupuser $groupuser
      * @return User
      */
-    public function setGroupuser(Groupuser $groupuser): User
+    protected function setGroupuser(Groupuser $groupuser): User
     {
         $this->groupuser = $groupuser;
         return $this;
@@ -79,7 +79,7 @@ class User extends BaseEntity
     /**
      * @return ?string
      */
-    public function getUsername(): ?string
+    protected function getUsername(): ?string
     {
         return $this->username;
     }
@@ -88,7 +88,7 @@ class User extends BaseEntity
      * @param string $username
      * @return User
      */
-    public function setUsername(string $username): User
+    protected function setUsername(string $username): User
     {
         $this->username = $username;
         return $this;
@@ -97,7 +97,7 @@ class User extends BaseEntity
     /**
      * @return ?string
      */
-    public function getEmail(): ?string
+    protected function getEmail(): ?string
     {
         return $this->email;
     }
@@ -106,7 +106,7 @@ class User extends BaseEntity
      * @param string $username
      * @return User
      */
-    public function setEmail(string $email): User
+    protected function setEmail(string $email): User
     {
         $this->email = $email;
         return $this;
@@ -115,7 +115,7 @@ class User extends BaseEntity
     /**
      * @return ?string
      */
-    public function getPassword(): ?string
+    protected function getPassword(): ?string
     {
         return $this->password;
     }
@@ -124,7 +124,7 @@ class User extends BaseEntity
      * @param string $password
      * @return User
      */
-    public function setPassword(string $password): User
+    protected function setPassword(string $password): User
     {
         $this->password = $password;
         return $this;
@@ -133,7 +133,7 @@ class User extends BaseEntity
     /**
      * @return ?string
      */
-    public function getPhoto(): ?string
+    protected function getPhoto(): ?string
     {
         return $this->photo;
     }
@@ -142,7 +142,7 @@ class User extends BaseEntity
      * @param string $photo
      * @return User
      */
-    public function setPhoto(string $photo): User
+    protected function setPhoto(string $photo): User
     {
         $this->photo = $photo;
         return $this;
@@ -151,7 +151,7 @@ class User extends BaseEntity
     /**
      * @return ?bool
      */
-    public function getIsActive(): ?bool
+    protected function getIsActive(): ?bool
     {
         return $this->isActive;
     }
@@ -160,7 +160,7 @@ class User extends BaseEntity
      * @param bool $isActive
      * @return User
      */
-    public function setIsActive(bool $isActive): User
+    protected function setIsActive(bool $isActive): User
     {
         $this->isActive = $isActive;
         return $this;

@@ -7,15 +7,15 @@ LaravelCommon\App\Entities\Groupuser:
         isEntity: false
         field: id
     users: 
-        type: App\Entities\User
+        type: LaravelCommon\App\Entities\User
         isEntity: true
         relationType: many_to_one
         mappedBy: groupuser
         field: users
-    groupname: 
+    groupName: 
         type: string
         isEntity: false
-        field: groupname
+        field: group_name
     description: 
         type: string
         isEntity: false
