@@ -55,9 +55,9 @@ class Token extends BaseEntity
     /**
      * Get the value of user
      *
-     * @return  User
+     * @return  ?User
      */ 
-    protected function getUser(): User
+    protected function getUser(): ?User
     {
         return $this->user;
     }

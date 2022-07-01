@@ -31,7 +31,6 @@ class ControllerAfter
             }
         }
 
-
         throw new Exception('Controller does not return response');
     }
 }
