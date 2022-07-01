@@ -11,8 +11,8 @@ use LaravelCommon\System\Http\Request\Request as RequestRequest;
 class CommonAppServiceProvider extends ServiceProvider
 {
     public $bindings = [
-        Request::class => RequestRequest::class,
-        Blueprint::class => SchemaBlueprint::class
+        RequestRequest::class => Request::class,
+        SchemaBlueprint::class => Blueprint::class
     ];
 
     /**
