@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LaravelCommon\App\Services\UserService;
 use LaravelCommon\App\ViewModels\User\TokenViewModel;
+use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\SuccessResponse;
 
 class AuthController extends Controller {
@@ -38,6 +39,9 @@ class AuthController extends Controller {
         $password = $request->password;
 
         $userToken = $this->userService->generateToken($username, $password);
+        if(empty($userToken)){
+            return new BadRequestResponse('User not found', [], null);
+        }
         return (new SuccessResponse('OK', [], new TokenViewModel($userToken)));
     }
 }

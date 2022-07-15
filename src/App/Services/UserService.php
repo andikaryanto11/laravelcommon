@@ -69,11 +69,15 @@ class UserService {
          */
         $user = $this->userRepository->findOne($param);
 
+        if(empty($user)){
+            return null;
+        }
+
         if(!Hash::check($password, $user->getPassword())){
             return null;
         }
 
-        $payload = 
+        $payload =
         [
             $user->getId(),
             $user->getUsername(),
