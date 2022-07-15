@@ -2,7 +2,9 @@
 
 namespace LaravelCommon\App\Http\Middleware;
 
+use App\Entities\User\Token;
 use Closure;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,19 +45,29 @@ class TokenValid
         try{
             if($request->hasHeader('Authorization')){
                 $authorization = $request->header('Authorization');
+                $jwtConfig = app('config')->get('jwt');
+                $now = new DateTime();
+
                 $param = [
                     'where' => [
-                        ['token', '=', $authorization]
+                        ['token', '=', $authorization],
+                        // ['expired_at', '=', $ninetyDays]
                     ]
                 ];
-                $userToken = $this->tokenRepository->findOne($param);
 
+                /**
+                 * @var Token $userToken
+                 */
+                $userToken = $this->tokenRepository->findOne($param);
                 if(empty($userToken)){
-                    new BadRequestResponse('Invalid Token', [], []);
+                    return new BadRequestResponse('Invalid Token', [], []);
                 }
 
+                if($userToken->getExpiredAt() < $now){
+                    return new BadRequestResponse('Token Expired', [], []);
+                }
                 $request->userToken = $userToken;
-                
+
             }
         } catch(Exception $e){
 

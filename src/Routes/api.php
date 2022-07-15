@@ -10,7 +10,7 @@ Route::middleware(['controller-after'])->group(function () {
 
 
         Route::middleware(['token-valid'])->group(function () {
-            Route::post('/users', [UserController::class, 'getAll']);
+            Route::get('/users', [UserController::class, 'getAll']);
         });
     });
 });
