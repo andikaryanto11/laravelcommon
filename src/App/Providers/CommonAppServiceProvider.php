@@ -14,7 +14,7 @@ class CommonAppServiceProvider extends ServiceProvider
 {
     public $bindings = [
         // RequestRequest::class => Request::class,
-        SchemaBlueprint::class => Blueprint::class
+        Blueprint::class => SchemaBlueprint::class
     ];
 
     /**
