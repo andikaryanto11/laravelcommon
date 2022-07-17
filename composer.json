@@ -20,5 +20,16 @@
 		"psr-4": {
 			"LaravelCommon\\": "src/"
 		}
-	}
+	},
+    "extra": {
+        "laravel": {
+            "dont-discover": [],
+            "providers": [
+                "LaravelCommon\\App\\Providers\\CommonAppServiceProvider"
+            ],
+            "aliases": {
+                "LaraveCommon": "LaravelCommon\\System\\Support\\Facades\\Common"
+            }
+        }
+    }
 }
