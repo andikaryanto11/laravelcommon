@@ -2,13 +2,10 @@
 
 namespace LaravelCommon\App\Entities;
 
+use LaravelOrm\Entities\EntityList;
+
 class User extends BaseEntity
 {
-    /**
-     * @var int
-     */
-    private int $id = 0;
-
     /**
      * @var Groupuser
      */
@@ -39,24 +36,10 @@ class User extends BaseEntity
      */
     private ?bool $isActive  = null;
 
-
     /**
-     * @return ?int
+     * @var EntityList
      */
-    protected function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return User
-     */
-    protected function setId(int $id): User
-    {
-        $this->id = $id;
-        return $this;
-    }
+    private ?EntityList $scopes  = null;
 
     /**
      * @return ?Groupuser
@@ -163,6 +146,30 @@ class User extends BaseEntity
     protected function setIsActive(bool $isActive): User
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * Get the value of scopes
+     *
+     * @return  ?EntityList
+     */ 
+    protected function getScopes(): ?EntityList
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * Set the value of scopes
+     *
+     * @param  EntityList  $scopes
+     *
+     * @return  self
+     */ 
+    protected function setScopes(EntityList $scopes): User
+    {
+        $this->scopes = $scopes;
+
         return $this;
     }
 }

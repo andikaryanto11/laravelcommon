@@ -19,6 +19,12 @@ LaravelCommon\App\Entities\User:
         relationType: many_to_one
         mappedBy: user
         field: tokens
+    scopeMappings: 
+        type: LaravelCommon\App\Entities\User\ScopeMapping
+        isEntity: true
+        relationType: many_to_one
+        mappedBy: user
+        field: scopes
     username: 
         type: string
         isEntity: false

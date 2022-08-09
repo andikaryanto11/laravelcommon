@@ -7,12 +7,13 @@ use DateTime;
 
 class BaseEntity extends Entity
 {
+    private int $id = 0;
     private ?string $createdBy = null;
     private ?string $updatedBy = null;
     private ?DateTime $createdAt = null;
     private ?DateTime $updatedAt = null;
 
-    public function getCreatedBy()
+    public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
@@ -23,7 +24,7 @@ class BaseEntity extends Entity
         return $this;
     }
 
-    public function getUpdatedBy()
+    public function getUpdatedBy(): ?string
     {
         return $this->updatedBy;
     }
@@ -34,7 +35,7 @@ class BaseEntity extends Entity
         return $this;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): ?Datetime
     {
         return $this->createdAt;
     }
@@ -45,7 +46,7 @@ class BaseEntity extends Entity
         return $this;
     }
 
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?Datetime
     {
         return $this->updatedAt;
     }
@@ -53,6 +54,27 @@ class BaseEntity extends Entity
     public function setUpdatedAt(?DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     * @return int 
+     */ 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return self
+     */ 
+    public function setId(int $id)
+    {
+        $this->id = $id;
+
         return $this;
     }
 }

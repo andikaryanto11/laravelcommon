@@ -1,27 +1,29 @@
-LaravelCommon\App\Entities\Groupuser:
-  table: groupusers
+LaravelCommon\App\Entities\Scope:
+  table: scopes
   primaryKey: id
   props: 
     id: 
         type: int
         isEntity: false
         field: id
-    users: 
+    scopeMappings: 
+        type: LaravelCommon\App\Entities\Groupuser
+        isEntity: true
+        foreignKey: groupuser_id
+        relationType: one_to_many
+        inversedBy: scopes
+        field: groupuser_id
+    user: 
         type: LaravelCommon\App\Entities\User
         isEntity: true
-        relationType: many_to_one
-        mappedBy: groupuser
-        field: users
-    scopeMappings: 
-        type: LaravelCommon\App\Entities\User\ScopeMapping
-        isEntity: true
-        relationType: many_to_one
-        mappedBy: user
-        field: scopes
-    groupName: 
+        foreignKey: user_id
+        relationType: one_to_many
+        inversedBy: scopes
+        field: user_id
+    name: 
         type: string
         isEntity: false
-        field: group_name
+        field: name
     description: 
         type: string
         isEntity: false

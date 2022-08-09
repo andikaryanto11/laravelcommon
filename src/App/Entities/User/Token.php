@@ -9,11 +9,6 @@ use DateTime;
 class Token extends BaseEntity
 {
     /**
-     * @var int
-     */
-    private int $id = 0;
-
-    /**
      * @var ?User
      */
     private ?User $user  = null;
@@ -28,29 +23,6 @@ class Token extends BaseEntity
      */
     private ?DateTime $expiredAt  = null;
 
-    /**
-     * Get the value of id
-     *
-     * @return  int
-     */ 
-    protected function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @param  int  $id
-     *
-     * @return  self
-     */ 
-    protected function setId(int $id): Token
-    {
-        $this->id = $id;
-
-        return $this;
-    }
 
     /**
      * Get the value of user
@@ -122,5 +94,10 @@ class Token extends BaseEntity
         $this->expiredAt = $expiredAt;
 
         return $this;
+    }
+
+    public function isExpired(){
+        $now = new DateTime();
+        return $this->getExpiredAt() < $now;
     }
 }
