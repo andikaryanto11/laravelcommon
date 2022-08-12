@@ -5,29 +5,21 @@ LaravelCommon\App\Entities\Scope:
     id: 
         type: int
         isEntity: false
-        field: id
-    scopeMappings: 
-        type: LaravelCommon\App\Entities\Groupuser
-        isEntity: true
-        foreignKey: groupuser_id
-        relationType: one_to_many
-        inversedBy: scopes
-        field: groupuser_id
-    user: 
+        field: id        
+    users: 
         type: LaravelCommon\App\Entities\User
+        mapping: 
+            type: LaravelCommon\App\Entities\User\ScopeMapping
+            isEntity: true
+            foreignKey: scope_id
         isEntity: true
-        foreignKey: user_id
-        relationType: one_to_many
-        inversedBy: scopes
-        field: user_id
+        relationType: many_to_one
+        mappedBy: user
+        field: scopes
     name: 
         type: string
         isEntity: false
         field: name
-    description: 
-        type: string
-        isEntity: false
-        field: description
     createdAt: 
         type: DateTime
         isEntity: false

@@ -22,23 +22,29 @@ class CheckScope
         $groupuser = $user->getGroupuser();
 
         $userScopes = $user->getScopes();
-        foreach ($userScopes as $userScope) {
-            $scope = $userScope->getScope();
-            if (in_array($scope->getName(), $scopes)) {
-                $isAuthorized = true;
-                break;
-            }
-        }
-
-        if (!$isAuthorized) {
-            $groupuserScopes = $groupuser->getScopes();
-            foreach ($groupuserScopes as $groupuserScope) {
-                $scope = $groupuserScope->getScope();
-                if (in_array($scope->getName(), $scopes)) {
-                    $isAuthorized = true;
-                    break;
+        if(count($scopes) > 0){
+            if(!empty($userScopes)){
+                foreach ($userScopes as $scope) {
+                    if (in_array($scope->getName(), $scopes)) {
+                        $isAuthorized = true;
+                        break;
+                    }
                 }
             }
+
+            if (!$isAuthorized) {
+                $groupuserScopes = $groupuser->getScopes();
+                if(!empty($groupuserScopes)){
+                    foreach ($groupuserScopes as $scope) {
+                        if (in_array($scope->getName(), $scopes)) {
+                            $isAuthorized = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            $isAuthorized = true;
         }
 
         if(!$isAuthorized){

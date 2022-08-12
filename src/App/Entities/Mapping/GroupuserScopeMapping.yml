@@ -1,5 +1,5 @@
-LaravelCommon\App\Entities\Scope:
-  table: scopes
+LaravelCommon\App\Entities\Groupuser\ScopeMapping:
+  table: groupuser_scope_mappings
   primaryKey: id
   props: 
     id: 
@@ -13,17 +13,13 @@ LaravelCommon\App\Entities\Scope:
         relationType: one_to_many
         inversedBy: scopes
         field: groupuser_id
-    scope: 
+    scopes: 
         type: LaravelCommon\App\Entities\Scope
         isEntity: true
         foreignKey: scope_id
         relationType: one_to_many
         inversedBy: scopes
         field: scope_id
-    description: 
-        type: string
-        isEntity: false
-        field: description
     createdAt: 
         type: DateTime
         isEntity: false

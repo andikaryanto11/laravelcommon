@@ -12,11 +12,16 @@ LaravelCommon\App\Entities\Groupuser:
         relationType: many_to_one
         mappedBy: groupuser
         field: users
-    scopeMappings: 
-        type: LaravelCommon\App\Entities\User\ScopeMapping
+    scopes: 
+        type: LaravelCommon\App\Entities\Scope
+        mapping: 
+            type: LaravelCommon\App\Entities\Groupuser\ScopeMapping
+            isEntity: true
+            foreignKey: groupuser_id
+            mainKey: scope_id
         isEntity: true
-        relationType: many_to_one
-        mappedBy: user
+        relationType: many_to_many
+        mappedBy: groupuser
         field: scopes
     groupName: 
         type: string

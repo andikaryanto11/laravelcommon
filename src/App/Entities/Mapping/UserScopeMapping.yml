@@ -1,5 +1,5 @@
-LaravelCommon\App\Entities\Scope:
-  table: scopes
+LaravelCommon\App\Entities\User\ScopeMapping:
+  table: user_scope_mappings
   primaryKey: id
   props: 
     id: 
@@ -20,10 +20,6 @@ LaravelCommon\App\Entities\Scope:
         relationType: one_to_many
         inversedBy: scopes
         field: scope_id
-    description: 
-        type: string
-        isEntity: false
-        field: description
     createdAt: 
         type: DateTime
         isEntity: false
