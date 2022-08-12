@@ -60,18 +60,21 @@ class TokenValid
                  */
                 $userToken = $this->tokenRepository->findOne($param);
                 if(empty($userToken)){
-                    return new BadRequestResponse('Invalid Token', [], []);
+                    return new BadRequestResponse('Invalid Token');
                 }
 
                 if($userToken->getExpiredAt() < $now){
-                    return new BadRequestResponse('Token Expired', [], []);
+                    return new BadRequestResponse('Token Expired');
                 }
                 $request->userToken = $userToken;
 
+            } else {
+
+                return new BadRequestResponse('No Authorization header found');
             }
         } catch(Exception $e){
 
-            return new BadRequestResponse($e->getMessage(), [], []);
+            return new BadRequestResponse($e->getMessage());
         }
         return $next($request);
     }

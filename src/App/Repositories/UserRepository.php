@@ -3,9 +3,11 @@
 namespace LaravelCommon\App\Repositories;
 
 use LaravelCommon\App\Entities\User;
-use LaravelOrm\Repository\Repository;
+use LaravelCommon\App\ViewModels\UserCollection;
+use LaravelCommon\App\ViewModels\UserViewModel;
 
-class UserRepository extends Repository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements 
+    UserRepositoryInterface
 {
  /**
     * Constrcutor
@@ -13,5 +15,25 @@ class UserRepository extends Repository implements UserRepositoryInterface
     public function __construct()
     {
         parent::__construct(User::class);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return string
+     */
+    public function collectionClass(): string
+    {
+        return UserCollection::class;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return stirng
+     */
+    public function viewModelClass(): string
+    {
+        return UserViewModel::class;
     }
 }
