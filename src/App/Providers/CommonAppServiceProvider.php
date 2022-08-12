@@ -54,12 +54,9 @@ class CommonAppServiceProvider extends ServiceProvider
     private function publishConfig()
     {
         $this->publishes([
-            __DIR__ . '/../../Config/entity.php' => config_path('entity.php'),
-        ], 'entity-config');
 
-        $this->publishes([
-            __DIR__ . '/../../Config/jwt.php' => config_path('jwt.php'),
-        ], 'laravel-common-jwt-config');
+            __DIR__ . '/../../Config/common-config.php' => config_path('common-config.php'),
+        ], 'laravel-common-config');
         
     }
 
