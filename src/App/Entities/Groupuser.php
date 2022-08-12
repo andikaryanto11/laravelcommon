@@ -6,10 +6,7 @@ use LaravelOrm\Entities\EntityList;
 
 class Groupuser extends BaseEntity
 {
-    /**
-     * @var int
-     */
-    private int $id = 0;
+   
 
     /**
      * @var EntityList
@@ -26,24 +23,10 @@ class Groupuser extends BaseEntity
      */
     private ?string $description  = null;
 
-
     /**
-     * @return ?int
+     * @var EntityList
      */
-    protected function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $Id
-     * @return $this
-     */
-    protected function setId(int $id)
-    {
-        $this->id = $id;
-        return $this;
-    }
+    private ?EntityList $scopes  = null;
 
     /**
      * @return ?EntityList
@@ -96,6 +79,30 @@ class Groupuser extends BaseEntity
     protected function setDescription(string $description): Groupuser
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get the value of scopes
+     *
+     * @return  ?EntityList
+     */ 
+    protected function getScopes(): ?EntityList
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * Set the value of scopes
+     *
+     * @param  EntityList  $scopes
+     *
+     * @return  self
+     */ 
+    protected function setScopes(EntityList $scopes): Groupuser
+    {
+        $this->scopes = $scopes;
+
         return $this;
     }
 }
