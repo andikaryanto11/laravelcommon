@@ -60,10 +60,7 @@ class CommonAppServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../Config/jwt.php' => config_path('jwt.php'),
         ], 'laravel-common-jwt-config');
-
-        $this->publishes([
-            __DIR__ . '/../../Config/kernel.php' => config_path('kernel.php'),
-        ], 'laravel-common-kernel');
+        
     }
 
     /**
