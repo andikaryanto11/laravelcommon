@@ -4,6 +4,7 @@ namespace LaravelCommon\System\Http;
 
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
+use LaravelCommon\App\Entities\User\Token;
 
 class Request extends HttpRequest {
 
@@ -12,19 +13,14 @@ class Request extends HttpRequest {
      */
     protected TokenRepository $tokenRepository;
 
-    protected $resource;
-
     /**
      * Undocumented function
      *
-     * @param TokenRepository $tokenRepository
+     * @param [type] $userToken
+     * @return void
      */
-    public function __construct(
-        TokenRepository $tokenRepository
-    )
-    {
-        $this->tokenRepository = $tokenRepository;
-        parent::__construct();
+    public function setuserToken(Token $userToken){
+        $this->userToken = $userToken;
     }
 
     /**
@@ -32,17 +28,8 @@ class Request extends HttpRequest {
      *
      * @return 
      */
-    public function getToken(){
-        $accpet = $this->query; 
-        $gt = $_GET; 
-        if($this->hasHeader('Authorization')){
-            $authorization = $this->header('Authorization');
-            $param = [
-                'where' => ['token', '=', $authorization]
-            ];
-            return $this->tokenRepository->findOne($param);
-        }
-        return null;
+    public function getUserToken(){
+       return $this->userToken;
     }
 
     /**
