@@ -12,6 +12,8 @@ class Request extends HttpRequest {
      */
     protected TokenRepository $tokenRepository;
 
+    protected $resource;
+
     /**
      * Undocumented function
      *
@@ -41,6 +43,29 @@ class Request extends HttpRequest {
             return $this->tokenRepository->findOne($param);
         }
         return null;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param mixed $entity
+     * @return Request
+     */
+    public function setResource($entity){
+        $this->resource = $entity;
+        $json = $this->json();
+        $this->resource->hydrate($json);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
+    public function getResource(){
+        return $this->resource;
+
     }
 
 }
