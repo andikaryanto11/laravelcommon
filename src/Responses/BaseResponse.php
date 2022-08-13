@@ -51,11 +51,17 @@ class BaseResponse extends Response implements ResponseInterface
      */
     public function send()
     {
-        $json = [
-            'Message'  => $this->message,
-            'Data'     => $this->proceededData(),
-            'Response' => $this->reponseCode,
-        ];
+        $json = [];
+
+        if($this->data instanceof AbstractCollection){
+            $json['page'] = $this->data->getPage();
+            $json['size'] = $this->data->getSize();
+            $json['total_record'] = $this->data->getTotalRecord();
+        }
+
+        $json['message'] = $this->message;
+        $json['data'] = $this->proceededData();
+        $json['response'] = $this->reponseCode;
 
         return response()->json($json, $this->code);
     }
@@ -68,7 +74,6 @@ class BaseResponse extends Response implements ResponseInterface
 
         if ($this->data instanceof AbstractViewModel) {
             $array = $this->data->finalArray();
-            // $this->data->addResource($array);
             return $array;
         }
 

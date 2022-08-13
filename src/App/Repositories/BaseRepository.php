@@ -5,19 +5,43 @@ namespace LaravelCommon\App\Repositories;
 use Exception;
 use LaravelOrm\Repository\Repository;
 
-class BaseRepository extends Repository implements RepositoryInterface {
+class BaseRepository extends Repository implements RepositoryInterface
+{
 
     /**
-     * Get view collection
+     * Get view collection and paged the collection
      *
      * @param array $filter
-     * @param array $columns
+     * @param ?int $page
+     * @param ?int $size
      * @return mixed
      */
-    public function collectViewModel($filter = [], $columns = []){
-        $colection = $this->collect($filter, $columns);
+    public function gather($filter = [])
+    {
+
+        $colelctionPagingConfig = app('config')->get('common-config');
+        $totalRecord = $this->count($filter);
+
+        $filter['limit'] = [
+            'page' => 1,
+            'size' => $colelctionPagingConfig['collection_paging']['size']
+        ];
+
+        if (isset(request()->page)) {
+            $filter['limit']['page'] = request()->page;
+        }
+
+        if (isset(request()->size)) {
+            $filter['limit']['size'] = request()->page;
+        }
+
+        $collection = $this->collect($filter);
         $collectionClass = $this->collectionClass();
-        return new $collectionClass($colection);
+        $collection = new $collectionClass($collection);
+        $collection->setPage($filter['limit']['page']);
+        $collection->setSize($filter['limit']['size']);
+        $collection->setTotalRecord($totalRecord);
+        return $collection;
     }
 
     /**
