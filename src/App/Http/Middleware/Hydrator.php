@@ -29,13 +29,20 @@ class Hydrator
      */
     public function handle(Request $request, Closure $next, ...$methods)
     {
-        $mehod = $methods[0];
-        if ($mehod == 'post') {
+        if (strtoupper($request->method()) == 'POST') {
             $this->post($request);
         }
 
-        if ($mehod == 'get') {
+        if (strtoupper($request->method())  == 'GET') {
             $this->get($request);
+        }
+
+        if (strtoupper($request->method()) == 'PATCH') {
+            $this->patch($request);
+        }
+
+        if (strtoupper($request->method()) == 'DELETE') {
+            $this->delete($request);
         }
 
         return $next($request);
@@ -49,11 +56,8 @@ class Hydrator
      */
     public function get(Request $request)
     {
-        $id = $request->route()->parameter('id');
-        $repositoryClass = $this->repositoryClass();
-
-        $repository = new $repositoryClass();
-        $request->setResource($repository->find($id));
+        $resource = $this->getEntity($request);
+        $request->setResource($resource);
     }
 
     /**
@@ -68,5 +72,45 @@ class Hydrator
         $repository = new $repositoryClass();
         $resource = $repository->newEntity();
         $request->hyrdateResource($resource);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function delete(Request $request){
+        $resource = $this->getEntity($request);
+        $request->setResource($resource);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function patch(Request $request)
+    {
+        $resource = $this->getEntity($request);
+        $request->setResource($resource);
+        $request->hyrdateResource($resource);
+    }
+
+    /**
+     * Get entity instance
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    private function getEntity(Request $request){
+
+        $id = $request->route()->parameter('id');
+        $repositoryClass = $this->repositoryClass();
+
+        $repository = new $repositoryClass();
+        $resource = $repository->find($id);
+        return $resource;
     }
 }

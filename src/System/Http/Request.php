@@ -56,7 +56,7 @@ class Request extends HttpRequest
     public function hyrdateResource($entity)
     {
         $this->setResource($entity);
-        $json = $this->json();
+        $json = $this->input();
         $this->resource->hydrate($json);
     }
 
