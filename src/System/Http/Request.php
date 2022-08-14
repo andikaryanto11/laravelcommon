@@ -6,7 +6,8 @@ use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
 use LaravelCommon\App\Entities\User\Token;
 
-class Request extends HttpRequest {
+class Request extends HttpRequest
+{
 
     /**
      * @var TokenRepository $tokenRepository
@@ -19,7 +20,8 @@ class Request extends HttpRequest {
      * @param [type] $userToken
      * @return void
      */
-    public function setuserToken(Token $userToken){
+    public function setuserToken(Token $userToken)
+    {
         $this->userToken = $userToken;
     }
 
@@ -28,8 +30,9 @@ class Request extends HttpRequest {
      *
      * @return 
      */
-    public function getUserToken(){
-       return $this->userToken;
+    public function getUserToken()
+    {
+        return $this->userToken;
     }
 
     /**
@@ -38,12 +41,20 @@ class Request extends HttpRequest {
      * @param mixed $entity
      * @return Request
      */
-    public function setResource($entity){
+    public function setResource($entity)
+    {
         $this->resource = $entity;
         return $this;
     }
 
-    public function hyrdateResource($entity){
+    /**
+     * hydrate resource
+     *
+     * @param mixed $entity
+     * @return void
+     */
+    public function hyrdateResource($entity)
+    {
         $this->setResource($entity);
         $json = $this->json();
         $this->resource->hydrate($json);
@@ -54,9 +65,8 @@ class Request extends HttpRequest {
      *
      * @return mixed
      */
-    public function getResource(){
+    public function getResource()
+    {
         return $this->resource;
-
     }
-
 }

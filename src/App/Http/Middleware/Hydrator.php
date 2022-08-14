@@ -14,16 +14,6 @@ class Hydrator
      *
      * @return string
      */
-    public function entityClass(): string
-    {
-        throw new Exception('"entityClass" needs to be overriden on your hydrator classes');
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
     public function repositoryClass(): string
     {
         throw new Exception('"repositoryClass" needs to be overriden on your hydrator classes');
@@ -61,9 +51,8 @@ class Hydrator
     {
         $id = $request->route()->parameter('id');
         $repositoryClass = $this->repositoryClass();
-        $entityClass = $this->entityClass();
 
-        $repository = new $repositoryClass($entityClass);
+        $repository = new $repositoryClass();
         $request->setResource($repository->find($id));
     }
 
@@ -75,8 +64,9 @@ class Hydrator
      */
     private function post(Request $request)
     {
-        $entityClass = $this->entityClass();
-        $resource = new $entityClass();
+        $repositoryClass = $this->repositoryClass();
+        $repository = new $repositoryClass();
+        $resource = $repository->newEntity();
         $request->hyrdateResource($resource);
     }
 }

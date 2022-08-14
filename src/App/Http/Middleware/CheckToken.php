@@ -10,7 +10,7 @@ use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\System\Http\Request;
 
-class TokenValid
+class CheckToken
 {
 
     /**
