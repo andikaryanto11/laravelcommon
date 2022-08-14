@@ -43,13 +43,11 @@ class TokenValid
         try{
             if($request->hasHeader('Authorization')){
                 $authorization = $request->header('Authorization');
-                $jwtConfig = app('config')->get('common-config')['jwt'];
                 $now = new DateTime();
 
                 $param = [
                     'where' => [
                         ['token', '=', $authorization],
-                        // ['expired_at', '=', $ninetyDays]
                     ]
                 ];
 

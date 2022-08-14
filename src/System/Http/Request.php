@@ -40,9 +40,13 @@ class Request extends HttpRequest {
      */
     public function setResource($entity){
         $this->resource = $entity;
+        return $this;
+    }
+
+    public function hyrdateResource($entity){
+        $this->setResource($entity);
         $json = $this->json();
         $this->resource->hydrate($json);
-        return $this;
     }
 
     /**
