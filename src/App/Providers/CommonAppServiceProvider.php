@@ -9,6 +9,7 @@ use LaravelCommon\App\Http\Middleware\CheckScope;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\ControllerAfter;
 use LaravelCommon\App\Http\Middleware\EntityUnit;
+use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
 
 class CommonAppServiceProvider extends ServiceProvider
@@ -74,5 +75,6 @@ class CommonAppServiceProvider extends ServiceProvider
         $router->aliasMiddleware('check-token', CheckToken::class);
         $router->aliasMiddleware('check-scope', CheckScope::class);
         $router->aliasMiddleware('entity-unit', EntityUnit::class);
+        $router->aliasMiddleware('resource-validation', ResourceValidation::class);
     }
 }

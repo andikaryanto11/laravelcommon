@@ -110,7 +110,7 @@ class Hydrator
         $repositoryClass = $this->repositoryClass();
 
         $repository = new $repositoryClass();
-        $resource = $repository->find($id);
+        $resource = $repository->findOrFail($id);
         return $resource;
     }
 }

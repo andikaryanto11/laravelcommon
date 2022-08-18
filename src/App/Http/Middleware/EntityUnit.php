@@ -54,10 +54,8 @@ class EntityUnit {
         } catch (Exception $e){
             $response = new ServerErrorResponse($e->getMessage());
         }
-        
-        return $response;
 
-        // return $next($request);
+        return $response;
     }
 
     
