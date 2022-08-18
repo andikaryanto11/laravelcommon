@@ -2,8 +2,10 @@
 
 namespace LaravelCommon\Responses;
 
+use LaravelCommon\Services\UrlLink;
 use LaravelCommon\ViewModels\AbstractCollection;
 use LaravelCommon\ViewModels\AbstractViewModel;
+use LaravelCommon\ViewModels\PaggedCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseResponse extends Response implements ResponseInterface
@@ -53,10 +55,17 @@ class BaseResponse extends Response implements ResponseInterface
     {
         $json = [];
 
-        if($this->data instanceof AbstractCollection){
-            $json['page'] = $this->data->getPage();
-            $json['size'] = $this->data->getSize();
-            $json['total_record'] = $this->data->getTotalRecord();
+        if($this->data instanceof PaggedCollection){
+            $json['paging']['next_page'] = $this->data->getNextPage();
+            $json['paging']['prev_page'] = $this->data->getPreviousPage();
+            $json['paging']['total_page'] = $this->data->getTotalPage();
+            $json['paging']['page'] = $this->data->getPage();
+            $json['paging']['size'] = $this->data->getSize();
+            $json['paging']['total_record'] = $this->data->getTotalRecord();
+
+            $links = UrlLink::createLinks($this->data);
+
+            $json['links'] = $links;
         }
 
         $json['message'] = $this->message;
