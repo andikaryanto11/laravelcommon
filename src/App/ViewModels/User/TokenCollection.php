@@ -2,11 +2,10 @@
 
 namespace LaravelCommon\App\ViewModels\User;
 
-use LaravelCommon\App\ViewModels\UserViewModel;
-use LaravelCommon\ViewModels\AbstractCollection;
+use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Interfaces\IEntity;
 
-class TokenCollection extends AbstractCollection
+class TokenCollection extends PaggedCollection
 {
     /**
      * @inheritdoc

@@ -2,17 +2,15 @@
 
 namespace LaravelCommon\App\Http\Middleware;
 
-use App\Entities\User\Token;
 use Closure;
 use DateTime;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use LaravelCommon\App\Entities\User\Token;
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\Responses\BadRequestResponse;
-use LaravelCommon\Responses\BaseResponse;
+use LaravelCommon\System\Http\Request;
 
-class TokenValid
+class CheckToken
 {
 
     /**
@@ -36,7 +34,7 @@ class TokenValid
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
@@ -45,13 +43,11 @@ class TokenValid
         try{
             if($request->hasHeader('Authorization')){
                 $authorization = $request->header('Authorization');
-                $jwtConfig = app('config')->get('jwt');
                 $now = new DateTime();
 
                 $param = [
                     'where' => [
                         ['token', '=', $authorization],
-                        // ['expired_at', '=', $ninetyDays]
                     ]
                 ];
 
@@ -66,7 +62,7 @@ class TokenValid
                 if($userToken->getExpiredAt() < $now){
                     return new BadRequestResponse('Token Expired');
                 }
-                $request->userToken = $userToken;
+                $request->setuserToken($userToken);
 
             } else {
 

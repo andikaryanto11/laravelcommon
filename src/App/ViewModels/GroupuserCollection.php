@@ -2,10 +2,10 @@
 
 namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\ViewModels\AbstractCollection;
+use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Interfaces\IEntity;
 
-class GroupuserCollection extends AbstractCollection
+class GroupuserCollection extends PaggedCollection
 {
     /**
      * @inheritdoc

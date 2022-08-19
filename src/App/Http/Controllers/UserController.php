@@ -33,7 +33,7 @@ class UserController extends Controller {
     }
 
     public function getAll(Request $request){
-        $data = $request->userToken->getUser();
+        $data = $request->getUserToken()->getUser();
         $users = $this->userRepository->collect();
         $userCollection = new UserCollection($users);
 

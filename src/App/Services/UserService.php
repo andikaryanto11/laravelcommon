@@ -85,7 +85,7 @@ class UserService {
         ];
 
         $token = JWT::encode($payload, env('APP_KEY'), 'HS256');
-        $jwtExpiredDay = app('config')->get('jwt')['expired_in_days'];
+        $jwtExpiredDay = app('config')->get('common-config')['jwt']['expired_in_days'];
         $jwtExpiredDate = new DateTime($jwtExpiredDay . ' days');
 
         $userToken = new Token();

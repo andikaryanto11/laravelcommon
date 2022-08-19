@@ -2,8 +2,10 @@
 
 namespace LaravelCommon\Responses;
 
+use LaravelCommon\Services\UrlLink;
 use LaravelCommon\ViewModels\AbstractCollection;
 use LaravelCommon\ViewModels\AbstractViewModel;
+use LaravelCommon\ViewModels\PaggedCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseResponse extends Response implements ResponseInterface
@@ -51,11 +53,24 @@ class BaseResponse extends Response implements ResponseInterface
      */
     public function send()
     {
-        $json = [
-            'Message'  => $this->message,
-            'Data'     => $this->proceededData(),
-            'Response' => $this->reponseCode,
-        ];
+        $json = [];
+
+        if($this->data instanceof PaggedCollection){
+            $json['paging']['next_page'] = $this->data->getNextPage();
+            $json['paging']['prev_page'] = $this->data->getPreviousPage();
+            $json['paging']['total_page'] = $this->data->getTotalPage();
+            $json['paging']['page'] = $this->data->getPage();
+            $json['paging']['size'] = $this->data->getSize();
+            $json['paging']['total_record'] = $this->data->getTotalRecord();
+
+            $links = UrlLink::createLinks($this->data);
+
+            $json['links'] = $links;
+        }
+
+        $json['message'] = $this->message;
+        $json['data'] = $this->proceededData();
+        $json['response'] = $this->reponseCode;
 
         return response()->json($json, $this->code);
     }
@@ -68,7 +83,6 @@ class BaseResponse extends Response implements ResponseInterface
 
         if ($this->data instanceof AbstractViewModel) {
             $array = $this->data->finalArray();
-            // $this->data->addResource($array);
             return $array;
         }
 

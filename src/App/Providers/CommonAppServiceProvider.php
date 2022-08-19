@@ -6,15 +6,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Http\Middleware\CheckScope;
+use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\ControllerAfter;
-use LaravelCommon\App\Http\Middleware\TokenValid;
+use LaravelCommon\App\Http\Middleware\EntityUnit;
+use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
-use LaravelCommon\System\Http\Request\Request as RequestRequest;
 
 class CommonAppServiceProvider extends ServiceProvider
 {
     public $bindings = [
-        // RequestRequest::class => Request::class,
+        // Request::class => RequestRequest::class,
         Blueprint::class => SchemaBlueprint::class
     ];
 
@@ -54,16 +55,10 @@ class CommonAppServiceProvider extends ServiceProvider
     private function publishConfig()
     {
         $this->publishes([
-            __DIR__ . '/../../Config/entity.php' => config_path('entity.php'),
-        ], 'entity-config');
 
-        $this->publishes([
-            __DIR__ . '/../../Config/jwt.php' => config_path('jwt.php'),
-        ], 'laravel-common-jwt-config');
-
-        $this->publishes([
-            __DIR__ . '/../../Config/kernel.php' => config_path('kernel.php'),
-        ], 'laravel-common-kernel');
+            __DIR__ . '/../../Config/common-config.php' => config_path('common-config.php'),
+        ], 'laravel-common-config');
+        
     }
 
     /**
@@ -77,7 +72,9 @@ class CommonAppServiceProvider extends ServiceProvider
         $router->aliasMiddleware('controller-after', ControllerAfter::class);
         $router->pushMiddlewareToGroup('api', ControllerAfter::class);
 
-        $router->aliasMiddleware('token-valid', TokenValid::class);
+        $router->aliasMiddleware('check-token', CheckToken::class);
         $router->aliasMiddleware('check-scope', CheckScope::class);
+        $router->aliasMiddleware('entity-unit', EntityUnit::class);
+        $router->aliasMiddleware('resource-validation', ResourceValidation::class);
     }
 }

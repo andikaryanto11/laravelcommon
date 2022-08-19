@@ -77,4 +77,21 @@ class BaseEntity extends Entity
 
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function beforePersist()
+    {
+        /**
+         * @var User
+         */
+        $user = request()->getUserToken()->getUser();
+
+        if(!empty($this->getId())){
+            $this->setUpdatedBy($user->getUsername());
+        } else {
+            $this->setCreatedBy($user->getUsername());
+        }
+    }
 }

@@ -4,8 +4,10 @@ namespace LaravelCommon\System\Http;
 
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
+use LaravelCommon\App\Entities\User\Token;
 
-class Request extends HttpRequest {
+class Request extends HttpRequest
+{
 
     /**
      * @var TokenRepository $tokenRepository
@@ -15,14 +17,12 @@ class Request extends HttpRequest {
     /**
      * Undocumented function
      *
-     * @param TokenRepository $tokenRepository
+     * @param [type] $userToken
+     * @return void
      */
-    public function __construct(
-        TokenRepository $tokenRepository
-    )
+    public function setuserToken(Token $userToken)
     {
-        $this->tokenRepository = $tokenRepository;
-        parent::__construct();
+        $this->userToken = $userToken;
     }
 
     /**
@@ -30,17 +30,43 @@ class Request extends HttpRequest {
      *
      * @return 
      */
-    public function getToken(){
-        $accpet = $this->query; 
-        $gt = $_GET; 
-        if($this->hasHeader('Authorization')){
-            $authorization = $this->header('Authorization');
-            $param = [
-                'where' => ['token', '=', $authorization]
-            ];
-            return $this->tokenRepository->findOne($param);
-        }
-        return null;
+    public function getUserToken()
+    {
+        return $this->userToken;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param mixed $entity
+     * @return Request
+     */
+    public function setResource($entity)
+    {
+        $this->resource = $entity;
+        return $this;
+    }
+
+    /**
+     * hydrate resource
+     *
+     * @param mixed $entity
+     * @return void
+     */
+    public function hyrdateResource($entity)
+    {
+        $this->setResource($entity);
+        $json = $this->input();
+        $this->resource->hydrate($json);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
 }

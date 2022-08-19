@@ -8,7 +8,8 @@ use LaravelOrm\Interfaces\IEntity;
 abstract class AbstractCollection
 {
     protected $collection;
-    protected $element;
+    protected array $element = [];
+
     /**
      * @param array|EntityList $collection
      */
@@ -40,8 +41,9 @@ abstract class AbstractCollection
 
     /**
      * Add item element
+     * 
      */
-    public function addItem(AbstractViewModel $viewModel)
+    public function addItem(AbstractViewModel $viewModel): void
     {
         $items = $viewModel->toArray();
         $viewModel->addResource($items, $this->collection);
@@ -51,7 +53,7 @@ abstract class AbstractCollection
     /**
      * Get elemet
      */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->element;
     }
