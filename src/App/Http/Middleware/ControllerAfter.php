@@ -7,10 +7,9 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use LaravelCommon\Exception\ResponsableExeption;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\BaseResponse;
-use LaravelOrm\Exception\EntityException;
-use LaravelOrm\Exception\ValidationException;
 
 class ControllerAfter
 {
@@ -29,12 +28,12 @@ class ControllerAfter
             return $response->send();
         }
 
-        if ($response instanceof Response ||
-            $response instanceof JsonResponse) {
+        if (
+            $response instanceof Response ||
+            $response instanceof JsonResponse
+        ) {
             if ($response->exception) {
-                if($response->exception instanceof ValidationException ||
-                    $response->exception instanceof EntityException
-                ){
+                if ($response->exception instanceof ResponsableExeption) {
                     return (new BadRequestResponse($response->exception->getMessage()))->send();
                 } else {
                     throw $response->exception;

@@ -4,6 +4,8 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
+use LaravelCommon\Exception\ResponsableExeption;
+use LaravelOrm\Exception\ValidationException;
 
 class ResourceValidation
 {
@@ -17,7 +19,11 @@ class ResourceValidation
     public function handle(Request $request, Closure $next, ...$scopes)
     {
         $resource = $request->getResource();
-        $resource->validate();
+        try{
+            $resource->validate();
+        } catch(ValidationException $e){
+            throw new ResponsableExeption($e->getMessage());
+        }
         
         return $next($request);
     }

@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
-use LaravelCommon\Services\UrlLink;
+use LaravelCommon\App\Services\UrlLink;
 use LaravelCommon\ViewModels\AbstractCollection;
 use LaravelCommon\ViewModels\AbstractViewModel;
 use LaravelCommon\ViewModels\PaggedCollection;
