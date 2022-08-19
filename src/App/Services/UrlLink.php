@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCommon\Services;
+namespace LaravelCommon\App\Services;
 
 use LaravelCommon\ViewModels\PaggedCollection;
 

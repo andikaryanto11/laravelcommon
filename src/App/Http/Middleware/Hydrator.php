@@ -4,7 +4,9 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Closure;
 use Exception;
+use LaravelCommon\Exception\ResponsableExeption;
 use LaravelCommon\System\Http\Request;
+use LaravelOrm\Exception\EntityException;
 
 class Hydrator
 {
@@ -110,7 +112,12 @@ class Hydrator
         $repositoryClass = $this->repositoryClass();
 
         $repository = new $repositoryClass();
-        $resource = $repository->findOrFail($id);
+        try{
+            $resource = $repository->findOrFail($id);
+        } catch(EntityException $e){
+            throw new ResponsableExeption($e->getMessage());
+        }
+
         return $resource;
     }
 }
