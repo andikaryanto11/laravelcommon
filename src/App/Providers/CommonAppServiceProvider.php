@@ -6,10 +6,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Http\Middleware\CheckScope;
+use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\ControllerAfter;
-use LaravelCommon\App\Http\Middleware\TokenValid;
+use LaravelCommon\App\Http\Middleware\EntityUnit;
+use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
-use LaravelCommon\System\Http\Request\Request as RequestRequest;
 
 class CommonAppServiceProvider extends ServiceProvider
 {
@@ -71,7 +72,9 @@ class CommonAppServiceProvider extends ServiceProvider
         $router->aliasMiddleware('controller-after', ControllerAfter::class);
         $router->pushMiddlewareToGroup('api', ControllerAfter::class);
 
-        $router->aliasMiddleware('token-valid', TokenValid::class);
+        $router->aliasMiddleware('check-token', CheckToken::class);
         $router->aliasMiddleware('check-scope', CheckScope::class);
+        $router->aliasMiddleware('entity-unit', EntityUnit::class);
+        $router->aliasMiddleware('resource-validation', ResourceValidation::class);
     }
 }

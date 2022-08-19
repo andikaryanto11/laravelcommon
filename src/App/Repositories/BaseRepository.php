@@ -12,8 +12,6 @@ class BaseRepository extends Repository implements RepositoryInterface
      * Get view collection and paged the collection
      *
      * @param array $filter
-     * @param ?int $page
-     * @param ?int $size
      * @return mixed
      */
     public function gather($filter = [])

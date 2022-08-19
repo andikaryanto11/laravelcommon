@@ -3,10 +3,10 @@
 namespace LaravelCommon\App\ViewModels;
 
 use LaravelCommon\App\ViewModels\UserViewModel;
-use LaravelCommon\ViewModels\AbstractCollection;
+use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Interfaces\IEntity;
 
-class UserCollection extends AbstractCollection
+class UserCollection extends PaggedCollection
 {
     /**
      * @inheritdoc

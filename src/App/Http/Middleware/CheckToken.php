@@ -10,7 +10,7 @@ use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\System\Http\Request;
 
-class TokenValid
+class CheckToken
 {
 
     /**
@@ -43,13 +43,11 @@ class TokenValid
         try{
             if($request->hasHeader('Authorization')){
                 $authorization = $request->header('Authorization');
-                $jwtConfig = app('config')->get('common-config')['jwt'];
                 $now = new DateTime();
 
                 $param = [
                     'where' => [
                         ['token', '=', $authorization],
-                        // ['expired_at', '=', $ninetyDays]
                     ]
                 ];
 

@@ -9,7 +9,7 @@ Route::middleware(['controller-after'])->group(function () {
         Route::post('/auth/generate_token', [AuthController::class, 'generateToken']);
 
 
-        Route::middleware(['token-valid'])->group(function () {
+        Route::middleware(['check-token'])->group(function () {
             Route::get('/users', [UserController::class, 'getAll']);
         });
     });
