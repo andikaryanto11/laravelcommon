@@ -2,6 +2,8 @@
 
 namespace LaravelCommon\App\Repositories;
 
+use LaravelOrm\Interfaces\IEntity;
+
 interface RepositoryInterface {
 
     /**
@@ -17,4 +19,12 @@ interface RepositoryInterface {
      * @return string
      */
     public function viewModelClass();
+
+    /**
+     * Undocumented function
+     *
+     * @param IEntity $entity
+     * @return void
+     */
+    public function validateEntity(IEntity $entity);
 }

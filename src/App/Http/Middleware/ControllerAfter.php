@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use LaravelCommon\Exceptions\ResponsableExeption;
+use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BaseResponse;
 
 class ControllerAfter
@@ -32,7 +32,7 @@ class ControllerAfter
             $response instanceof JsonResponse
         ) {
             if ($response->exception) {
-                if ($response->exception instanceof ResponsableExeption) {
+                if ($response->exception instanceof ResponsableException) {
                     return $response->exception->getResponse()->send();
                 } else {
                     throw $response->exception;

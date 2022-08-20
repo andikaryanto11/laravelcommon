@@ -4,8 +4,11 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
-use LaravelCommon\Exceptions\ResponsableExeption;
+use Exception;
+use LaravelCommon\App\Consts\ResponseConst;
+use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BadRequestResponse;
+use LaravelOrm\Exception\EntityException;
 use LaravelOrm\Exception\ValidationException;
 
 class ResourceValidation
@@ -20,12 +23,16 @@ class ResourceValidation
     public function handle(Request $request, Closure $next, ...$scopes)
     {
         $resource = $request->getResource();
-        try{
+        try {
             $resource->validate();
-        } catch(ValidationException $e){
-            throw new ResponsableExeption($e->getMessage(), new BadRequestResponse($e->getMessage()));
-        }
-        
+        } catch (ValidationException $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
+        } catch (EntityException $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
+        } catch (Exception $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::FAILED_SAVE_DATA));
+        } 
+
         return $next($request);
     }
 }

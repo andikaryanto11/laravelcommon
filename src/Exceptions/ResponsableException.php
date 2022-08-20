@@ -5,7 +5,7 @@ namespace LaravelCommon\Exceptions;
 use Exception;
 use LaravelCommon\Responses\BaseResponse;
 
-class ResponsableExeption extends Exception
+class ResponsableException extends Exception
 {
 
     /**
