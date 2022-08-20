@@ -26,6 +26,9 @@ class UrlLink
             ? null
             : url()->current() . '&page=' . $paggedCollection->getNextPage();
 
+        $data['first'] = url()->current() . '?page=1' ;
+        $data['last'] = url()->current() . '?page=' . $paggedCollection->getTotalPage();
+
         return $data;
     }
 }
