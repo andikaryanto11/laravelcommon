@@ -80,4 +80,8 @@ class ResponseConst extends BaseConts
         'Status' => 'PAGE_NOT_FOUND',
         'Code'   => 2016,
     ];
+    const NOT_AUTHORIZED = [
+        'Status' => 'NOT_AUTHORIZED',
+        'Code'   => 2017,
+    ];
 }

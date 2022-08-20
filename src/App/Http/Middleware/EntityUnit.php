@@ -4,7 +4,9 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Closure;
 use Exception;
-use LaravelCommon\Responses\ServerErrorResponse;
+use LaravelCommon\App\Consts\ResponseConst;
+use LaravelCommon\Exceptions\ResponsableException;
+use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelOrm\Entities\EntityUnit as EntitiesEntityUnit;
 use Nette\Schema\Expect;
@@ -52,7 +54,7 @@ class EntityUnit {
 
             $this->entityUnit->flush();
         } catch (Exception $e){
-            $response = new ServerErrorResponse($e->getMessage());
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }
 
         return $response;

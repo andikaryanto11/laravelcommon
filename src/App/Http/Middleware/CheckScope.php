@@ -4,6 +4,7 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Closure;
+use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Responses\BadRequestResponse;
 
 class CheckScope
@@ -48,7 +49,7 @@ class CheckScope
         }
 
         if(!$isAuthorized){
-            return new BadRequestResponse('You are not authorized, scope not match');
+            return new BadRequestResponse('You are not authorized, scope not match', ResponseConst::NOT_AUTHORIZED);
         }
 
 

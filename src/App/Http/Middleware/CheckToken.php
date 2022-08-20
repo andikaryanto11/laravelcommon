@@ -5,6 +5,7 @@ namespace LaravelCommon\App\Http\Middleware;
 use Closure;
 use DateTime;
 use Exception;
+use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Entities\User\Token;
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\Responses\BadRequestResponse;
@@ -56,17 +57,17 @@ class CheckToken
                  */
                 $userToken = $this->tokenRepository->findOne($param);
                 if(empty($userToken)){
-                    return new BadRequestResponse('Invalid Token');
+                    return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
                 if($userToken->getExpiredAt() < $now){
-                    return new BadRequestResponse('Token Expired');
+                    return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
                 $request->setUserToken($userToken);
 
             } else {
 
-                return new BadRequestResponse('No Authorization header found');
+                return new BadRequestResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);
             }
         } catch(Exception $e){
 

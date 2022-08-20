@@ -36,4 +36,5 @@ class GroupuserRepository extends BaseRepository implements
     {
         return GroupuserViewModel::class;
     }
+    
 }

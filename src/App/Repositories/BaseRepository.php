@@ -4,6 +4,7 @@ namespace LaravelCommon\App\Repositories;
 
 use Exception;
 use LaravelCommon\ViewModels\PaggedCollection;
+use LaravelOrm\Interfaces\IEntity;
 use LaravelOrm\Repository\Repository;
 
 class BaseRepository extends Repository implements RepositoryInterface
@@ -57,5 +58,13 @@ class BaseRepository extends Repository implements RepositoryInterface
     public function viewModelClass(): string
     {
         throw new Exception('"viewModelClass" needs to be overrided in your repository classes');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validateEntity(IEntity $entity): void
+    {
+        
     }
 }
