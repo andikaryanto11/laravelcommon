@@ -62,7 +62,7 @@ class CheckToken
                 if($userToken->getExpiredAt() < $now){
                     return new BadRequestResponse('Token Expired');
                 }
-                $request->setuserToken($userToken);
+                $request->setUserToken($userToken);
 
             } else {
 

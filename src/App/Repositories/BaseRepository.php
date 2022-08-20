@@ -3,6 +3,7 @@
 namespace LaravelCommon\App\Repositories;
 
 use Exception;
+use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Repository\Repository;
 
 class BaseRepository extends Repository implements RepositoryInterface
@@ -12,7 +13,7 @@ class BaseRepository extends Repository implements RepositoryInterface
      * Get view collection and paged the collection
      *
      * @param array $filter
-     * @return mixed
+     * @return PaggedCollection
      */
     public function gather($filter = [])
     {

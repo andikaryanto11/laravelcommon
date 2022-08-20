@@ -57,4 +57,13 @@ abstract class AbstractCollection
     {
         return $this->element;
     }
+
+    /**
+     * Get count of element
+     *
+     * @return int
+     */
+    public function count(){
+        return $this->collection->count();
+    }
 }
