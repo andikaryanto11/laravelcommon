@@ -18,7 +18,7 @@ class CheckScope
     public function handle(Request $request, Closure $next, ...$scopes)
     {
         $isAuthorized = false;
-        $user = $request->userToken->getUser();
+        $user = $request->getUserToken()->getUser();
         $groupuser = $user->getGroupuser();
 
         $userScopes = $user->getScopes();

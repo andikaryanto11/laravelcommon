@@ -4,7 +4,8 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Closure;
 use Exception;
-use LaravelCommon\Exception\ResponsableExeption;
+use LaravelCommon\Exceptions\ResponsableExeption;
+use LaravelCommon\Responses\NoDataFoundResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelOrm\Exception\EntityException;
 
@@ -115,7 +116,7 @@ class Hydrator
         try{
             $resource = $repository->findOrFail($id);
         } catch(EntityException $e){
-            throw new ResponsableExeption($e->getMessage());
+            throw new ResponsableExeption($e->getMessage(), new NoDataFoundResponse('No Data Found'));
         }
 
         return $resource;

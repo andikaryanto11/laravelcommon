@@ -13,6 +13,13 @@ class Request extends HttpRequest
      * @var TokenRepository $tokenRepository
      */
     protected TokenRepository $tokenRepository;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var Token
+     */
+    protected Token $userToken;
 
     /**
      * Undocumented function
@@ -20,7 +27,7 @@ class Request extends HttpRequest
      * @param [type] $userToken
      * @return void
      */
-    public function setuserToken(Token $userToken)
+    public function setUserToken(Token $userToken)
     {
         $this->userToken = $userToken;
     }
