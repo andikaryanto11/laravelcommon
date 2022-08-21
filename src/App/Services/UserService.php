@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelCommon\App\Services;
 
 use DateTime;
@@ -10,7 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use LaravelCommon\App\Entities\User\Token;
 use LaravelOrm\Entities\EntityManager;
 
-class UserService {
+class UserService
+{
 
     /**
      * Undocumented variable
@@ -44,8 +46,7 @@ class UserService {
         UserRepository $userRepository,
         GroupuserRepository $groupuserRepository,
         EntityManager $entityManager
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
@@ -57,10 +58,11 @@ class UserService {
      * @param string $password
      * @return User
      */
-    public function generateToken(string $username, string $password){
+    public function generateToken(string $username, string $password)
+    {
         $param = [
             'where' => [
-                ['username', '=', $username ]
+                ['username', '=', $username]
             ]
         ];
 
@@ -69,20 +71,20 @@ class UserService {
          */
         $user = $this->userRepository->findOne($param);
 
-        if(empty($user)){
+        if (empty($user)) {
             return null;
         }
 
-        if(!Hash::check($password, $user->getPassword())){
+        if (!Hash::check($password, $user->getPassword())) {
             return null;
         }
 
         $payload =
-        [
-            $user->getId(),
-            $user->getUsername(),
-            $user->getPassword()
-        ];
+            [
+                $user->getId(),
+                $user->getUsername(),
+                $user->getPassword()
+            ];
 
         $token = JWT::encode($payload, env('APP_KEY'), 'HS256');
         $jwtExpiredDay = app('config')->get('common-config')['jwt']['expired_in_days'];
@@ -96,8 +98,5 @@ class UserService {
         $this->entityManager->persist($userToken);
 
         return $userToken;
-
-
     }
-
 }

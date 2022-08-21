@@ -114,7 +114,7 @@ abstract class PaggedCollection extends AbstractCollection
     public function getPreviousPage(): ?int
     {
         if ($this->getTotalPage() > 1) {
-            if ($this->page < $this->getTotalPage()) {
+            if ($this->page <= $this->getTotalPage()) {
                 return $this->page > 1 ? $this->page - 1 : null;
             }
         }

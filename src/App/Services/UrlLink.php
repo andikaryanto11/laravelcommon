@@ -16,18 +16,25 @@ class UrlLink
     public static function createLinks(PaggedCollection $paggedCollection): array
     {
         $data = [];
-        $data['current'] = url()->current() . '&page=' . $paggedCollection->getPage();
 
-        $data['previuos'] = empty($paggedCollection->getPreviousPage())
+        $queryParams = CollectionQueryParameters::getQueryParameters(['page']);
+
+        $queryParam = !empty($queryParams) 
+            ? "&" . http_build_query($queryParams)
+            : '';
+
+        $data['current'] = url()->current() . '?page=' . $paggedCollection->getPage() . $queryParam;
+
+        $data['previous'] = empty($paggedCollection->getPreviousPage())
             ? null
-            : url()->current() . '&page=' . $paggedCollection->getPreviousPage();
+            : url()->current() . '&page=' . $paggedCollection->getPreviousPage() . $queryParam;
 
         $data['next'] = empty($paggedCollection->getNextPage())
             ? null
-            : url()->current() . '&page=' . $paggedCollection->getNextPage();
+            : url()->current() . '&page=' . $paggedCollection->getNextPage(). $queryParam;
 
-        $data['first'] = url()->current() . '?page=1' ;
-        $data['last'] = url()->current() . '?page=' . $paggedCollection->getTotalPage();
+        $data['first'] = url()->current() . '?page=1' . $queryParam;
+        $data['last'] = url()->current() . '?page=' . $paggedCollection->getTotalPage() . $queryParam;
 
         return $data;
     }

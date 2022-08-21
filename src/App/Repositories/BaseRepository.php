@@ -3,6 +3,7 @@
 namespace LaravelCommon\App\Repositories;
 
 use Exception;
+use LaravelCommon\App\Services\CollectionQueryParameters;
 use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Interfaces\IEntity;
 use LaravelOrm\Repository\Repository;
@@ -20,20 +21,17 @@ class BaseRepository extends Repository implements RepositoryInterface
     {
 
         $colelctionPagingConfig = app('config')->get('common-config');
-        $totalRecord = $this->count($filter);
 
         $filter['limit'] = [
             'page' => 1,
             'size' => $colelctionPagingConfig['collection_paging']['size']
         ];
 
-        if (isset(request()->page)) {
-            $filter['limit']['page'] = request()->page;
-        }
+        $filter = CollectionQueryParameters::getCollectionParameters($filter);
 
-        if (isset(request()->size)) {
-            $filter['limit']['size'] = request()->page;
-        }
+        $countParams = $filter;
+        unset($countParams['limit']);
+        $totalRecord = $this->count($countParams);
 
         $collection = $this->collect($filter);
         $collectionClass = $this->collectionClass();
