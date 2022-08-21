@@ -9,6 +9,7 @@ use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Entities\User\Token;
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\Responses\BadRequestResponse;
+use LaravelCommon\Responses\UnauthorizedResponse;
 use LaravelCommon\System\Http\Request;
 
 class CheckToken
@@ -67,7 +68,7 @@ class CheckToken
 
             } else {
 
-                return new BadRequestResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);
+                return new UnauthorizedResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);
             }
         } catch(Exception $e){
 

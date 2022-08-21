@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Closure;
 use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Responses\BadRequestResponse;
+use LaravelCommon\Responses\NotAllowedResponse;
+use LaravelCommon\Responses\UnauthorizedResponse;
 
 class CheckScope
 {
@@ -37,7 +39,7 @@ class CheckScope
                 $groupuserScopes = $groupuser->getScopes();
                 if(!empty($groupuserScopes)){
                     foreach ($groupuserScopes as $scope) {
-                        if (in_array($scope->getName(), $scopes)) {
+                        if (in_array($scope->getName(), $scopes)) { 
                             $isAuthorized = true;
                             break;
                         }
@@ -49,7 +51,7 @@ class CheckScope
         }
 
         if(!$isAuthorized){
-            return new BadRequestResponse('You are not authorized, scope not match', ResponseConst::NOT_AUTHORIZED);
+            return new NotAllowedResponse('You are not allowed to view or modify the resource', ResponseConst::NOT_ALLOWED);
         }
 
 
