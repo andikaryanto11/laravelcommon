@@ -18,9 +18,9 @@ class Request extends HttpRequest
     /**
      * Undocumented variable
      *
-     * @var Token
+     * @var ?Token
      */
-    protected Token $userToken;
+    protected ?Token $userToken = null;
 
     /**
      * Undocumented variable
@@ -43,7 +43,7 @@ class Request extends HttpRequest
     /**
      * Undocumented function
      *
-     * @return 
+     * @return
      */
     public function getUserToken()
     {

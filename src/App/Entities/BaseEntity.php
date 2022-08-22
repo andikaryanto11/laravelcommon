@@ -59,8 +59,8 @@ class BaseEntity extends Entity
 
     /**
      * Get the value of id
-     * @return int 
-     */ 
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
@@ -70,7 +70,7 @@ class BaseEntity extends Entity
      * Set the value of id
      *
      * @return self
-     */ 
+     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -83,15 +83,19 @@ class BaseEntity extends Entity
      */
     protected function beforePersist()
     {
-        /**
-         * @var User
-         */
-        $user = request()->getUserToken()->getUser();
+        $userToken = request()->getUserToken();
+        if(!empty($userToken)){
 
-        if(!empty($this->getId())){
-            $this->setUpdatedBy($user->getUsername());
-        } else {
-            $this->setCreatedBy($user->getUsername());
+            /**
+             * @var User
+             */
+            $user = $userToken->getUser();
+
+            if(!empty($this->getId())){
+                $this->setUpdatedBy($user->getUsername());
+            } else {
+                $this->setCreatedBy($user->getUsername());
+            }
         }
     }
 }
