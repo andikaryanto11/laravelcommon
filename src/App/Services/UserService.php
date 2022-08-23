@@ -6,7 +6,6 @@ use DateTime;
 use LaravelCommon\App\Entities\User;
 use LaravelCommon\App\Repositories\GroupuserRepository;
 use LaravelCommon\App\Repositories\UserRepository;
-use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
 use LaravelCommon\App\Entities\User\Token;
 use LaravelOrm\Entities\EntityManager;
@@ -24,31 +23,32 @@ class UserService
     /**
      * Undocumented variable
      *
-     * @var GroupuserRepository
-     */
-    protected GroupuserRepository $groupuserRepository;
-
-    /**
-     * Undocumented variable
-     *
      * @var EntityManager
      */
     protected EntityManager $entityManager;
 
     /**
+     * Undocumented variable
+     *
+     * @var Jwt
+     */
+    protected Jwt $jwt;
+
+    /**
      *
      *
      * @param UserRepository $userRepository
-     * @param GroupuserRepository $groupuserRepository
      * @param EntityManager $entityManager
+     * @param Jwt $jwt
      */
     public function __construct(
         UserRepository $userRepository,
-        GroupuserRepository $groupuserRepository,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        Jwt $jwt
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->jwt = $jwt;
     }
 
     /**
@@ -79,23 +79,7 @@ class UserService
             return null;
         }
 
-        $jwtExpiredDay = app('config')->get('common-config')['jwt']['expired_in_days'];
-        $jwtExpiredDate = new DateTime($jwtExpiredDay . ' days');
-
-        $payload =
-            [
-                $user->getId(),
-                $user->getUsername(),
-                $user->getPassword(),
-                $jwtExpiredDate->format('YmdHis')
-            ];
-
-        $token = JWT::encode($payload, env('APP_KEY'), 'HS256');
-
-        $userToken = new Token();
-        $userToken->setUser($user);
-        $userToken->setToken($token);
-        $userToken->setExpiredAt($jwtExpiredDate);
+        $userToken = $this->jwt->createUserToken($user);
 
         $this->entityManager->persist($userToken);
 
