@@ -6,7 +6,6 @@ use ReflectionClass;
 
 class BaseConts
 {
-
     public $reflection = null;
 
     public function __construct()
