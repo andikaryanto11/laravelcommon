@@ -18,7 +18,7 @@ class CollectionQueryParameters
         }
 
         if (isset(request()->size)) {
-            $filter['limit']['size'] = request()->page;
+            $filter['limit']['size'] = request()->size;
         }
 
         if (isset(request()->order_by)) {
@@ -59,7 +59,7 @@ class CollectionQueryParameters
         }
 
         if (isset(request()->order_by) && !in_array('order_by', $except)) {
-            $parameters['size'] = request()->order_by;
+            $parameters['order_by'] = request()->order_by;
         }
 
         if (isset(request()->order_direction) && !in_array('order_by', $except)) {
