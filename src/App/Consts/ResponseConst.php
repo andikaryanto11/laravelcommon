@@ -84,8 +84,8 @@ class ResponseConst extends BaseConts
         'Status' => 'NOT_AUTHORIZED',
         'Code'   => 2017,
     ];
-    const NOT_ALLOWED = [
-        'Status' => 'NOT_ALLOWED',
+    const NOT_ALLOWED_METHOD = [
+        'Status' => 'NOT_ALLOWED_METHOD',
         'Code'   => 2018,
     ];
 }
