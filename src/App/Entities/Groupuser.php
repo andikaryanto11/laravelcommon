@@ -6,8 +6,6 @@ use LaravelOrm\Entities\EntityList;
 
 class Groupuser extends BaseEntity
 {
-   
-
     /**
      * @var EntityList
      */
@@ -86,7 +84,7 @@ class Groupuser extends BaseEntity
      * Get the value of scopes
      *
      * @return  ?EntityList
-     */ 
+     */
     protected function getScopes(): ?EntityList
     {
         return $this->scopes;
@@ -98,7 +96,7 @@ class Groupuser extends BaseEntity
      * @param  EntityList  $scopes
      *
      * @return  self
-     */ 
+     */
     protected function setScopes(EntityList $scopes): Groupuser
     {
         $this->scopes = $scopes;
