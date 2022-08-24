@@ -5,6 +5,7 @@ namespace LaravelCommon\App\Providers;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use LaravelCommon\App\Console\Commands\GenerateEntity;
 use LaravelCommon\App\Http\Middleware\CheckScope;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\ControllerAfter;
@@ -45,6 +46,12 @@ class CommonAppServiceProvider extends ServiceProvider
         $this->publishConfig();
 
         $this->registerMiddleware();
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GenerateEntity::class,
+            ]);
+        }
        
     }
 
