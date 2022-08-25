@@ -33,10 +33,8 @@ class UserController extends Controller {
     }
 
     public function getAll(Request $request){
-        $data = $request->getUserToken()->getUser();
-        $users = $this->userRepository->collect();
-        $userCollection = new UserCollection($users);
+        $users = $this->userRepository->gather();
 
-        return new SuccessResponse('OK', [], $userCollection);
+        return new SuccessResponse('OK', [], $users);
     }
 }

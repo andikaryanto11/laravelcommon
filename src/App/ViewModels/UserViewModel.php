@@ -42,7 +42,8 @@ class UserViewModel extends AbstractViewModel
         return [
             'id' => $this->entity->getId(),
             'username' => $this->entity->getUsername(),
-            "is_active" => (bool)$this->entity->getIsActive()
+            "is_active" => (bool)$this->entity->getIsActive(),
+            "email" => (bool)$this->entity->getEmail()
         ];
     }
 }

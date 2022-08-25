@@ -34,14 +34,17 @@ LaravelCommon\App\Entities\User:
         type: string
         isEntity: false
         field: username
+        rule: 'required|alpha_dash'
     email: 
         type: string
         isEntity: false
         field: email
+        rule: 'email'
     password: 
         type: string
         isEntity: false
         field: password
+        rule: 'password'
     photo: 
         type: string
         isEntity: false

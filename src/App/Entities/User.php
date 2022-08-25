@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\App\Entities;
 
+use Illuminate\Support\Facades\Hash;
 use LaravelOrm\Entities\EntityList;
 
 class User extends BaseEntity
@@ -29,12 +30,17 @@ class User extends BaseEntity
     /**
      * @var string
      */
+    private ?string $realPassword = null;
+
+    /**
+     * @var string
+     */
     private ?string $photo  = null;
 
     /**
      * @var bool
      */
-    private ?bool $isActive  = null;
+    private bool $isActive  = false;
 
     /**
      * @var EntityList
@@ -134,7 +140,7 @@ class User extends BaseEntity
     /**
      * @return ?bool
      */
-    protected function getIsActive(): ?bool
+    protected function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -169,6 +175,32 @@ class User extends BaseEntity
     protected function setScopes(EntityList $scopes): User
     {
         $this->scopes = $scopes;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function beforePersist()
+    {
+        parent::beforePersist();
+        if(!empty($this->realPasword)){
+            $this->setPassword(Hash::make($this->realPasword));
+        }
+    }
+
+    /**
+     * Set the value of realPasword
+     *
+     * @param  string  $realPasword
+     *
+     * @return  self
+     */ 
+    protected function setRealPassword(string $realPassword)
+    { 
+        $this->password = $realPassword;
+        $this->realPassword = $realPassword;
 
         return $this;
     }
