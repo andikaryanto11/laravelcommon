@@ -69,5 +69,13 @@ LaravelCommon\App\Entities\User:
         type: string
         isEntity: false
         field: updated_by
+    isDeleted: 
+        type: bool
+        isEntity: false
+        field: is_deleted
+    deletedAt: 
+        type: DateTime
+        isEntity: false
+        field: deleted_at
         
     

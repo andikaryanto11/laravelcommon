@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\App\Entities;
 
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 use LaravelOrm\Entities\EntityList;
 
@@ -30,11 +31,6 @@ class User extends BaseEntity
     /**
      * @var string
      */
-    private ?string $realPassword = null;
-
-    /**
-     * @var string
-     */
     private ?string $photo  = null;
 
     /**
@@ -46,6 +42,21 @@ class User extends BaseEntity
      * @var EntityList
      */
     private ?EntityList $scopes  = null;
+
+    /**
+     * Undocumented variable
+     *
+     * @var bool
+     */
+    private bool $isDeleted = false;
+
+    /**
+     * Undocumented variable
+     *
+     * @var DateTime|null
+     */
+    private ?DateTime $deletedAt = null;
+
 
     /**
      * @return ?Groupuser
@@ -159,7 +170,7 @@ class User extends BaseEntity
      * Get the value of scopes
      *
      * @return  ?EntityList
-     */ 
+     */
     protected function getScopes(): ?EntityList
     {
         return $this->scopes;
@@ -171,7 +182,7 @@ class User extends BaseEntity
      * @param  EntityList  $scopes
      *
      * @return  self
-     */ 
+     */
     protected function setScopes(EntityList $scopes): User
     {
         $this->scopes = $scopes;
@@ -180,27 +191,64 @@ class User extends BaseEntity
     }
 
     /**
-     * @inheritdoc
-     */
-    protected function beforePersist()
-    {
-        parent::beforePersist();
-        if(!empty($this->realPasword)){
-            $this->setPassword(Hash::make($this->realPasword));
-        }
-    }
-
-    /**
      * Set the value of realPasword
      *
      * @param  string  $realPasword
      *
      * @return  self
-     */ 
+     */
     protected function setRealPassword(string $realPassword)
-    { 
+    {
         $this->password = $realPassword;
         $this->realPassword = $realPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  bool
+     */
+    protected function getIsDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  bool  $isDeleted  Undocumented variable
+     *
+     * @return  self
+     */
+    protected function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  DateTime|null
+     */
+    protected function getDeletedAt(): ?DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  DateTime|null  $deletedAt  Undocumented variable
+     *
+     * @return  self
+     */
+    protected function setDeletedAt(Datetime $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }

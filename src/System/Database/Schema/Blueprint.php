@@ -18,4 +18,15 @@ class Blueprint extends SchemaBlueprint
         $this->string('created_by')->nullable();
         return $this->string('updated_by')->nullable();
     }
+
+    /**
+     * created_by and updated_by column
+     *
+     * @return ColumnDefinition
+     */
+    public function softDelete(): ColumnDefinition
+    {
+        $this->boolean('is_deleted')->default(false);
+        return $this->dateTime('deleted_at')->nullable();
+    }
 }
