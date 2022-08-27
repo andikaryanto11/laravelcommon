@@ -7,7 +7,6 @@ use LaravelCommon\System\Http\Request;
 
 class Kernel extends HttpKernel
 {
-
     /**
      * Handle an incoming HTTP request.
      *

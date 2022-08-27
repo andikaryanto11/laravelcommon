@@ -1,0 +1,58 @@
+name: laravelcommon
+
+on:
+  push:
+    branches: ['**']
+  # pull_request:
+  #   branches: [ '**' ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    # services:
+    #   mysql:
+    #     image: mysql:5.7
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: password       
+    #     ports:
+    #     - 3366:3306
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # - name: Verify MySQL connection from host
+    #   run: |
+    #     sudo apt-get install -y mysql-client
+    #     mysql --host 127.0.0.1 --port 3366 -uroot -ppassword -e "CREATE DATABASE IF NOT EXISTS amanahmarttest; SHOW DATABASES;"
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+    
+    - name: writable directory 
+      run: chmod -R 777 storage
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+    
+    # - name: Run All Unit Test
+    #   run: vendor/bin/phpunit app
+
+    - name: PHP standart code 
+      run: ./vendor/bin/phpcbf --standard=PSR12 src/

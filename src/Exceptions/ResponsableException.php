@@ -7,7 +7,6 @@ use LaravelCommon\Responses\BaseResponse;
 
 class ResponsableException extends Exception
 {
-
     /**
      * Undocumented variable
      *
@@ -32,8 +31,8 @@ class ResponsableException extends Exception
      *
      * @return mixed
      */
-    public function getResponse(){
+    public function getResponse()
+    {
         return $this->response;
     }
-    
 }

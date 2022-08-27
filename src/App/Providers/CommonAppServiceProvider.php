@@ -53,7 +53,6 @@ class CommonAppServiceProvider extends ServiceProvider
                 GenerateEntity::class,
             ]);
         }
-       
     }
 
     /**
@@ -67,7 +66,6 @@ class CommonAppServiceProvider extends ServiceProvider
 
             __DIR__ . '/../../Config/common-config.php' => config_path('common-config.php'),
         ], 'laravel-common-config');
-        
     }
 
     /**
@@ -75,7 +73,8 @@ class CommonAppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerMiddleware(){
+    private function registerMiddleware()
+    {
         $router = $this->app['router'];
 
         $router->aliasMiddleware('controller-after', ControllerAfter::class);

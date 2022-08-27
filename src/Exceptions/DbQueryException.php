@@ -7,5 +7,4 @@ use LaravelCommon\Responses\BaseResponse;
 
 class DbQueryException extends Exception
 {
-    
 }

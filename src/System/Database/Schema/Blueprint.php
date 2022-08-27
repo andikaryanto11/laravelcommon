@@ -7,7 +7,6 @@ use Illuminate\Database\Schema\ColumnDefinition;
 
 class Blueprint extends SchemaBlueprint
 {
-
     /**
      * created_by and updated_by column
      *

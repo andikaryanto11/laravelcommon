@@ -10,9 +10,8 @@ use LaravelCommon\App\ViewModels\User\TokenViewModel;
 use LaravelCommon\App\ViewModels\UserCollection;
 use LaravelCommon\Responses\SuccessResponse;
 
-class UserController extends Controller {
-
-
+class UserController extends Controller
+{
     /**
      * Undocumented variable
      *
@@ -27,12 +26,12 @@ class UserController extends Controller {
      */
     public function __construct(
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
     }
 
-    public function getAll(Request $request){
+    public function getAll(Request $request)
+    {
         $users = $this->userRepository->gather();
 
         return new SuccessResponse('OK', [], $users);

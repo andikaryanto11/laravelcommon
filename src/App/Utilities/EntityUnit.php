@@ -11,11 +11,11 @@ class EntityUnit extends EntitiesEntityUnit
 {
     public function flush()
     {
-        try{
+        try {
             parent::flush();
-        } catch(Exception $e) {
-            if($e instanceof QueryException){
-                if($e->getCode() == 23000){
+        } catch (Exception $e) {
+            if ($e instanceof QueryException) {
+                if ($e->getCode() == 23000) {
                     throw new DbQueryException('Data with uniq value exist');
                 }
             }
@@ -23,4 +23,3 @@ class EntityUnit extends EntitiesEntityUnit
         }
     }
 }
-   
