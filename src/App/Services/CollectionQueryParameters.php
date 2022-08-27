@@ -4,7 +4,6 @@ namespace LaravelCommon\App\Services;
 
 class CollectionQueryParameters
 {
-
     /**
      * Create query parameters as collection filters
      *
@@ -67,9 +66,10 @@ class CollectionQueryParameters
         }
 
 
-        if (isset(request()->search_by) && 
-            isset(request()->search_value) && 
-            !in_array('search_by', $except) && 
+        if (
+            isset(request()->search_by) &&
+            isset(request()->search_value) &&
+            !in_array('search_by', $except) &&
             !in_array('search_value', $except)
         ) {
             $parameters['search_by'] = request()->search_by;

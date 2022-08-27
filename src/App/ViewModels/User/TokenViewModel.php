@@ -24,7 +24,6 @@ class TokenViewModel extends AbstractViewModel
      */
     public function addResource(array &$element)
     {
-        
     }
 
     /**

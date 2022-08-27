@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseResponse extends Response implements ResponseInterface
 {
-
     /**
      * @var string
      */
@@ -55,7 +54,7 @@ class BaseResponse extends Response implements ResponseInterface
     {
         $json = [];
 
-        if($this->data instanceof PaggedCollection){
+        if ($this->data instanceof PaggedCollection) {
             $json['paging']['next_page'] = $this->data->getNextPage();
             $json['paging']['prev_page'] = $this->data->getPreviousPage();
             $json['paging']['total_page'] = $this->data->getTotalPage();
@@ -94,7 +93,8 @@ class BaseResponse extends Response implements ResponseInterface
      *
      * @return void
      */
-    public function getMessage(){
+    public function getMessage()
+    {
         return $this->message;
     }
 }

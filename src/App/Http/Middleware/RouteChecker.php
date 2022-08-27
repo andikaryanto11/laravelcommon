@@ -27,7 +27,7 @@ class RouteChecker
         //     return new SuccessResponse('', [], $routeMethods);
         //     return new NotAllowedResponse('Method not allowed', ResponseConst::NOT_ALLOWED_METHOD);
         // }
- 
+
         return $next($request);
     }
 }

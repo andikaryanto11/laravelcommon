@@ -9,8 +9,8 @@ use LaravelCommon\App\ViewModels\User\TokenViewModel;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\SuccessResponse;
 
-class AuthController extends Controller {
-
+class AuthController extends Controller
+{
     /**
      * @var UserService
      */
@@ -22,8 +22,7 @@ class AuthController extends Controller {
      */
     public function __construct(
         UserService $userService
-    )
-    {
+    ) {
         $this->userService = $userService;
     }
 
@@ -34,12 +33,13 @@ class AuthController extends Controller {
      * @param Request $request
      * @return void
      */
-    public function generateToken(Request $request){
+    public function generateToken(Request $request)
+    {
         $username = $request->username;
         $password = $request->password;
 
         $userToken = $this->userService->generateToken($username, $password);
-        if(empty($userToken)){
+        if (empty($userToken)) {
             return new BadRequestResponse('User not found', [], null);
         }
         return (new SuccessResponse('OK', [], new TokenViewModel($userToken)));

@@ -14,7 +14,6 @@ use LaravelCommon\System\Http\Request;
 
 class CheckToken
 {
-
     /**
      *
      * @var TokenRepository
@@ -28,8 +27,7 @@ class CheckToken
      */
     public function __construct(
         TokenRepository $tokenRepository
-    )
-    {
+    ) {
         $this->tokenRepository = $tokenRepository;
     }
 
@@ -42,8 +40,8 @@ class CheckToken
      */
     public function handle(Request $request, Closure $next)
     {
-        try{
-            if($request->hasHeader('Authorization')){
+        try {
+            if ($request->hasHeader('Authorization')) {
                 $authorization = $request->header('Authorization');
                 $now = new DateTime();
 
@@ -57,21 +55,18 @@ class CheckToken
                  * @var Token $userToken
                  */
                 $userToken = $this->tokenRepository->findOne($param);
-                if(empty($userToken)){
+                if (empty($userToken)) {
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
-                if($userToken->getExpiredAt() < $now){
+                if ($userToken->getExpiredAt() < $now) {
                     return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
                 $request->setUserToken($userToken);
-
             } else {
-
                 return new UnauthorizedResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);
             }
-        } catch(Exception $e){
-
+        } catch (Exception $e) {
             return new BadRequestResponse($e->getMessage());
         }
         return $next($request);

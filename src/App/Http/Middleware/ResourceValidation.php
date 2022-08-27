@@ -31,7 +31,7 @@ class ResourceValidation
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::FAILED_SAVE_DATA));
-        } 
+        }
 
         return $next($request);
     }

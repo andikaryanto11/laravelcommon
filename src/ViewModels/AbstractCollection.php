@@ -41,7 +41,7 @@ abstract class AbstractCollection
 
     /**
      * Add item element
-     * 
+     *
      */
     public function addItem(AbstractViewModel $viewModel): void
     {
@@ -63,7 +63,8 @@ abstract class AbstractCollection
      *
      * @return int
      */
-    public function count(){
+    public function count()
+    {
         return $this->collection->count();
     }
 }

@@ -13,7 +13,7 @@ class CreateGroupusers extends Migration
      */
     public function up()
     {
-        
+
         Schema::create('groupusers', function (Blueprint $table) {
             $table->id();
             $table->string('group_name');

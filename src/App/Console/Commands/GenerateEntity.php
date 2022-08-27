@@ -132,7 +132,7 @@ class GenerateEntity extends Command
         foreach ($this->entityProps as $entityProp) {
             $type = $entityProp['type'];
             $property = $entityProp['property'];
-            $properties .= "\tprotected ?{$type} $". $property . " = null;\n";
+            $properties .= "\tprotected ?{$type} $" . $property . " = null;\n";
         }
 
         $functions = '';
@@ -147,20 +147,20 @@ class GenerateEntity extends Command
             "\t * @param $returnType $property\n" .
             "\t * @return self\n" .
             "\t */\n" .
-            "\tprotected function set{$function}({$returnType} $" . $property ."): {$this->className}\n" .
+            "\tprotected function set{$function}({$returnType} $" . $property . "): {$this->className}\n" .
             "\t{\n" .
-"\t\t$" . "this->{$property} = $". $property .";\n".
-"\t\treturn $" . "this;\n".
-"\t}\n\n" .
-"\t/**\n" .
-"\t * Get $property \n" .
-"\t *\n" .
-"\t * @return $returnType\n" .
-"\t */\n" .
-"\tprotected function get{$function}(): {$returnType} \n".
-"\t{\n" .
-"\t\treturn $" . "this->{$property};\n " .
-"\t}\n\n";
+            "\t\t$" . "this->{$property} = $" . $property . ";\n" .
+            "\t\treturn $" . "this;\n" .
+            "\t}\n\n" .
+            "\t/**\n" .
+            "\t * Get $property \n" .
+            "\t *\n" .
+            "\t * @return $returnType\n" .
+            "\t */\n" .
+            "\tprotected function get{$function}(): {$returnType} \n" .
+            "\t{\n" .
+            "\t\treturn $" . "this->{$property};\n " .
+            "\t}\n\n";
             ;
         }
 
@@ -177,7 +177,7 @@ class {$this->getClassName()} extends BaseEntity
         ";
         $entityPath = app_path() . '\\' . $this->getNameSpace();
 
-        if(!file_exists($entityPath)){
+        if (!file_exists($entityPath)) {
             mkdir($entityPath . '\\', 777, true);
         }
         file_put_contents(app_path() . '\\' .  $this->getNameSpace() . '\\' . $this->getClassName() . '.php', $entityFile);
@@ -196,8 +196,8 @@ class {$this->getClassName()} extends BaseEntity
         $mapPath = explode('\\', $this->getNameSpace());
 
         array_splice($mapPath, 0, 1);
-        $strMapPath = $entityMappingPath . '\\' . implode('', $mapPath ) . $this->getClassName();
-        
+        $strMapPath = $entityMappingPath . '\\' . implode('', $mapPath) . $this->getClassName();
+
         file_put_contents($strMapPath  . '.yml', $yaml);
     }
 
@@ -224,11 +224,11 @@ class {$this->getClassName()} extends BaseEntity
             $type = '';
             if (strpos($schemInformation->Type, 'int') !== false) {
                 $type = 'int';
-            } else if (strpos($schemInformation->Type, 'varchar') !== false) {
+            } elseif (strpos($schemInformation->Type, 'varchar') !== false) {
                 $type = 'string';
-            } else if (strpos($schemInformation->Type, 'tinyint(1)') !== false) {
+            } elseif (strpos($schemInformation->Type, 'tinyint(1)') !== false) {
                 $type = 'bool';
-            } else if (
+            } elseif (
                 strpos($schemInformation->Type, 'timestamp') !== false ||
                 strpos($schemInformation->Type, 'datetime') !== false
             ) {
@@ -254,11 +254,11 @@ class {$this->getClassName()} extends BaseEntity
         $propData['isEntity'] = false;
         if (strpos($schemInformation->Type, 'int') !== false) {
             $propData['type'] = 'int';
-        } else if (strpos($schemInformation->Type, 'varchar') !== false) {
+        } elseif (strpos($schemInformation->Type, 'varchar') !== false) {
             $propData['type'] = 'string';
-        } else if (strpos($schemInformation->Type, 'tinyint(1)') !== false) {
+        } elseif (strpos($schemInformation->Type, 'tinyint(1)') !== false) {
             $propData['type'] = 'bool';
-        } else if (
+        } elseif (
             strpos($schemInformation->Type, 'timestamp') !== false ||
             strpos($schemInformation->Type, 'datetime') !== false
         ) {
@@ -269,7 +269,8 @@ class {$this->getClassName()} extends BaseEntity
             $propData['rule'] = 'required';
         }
 
-        if ((strpos($schemInformation->Type, 'varchar') !== false ||
+        if (
+            (strpos($schemInformation->Type, 'varchar') !== false ||
                 strpos($schemInformation->Type, 'char') !== false) &&
             $schemInformation->Key != 'PRI'
         ) {

@@ -12,7 +12,6 @@ use LaravelOrm\Entities\EntityManager;
 
 class UserService
 {
-
     /**
      * Undocumented variable
      *

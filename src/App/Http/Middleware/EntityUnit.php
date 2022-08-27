@@ -11,8 +11,8 @@ use LaravelCommon\System\Http\Request;
 use LaravelOrm\Entities\EntityUnit as EntitiesEntityUnit;
 use Nette\Schema\Expect;
 
-class EntityUnit {
-
+class EntityUnit
+{
     /**
      * Undocumented variable
      *
@@ -27,8 +27,7 @@ class EntityUnit {
      */
     public function __construct(
         EntitiesEntityUnit $entityUnit
-    )
-    {
+    ) {
         $this->entityUnit = $entityUnit;
     }
 
@@ -45,7 +44,7 @@ class EntityUnit {
         $response = $next($request);
         $resource = $request->getResource();
 
-        try{
+        try {
             if (strtoupper($request->method()) == 'DELETE') {
                 $this->entityUnit->prepareRemove($resource);
             } else {
@@ -53,13 +52,10 @@ class EntityUnit {
             }
 
             $this->entityUnit->flush();
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }
 
         return $response;
     }
-
-    
-
 }

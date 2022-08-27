@@ -7,7 +7,6 @@ use LaravelOrm\Interfaces\IEntity;
 
 abstract class PaggedCollection extends AbstractCollection
 {
-
     protected ?int $page = null;
     protected ?int $size = null;
     protected ?int $totalRecord = null;
@@ -35,7 +34,7 @@ abstract class PaggedCollection extends AbstractCollection
 
     /**
      * Get the value of size
-     * 
+     *
      * @return ?int
      */
     public function getSize(): ?int
@@ -57,7 +56,7 @@ abstract class PaggedCollection extends AbstractCollection
 
     /**
      * Get the value of totalRecord
-     * 
+     *
      * @return ?int
      */
     public function getTotalRecord(): ?int
@@ -78,7 +77,7 @@ abstract class PaggedCollection extends AbstractCollection
     }
 
     /**
-     * 
+     *
      *
      * @return int
      */

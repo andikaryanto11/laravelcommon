@@ -9,7 +9,6 @@ use LaravelCommon\App\Http\Middleware\Hydrator;
 
 class Request extends HttpRequest
 {
-
     /**
      * @var TokenRepository $tokenRepository
      */

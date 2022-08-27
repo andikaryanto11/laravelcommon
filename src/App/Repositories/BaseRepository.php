@@ -10,7 +10,6 @@ use LaravelOrm\Repository\Repository;
 
 class BaseRepository extends Repository implements RepositoryInterface
 {
-
     /**
      * Get view collection and paged the collection
      *
@@ -63,6 +62,5 @@ class BaseRepository extends Repository implements RepositoryInterface
      */
     public function validateEntity(IEntity $entity): void
     {
-        
     }
 }
