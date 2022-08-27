@@ -37,7 +37,7 @@ class BaseResponse extends Response implements ResponseInterface
          $this->data        = $data;
          $this->code        = $code;
          $this->reponseCode = $reponseCode;
-         parent::__construct();
+         parent::__construct(json_encode($data), $code);
     }
 
     /**
@@ -87,5 +87,14 @@ class BaseResponse extends Response implements ResponseInterface
         }
 
         return $this->data;
+    }
+
+    /**
+     * Get response message
+     *
+     * @return void
+     */
+    public function getMessage(){
+        return $this->message;
     }
 }
