@@ -6,7 +6,6 @@ use LaravelCommon\ViewModels\PaggedCollection;
 
 class UrlLink
 {
-
     /**
      * Create links
      *
@@ -19,7 +18,7 @@ class UrlLink
 
         $queryParams = CollectionQueryParameters::getQueryParameters(['page']);
 
-        $queryParam = !empty($queryParams) 
+        $queryParam = !empty($queryParams)
             ? "&" . http_build_query($queryParams)
             : '';
 
@@ -31,7 +30,7 @@ class UrlLink
 
         $data['next'] = empty($paggedCollection->getNextPage())
             ? null
-            : url()->current() . '&page=' . $paggedCollection->getNextPage(). $queryParam;
+            : url()->current() . '&page=' . $paggedCollection->getNextPage() . $queryParam;
 
         $data['first'] = url()->current() . '?page=1' . $queryParam;
         $data['last'] = url()->current() . '?page=' . $paggedCollection->getTotalPage() . $queryParam;

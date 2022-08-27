@@ -4,15 +4,15 @@ namespace LaravelCommon\App\Repositories;
 
 use LaravelOrm\Interfaces\IEntity;
 
-interface RepositoryInterface {
-
+interface RepositoryInterface
+{
     /**
      * Class to map collection model
      *
      * @return string
      */
     public function collectionClass();
-    
+
     /**
      * Class to map view model
      *

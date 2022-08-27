@@ -24,8 +24,8 @@ class CheckScope
         $groupuser = $user->getGroupuser();
 
         $userScopes = $user->getScopes();
-        if(count($scopes) > 0){
-            if(!empty($userScopes)){
+        if (count($scopes) > 0) {
+            if (!empty($userScopes)) {
                 foreach ($userScopes as $scope) {
                     if (in_array($scope->getName(), $scopes)) {
                         $isAuthorized = true;
@@ -36,7 +36,7 @@ class CheckScope
 
             if (!$isAuthorized) {
                 $groupuserScopes = $groupuser->getScopes();
-                if(!empty($groupuserScopes)){
+                if (!empty($groupuserScopes)) {
                     foreach ($groupuserScopes as $scope) {
                         if (in_array($scope->getName(), $scopes)) {
                             $isAuthorized = true;
@@ -49,7 +49,7 @@ class CheckScope
             $isAuthorized = true;
         }
 
-        if(!$isAuthorized){
+        if (!$isAuthorized) {
             return new UnauthorizedResponse('You are not authorized to view or modify the data', ResponseConst::NOT_AUTHORIZED);
         }
 

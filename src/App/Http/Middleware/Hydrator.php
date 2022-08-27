@@ -11,7 +11,6 @@ use LaravelOrm\Exception\EntityException;
 
 class Hydrator
 {
-
     /**
      * Undocumented function
      *
@@ -85,7 +84,8 @@ class Hydrator
      * @param Request $request
      * @return void
      */
-    private function delete(Request $request){
+    private function delete(Request $request)
+    {
         $resource = $this->getEntity($request);
         $request->setResource($resource);
     }
@@ -109,15 +109,16 @@ class Hydrator
      * @param Request $request
      * @return mixed
      */
-    private function getEntity(Request $request){
+    private function getEntity(Request $request)
+    {
 
         $id = $request->route()->parameter('id');
         $repositoryClass = $this->repositoryClass();
 
         $repository = new $repositoryClass();
-        try{
+        try {
             $resource = $repository->findOrFail($id);
-        } catch(EntityException $e){
+        } catch (EntityException $e) {
             throw new ResponsableException($e->getMessage(), new NoDataFoundResponse('No Data Found'));
         }
 

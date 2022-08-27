@@ -28,7 +28,7 @@ class Token extends BaseEntity
      * Get the value of user
      *
      * @return  ?User
-     */ 
+     */
     protected function getUser(): ?User
     {
         return $this->user;
@@ -40,7 +40,7 @@ class Token extends BaseEntity
      * @param  User  $user
      *
      * @return  self
-     */ 
+     */
     protected function setUser(User $user): Token
     {
         $this->user = $user;
@@ -52,7 +52,7 @@ class Token extends BaseEntity
      * Get the value of token
      *
      * @return  string
-     */ 
+     */
     protected function getToken(): string
     {
         return $this->token;
@@ -64,7 +64,7 @@ class Token extends BaseEntity
      * @param  string  $token
      *
      * @return  self
-     */ 
+     */
     protected function setToken(string $token): Token
     {
         $this->token = $token;
@@ -76,7 +76,7 @@ class Token extends BaseEntity
      * Get the value of expiredAt
      *
      * @return  DateTime
-     */ 
+     */
     protected function getExpiredAt(): DateTime
     {
         return $this->expiredAt;
@@ -88,7 +88,7 @@ class Token extends BaseEntity
      * @param  DateTime  $expiredAt
      *
      * @return  self
-     */ 
+     */
     protected function setExpiredAt(DateTime $expiredAt): Token
     {
         $this->expiredAt = $expiredAt;
@@ -96,7 +96,8 @@ class Token extends BaseEntity
         return $this;
     }
 
-    public function isExpired(){
+    public function isExpired()
+    {
         $now = new DateTime();
         return $this->getExpiredAt() < $now;
     }

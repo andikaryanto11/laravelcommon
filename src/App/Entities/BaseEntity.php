@@ -84,14 +84,14 @@ class BaseEntity extends Entity
     protected function beforePersist()
     {
         $userToken = request()->getUserToken();
-        if(!empty($userToken)){
+        if (!empty($userToken)) {
 
             /**
              * @var User
              */
             $user = $userToken->getUser();
 
-            if(!empty($this->getId())){
+            if (!empty($this->getId())) {
                 $this->setUpdatedBy($user->getUsername());
             } else {
                 $this->setCreatedBy($user->getUsername());

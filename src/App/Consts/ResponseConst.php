@@ -4,7 +4,6 @@ namespace LaravelCommon\App\Consts;
 
 class ResponseConst extends BaseConts
 {
-
     //Success
     const OK = [
         'Status' => 'OK',
