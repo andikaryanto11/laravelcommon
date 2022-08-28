@@ -23,7 +23,6 @@ class Token extends BaseEntity
      */
     private ?DateTime $expiredAt  = null;
 
-
     /**
      * Get the value of user
      *

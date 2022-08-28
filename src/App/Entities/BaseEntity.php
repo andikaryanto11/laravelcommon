@@ -4,6 +4,8 @@ namespace LaravelCommon\App\Entities;
 
 use LaravelOrm\Entities\Entity;
 use DateTime;
+use Exception;
+use LaravelCommon\App\Entities\User\Token;
 
 class BaseEntity extends Entity
 {
@@ -83,19 +85,24 @@ class BaseEntity extends Entity
      */
     protected function beforePersist()
     {
-        $userToken = request()->getUserToken();
-        if (!empty($userToken)) {
+        /**
+         * @var Token $userToken
+         */
+        try {
+            $userToken = request()->getUserToken();
+            if (!empty($userToken)) {
 
-            /**
-             * @var User
-             */
-            $user = $userToken->getUser();
-
-            if (!empty($this->getId())) {
-                $this->setUpdatedBy($user->getUsername());
-            } else {
-                $this->setCreatedBy($user->getUsername());
+                /**
+                 * @var User
+                 */
+                $user = $userToken->getUser();
+                if (!empty($this->getId())) {
+                    $this->setUpdatedBy($user->getUsername());
+                } else {
+                    $this->setCreatedBy($user->getUsername());
+                }
             }
+        } catch (Exception $e) {
         }
     }
 }

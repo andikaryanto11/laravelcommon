@@ -34,7 +34,7 @@ class CheckScope
                 }
             }
 
-            if (!$isAuthorized) {
+            if (!$isAuthorized && !empty($groupuser)) {
                 $groupuserScopes = $groupuser->getScopes();
                 if (!empty($groupuserScopes)) {
                     foreach ($groupuserScopes as $scope) {

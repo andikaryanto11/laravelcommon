@@ -11,5 +11,7 @@ Route::middleware(['controller-after'])->group(function () {
         Route::middleware(['check-token'])->group(function () {
             Route::get('/users', [UserController::class, 'getAll']);
         });
+
+        Route::post('/register-market-organizer', [UserController::class]);
     });
 });

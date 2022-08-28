@@ -2,8 +2,7 @@
 
 namespace LaravelCommon\App\ViewModels\User;
 
-use LaravelCommon\App\Entities\Groupuser;
-use LaravelCommon\App\Entities\User;
+use LaravelCommon\App\Entities\User\Token;
 use LaravelCommon\ViewModels\AbstractViewModel;
 use stdClass;
 
@@ -15,7 +14,7 @@ class TokenViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var User $entity
+     * @var Token $entity
      */
     protected $entity;
 

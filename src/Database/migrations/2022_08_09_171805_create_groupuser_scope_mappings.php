@@ -21,7 +21,7 @@ class CreateGroupuserScopeMappings extends Migration
 
 
             $table->foreign('groupuser_id')
-                ->references('id')->on('groupusers');
+                ->references('id')->on('groupusers')->onDelete('cascade');
         });
     }
 

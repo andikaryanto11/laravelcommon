@@ -62,6 +62,7 @@ class CheckToken
                 if ($userToken->getExpiredAt() < $now) {
                     return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
+                $userToken->getUser();
                 $request->setUserToken($userToken);
             } else {
                 return new UnauthorizedResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);
