@@ -41,7 +41,7 @@ class User extends BaseEntity
     /**
      * @var EntityList
      */
-    private ?EntityList $scopes  = null;
+    private ?EntityList $userScopeMappings  = null;
 
     /**
      * Undocumented variable
@@ -167,25 +167,25 @@ class User extends BaseEntity
     }
 
     /**
-     * Get the value of scopes
+     * Get the value of userScopeMappings
      *
      * @return  ?EntityList
      */
-    protected function getScopes(): ?EntityList
+    protected function getUserScopeMappings(): ?EntityList
     {
-        return $this->scopes;
+        return $this->userScopeMappings;
     }
 
     /**
-     * Set the value of scopes
+     * Set the value of userScopeMappings
      *
-     * @param  EntityList  $scopes
+     * @param  EntityList  $userScopeMappings
      *
      * @return  self
      */
-    protected function setScopes(EntityList $scopes): User
+    protected function setUserScopeMappings(EntityList $userScopeMappings): User
     {
-        $this->scopes = $scopes;
+        $this->userScopeMappings = $userScopeMappings;
 
         return $this;
     }

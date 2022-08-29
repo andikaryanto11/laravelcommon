@@ -24,7 +24,7 @@ class Groupuser extends BaseEntity
     /**
      * @var EntityList
      */
-    private ?EntityList $scopes  = null;
+    private ?EntityList $groupuserScopeMappings  = null;
 
     /**
      * @return ?EntityList
@@ -72,34 +72,34 @@ class Groupuser extends BaseEntity
 
     /**
      * @param string $description
-     * @return Groupuser
+     * @return self
      */
-    protected function setDescription(string $description): Groupuser
+    protected function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * Get the value of scopes
+     * Get the value of groupuserScopeMappings
      *
      * @return  ?EntityList
      */
-    protected function getScopes(): ?EntityList
+    protected function getGroupuserScopeMappings(): ?EntityList
     {
-        return $this->scopes;
+        return $this->groupuserScopeMappings;
     }
 
     /**
-     * Set the value of scopes
+     * Set the value of groupuserScopeMappings
      *
-     * @param  EntityList  $scopes
+     * @param  EntityList  $groupuserScopeMappings
      *
      * @return  self
      */
-    protected function setScopes(EntityList $scopes): Groupuser
+    protected function setGroupuserScopeMapppings(EntityList $groupuserScopeMappings): self
     {
-        $this->scopes = $scopes;
+        $this->groupuserScopeMappings = $groupuserScopeMappings;
 
         return $this;
     }
