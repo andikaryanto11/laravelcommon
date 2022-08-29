@@ -18,9 +18,9 @@ class ScopeMapping extends BaseEntity
     /**
      * Undocumented variable
      *
-     * @var Scope
+     * @var ?Scope
      */
-    private Scope $scope;
+    private ?Scope $scope = null;
 
     /**
      * Get undocumented variable
@@ -39,7 +39,7 @@ class ScopeMapping extends BaseEntity
      *
      * @return  self
      */
-    protected function setGroupuser(Groupuser $user): ScopeMapping
+    protected function setGroupuser(Groupuser $user): self
     {
         $this->user = $user;
 
@@ -49,9 +49,9 @@ class ScopeMapping extends BaseEntity
     /**
      * Get undocumented variable
      *
-     * @return  Scope
+     * @return  ?Scope
      */
-    protected function getScope(): Scope
+    protected function getScope(): ?Scope
     {
         return $this->scope;
     }
@@ -63,7 +63,7 @@ class ScopeMapping extends BaseEntity
      *
      * @return  self
      */
-    protected function setScope(Scope $scope): ScopeMapping
+    protected function setScope(Scope $scope): self
     {
         $this->scope = $scope;
 

@@ -5,17 +5,23 @@ LaravelCommon\App\Entities\Scope:
     id: 
         type: int
         isEntity: false
-        field: id        
-    users: 
-        type: LaravelCommon\App\Entities\User
-        mapping: 
-            type: LaravelCommon\App\Entities\User\ScopeMapping
-            isEntity: true
-            foreignKey: scope_id
+        field: id 
+    userScopeMappings: 
+        type: LaravelCommon\App\Entities\User\ScopeMapping
         isEntity: true
-        relationType: many_to_one
-        mappedBy: user
-        field: scopes
+        foreignKey: user_id
+        relationType: many_to_many
+        inversedBy: user
+        field: user_id
+        rule: 'required'
+    groupuserScopeMappings: 
+        type: LaravelCommon\App\Entities\Groupuser\ScopeMapping
+        isEntity: true
+        foreignKey: groupuser_id
+        relationType: many_to_many
+        inversedBy: groupuser
+        field: groupuser_id
+        rule: 'required'
     name: 
         type: string
         isEntity: false

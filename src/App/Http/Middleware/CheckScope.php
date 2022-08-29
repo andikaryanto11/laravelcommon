@@ -23,11 +23,11 @@ class CheckScope
         $user = $request->getUserToken()->getUser();
         $groupuser = $user->getGroupuser();
 
-        $userScopes = $user->getScopes();
+        $userScopesMappings = $user->getUserScopeMappings();
         if (count($scopes) > 0) {
-            if (!empty($userScopes)) {
-                foreach ($userScopes as $scope) {
-                    if (in_array($scope->getName(), $scopes)) {
+            if (!empty($userScopesMappings)) {
+                foreach ($userScopesMappings as $userScopesMapping) {
+                    if (in_array($userScopesMapping->getScope()->getName(), $scopes)) {
                         $isAuthorized = true;
                         break;
                     }
@@ -35,10 +35,10 @@ class CheckScope
             }
 
             if (!$isAuthorized && !empty($groupuser)) {
-                $groupuserScopes = $groupuser->getScopes();
+                $groupuserScopeMappings = $groupuser->getGroupuserScopeMappings();
                 if (!empty($groupuserScopes)) {
-                    foreach ($groupuserScopes as $scope) {
-                        if (in_array($scope->getName(), $scopes)) {
+                    foreach ($groupuserScopeMappings as $groupuserScopeMapping) {
+                        if (in_array($groupuserScopeMapping->getScope()->getName(), $scopes)) {
                             $isAuthorized = true;
                             break;
                         }
