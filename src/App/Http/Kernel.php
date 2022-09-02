@@ -19,7 +19,7 @@ class Kernel extends HttpKernel
             Request::createFrom($request)
         );
     }
-    
+
     /**
      * flexible create request from any custom request class
      *
@@ -28,7 +28,8 @@ class Kernel extends HttpKernel
      * @return \Illuminate\Http\Response
      * @return void
      */
-    public function handleRequest(string $requestClass, $request){
+    public function handleRequest(string $requestClass, $request)
+    {
         return parent::handle(
             $requestClass::createFrom($request)
         );
