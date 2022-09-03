@@ -12,6 +12,7 @@ use LaravelCommon\Responses\BaseResponse;
 
 class ControllerAfter
 {
+    public const NAME = 'controller-after';
     /**
      * Handle an incoming request.
      *

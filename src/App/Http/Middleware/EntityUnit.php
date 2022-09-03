@@ -13,6 +13,8 @@ use Nette\Schema\Expect;
 
 class EntityUnit
 {
+    public const NAME = 'entity-unit';
+
     /**
      * Undocumented variable
      *

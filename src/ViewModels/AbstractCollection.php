@@ -67,4 +67,14 @@ abstract class AbstractCollection
     {
         return $this->collection->count();
     }
+
+    /**
+     * Get Entity List
+     *
+     * @return EntityList
+     */
+    public function getEntityList()
+    {
+        return $this->collection;
+    }
 }

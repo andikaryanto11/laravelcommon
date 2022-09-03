@@ -46,7 +46,7 @@ abstract class AbstractViewModel
     /**
      *  set auto add Resource
      */
-    public function setIsAutoAddResource(bool $isAutoAddResource)
+    public function setIsAutoAddResource(bool $isAutoAddResource): self
     {
         $this->isAutoAddResource = $isAutoAddResource;
         return $this;
@@ -54,9 +54,20 @@ abstract class AbstractViewModel
 
     /**
      * if set true then view model will auto add available resource you define
+     * @return bool
      */
-    public function getIsAutoAddResource()
+    public function getIsAutoAddResource(): bool
     {
         return $this->isAutoAddResource;
+    }
+
+    /**
+     * Get entity instance
+     *
+     * @return mixed
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 }

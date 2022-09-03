@@ -10,6 +10,8 @@ use LaravelCommon\Responses\UnauthorizedResponse;
 
 class CheckScope
 {
+    public const NAME = 'check-scope';
+
     /**
      * Handle an incoming request.
      *
