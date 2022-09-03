@@ -77,15 +77,15 @@ class CommonAppServiceProvider extends ServiceProvider
     {
         $router = $this->app['router'];
 
-        $router->aliasMiddleware('controller-after', ControllerAfter::class);
+        $router->aliasMiddleware(ControllerAfter::NAME, ControllerAfter::class);
         // $router->aliasMiddleware('route-checker', RouteChecker::class);
         $router->pushMiddlewareToGroup('api', ControllerAfter::class);
         // $router->pushMiddlewareToGroup('api', RouteChecker::class);
 
-        $router->aliasMiddleware('check-token', CheckToken::class);
-        $router->aliasMiddleware('check-scope', CheckScope::class);
-        $router->aliasMiddleware('entity-unit', EntityUnit::class);
-        $router->aliasMiddleware('resource-validation', ResourceValidation::class);
-        $router->aliasMiddleware('common.hydrator.user', UserHydrator::class);
+        $router->aliasMiddleware(CheckToken::NAME, CheckToken::class);
+        $router->aliasMiddleware(CheckScope::NAME, CheckScope::class);
+        $router->aliasMiddleware(EntityUnit::NAME, EntityUnit::class);
+        $router->aliasMiddleware(ResourceValidation::NAME, ResourceValidation::class);
+        $router->aliasMiddleware(UserHydrator::NAME, UserHydrator::class);
     }
 }

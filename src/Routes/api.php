@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use LaravelCommon\App\Http\Controllers\AuthController;
 use LaravelCommon\App\Http\Controllers\UserController;
+use LaravelCommon\App\Http\Middleware\CheckToken;
+use LaravelCommon\App\Http\Middleware\ControllerAfter;
 
-Route::middleware(['controller-after'])->group(function () {
+Route::middleware([ControllerAfter::NAME])->group(function () {
     Route::prefix('api')->group(function () {
         Route::post('/auth/generate_token', [AuthController::class, 'generateToken']);
 
-        Route::middleware(['check-token'])->group(function () {
+        Route::middleware([CheckToken::NAME])->group(function () {
             Route::get('/users', [UserController::class, 'getAll']);
         });
 

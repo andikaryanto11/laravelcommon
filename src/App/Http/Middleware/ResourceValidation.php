@@ -13,6 +13,8 @@ use LaravelOrm\Exception\ValidationException;
 
 class ResourceValidation
 {
+    public const NAME = 'resource-validation';
+
     /**
      * Handle an incoming request.
      *
