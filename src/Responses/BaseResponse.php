@@ -52,40 +52,12 @@ class BaseResponse extends Response implements ResponseInterface
      */
     public function send()
     {
-        $json = [];
-
-        if ($this->data instanceof PaggedCollection) {
-            $json['paging']['next_page'] = $this->data->getNextPage();
-            $json['paging']['prev_page'] = $this->data->getPreviousPage();
-            $json['paging']['total_page'] = $this->data->getTotalPage();
-            $json['paging']['page'] = $this->data->getPage();
-            $json['paging']['size'] = $this->data->getSize();
-            $json['paging']['total_record'] = $this->data->getTotalRecord();
-
-            $links = UrlLink::createLinks($this->data);
-
-            $json['links'] = $links;
-        }
 
         $json['message'] = $this->message;
-        $json['data'] = $this->proceededData();
+        $json['data'] = $this->data;
         $json['response'] = $this->reponseCode;
 
         return response()->json($json, $this->code);
-    }
-
-    private function proceededData()
-    {
-        if ($this->data instanceof AbstractCollection) {
-            return $this->data->proceed()->getElements();
-        }
-
-        if ($this->data instanceof AbstractViewModel) {
-            $array = $this->data->finalArray();
-            return $array;
-        }
-
-        return $this->data;
     }
 
     /**

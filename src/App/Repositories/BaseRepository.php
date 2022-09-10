@@ -10,6 +10,14 @@ use LaravelOrm\Repository\Repository;
 
 class BaseRepository extends Repository implements RepositoryInterface
 {
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected array $filters = [];
+
     /**
      * Get view collection and paged the collection
      *
@@ -39,6 +47,28 @@ class BaseRepository extends Repository implements RepositoryInterface
         $collection->setSize($filter['limit']['size']);
         $collection->setTotalRecord($totalRecord);
         return $collection;
+    }
+
+    /**
+     * Set filters
+     *
+     * @param array $filters
+     * @return self
+     */
+    public function addFilters(array $filters = []): self
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getFilters(): array
+    {
+        return $this->filters;
     }
 
     /**
