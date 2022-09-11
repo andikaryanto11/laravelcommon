@@ -6,7 +6,7 @@ use LaravelCommon\App\Entities\Groupuser;
 use LaravelCommon\App\ViewModels\GroupuserCollection;
 use LaravelCommon\App\ViewModels\GroupuserViewModel;
 
-class GroupuserRepository extends BaseRepository implements
+class GroupuserRepository extends Repository implements
     GroupuserRepositoryInterface
 {
     /**

@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseResponse extends Response implements ResponseInterface
 {
+    public const RESOURCES_KEY = '_resources';
+
     /**
      * @var string
      */
@@ -21,6 +23,11 @@ class BaseResponse extends Response implements ResponseInterface
     protected $data;
 
     /**
+     * @var
+     */
+    protected $additionalData;
+
+    /**
      * @var integer
      */
     protected int $code;
@@ -30,13 +37,14 @@ class BaseResponse extends Response implements ResponseInterface
      */
     protected array $reponseCode;
 
-    public function __construct(string $message, int $code, $reponseCode, $data = null)
+    public function __construct(string $message, int $code, $reponseCode, $data = [], $additionalData = [])
     {
-         $this->message     = $message;
-         $this->data        = $data;
-         $this->code        = $code;
-         $this->reponseCode = $reponseCode;
-         parent::__construct(json_encode($data), $code);
+        $this->message = $message;
+        $this->data = $data;
+        $this->additionalData = $additionalData;
+        $this->code = $code;
+        $this->reponseCode = $reponseCode;
+        parent::__construct(json_encode($data), $code);
     }
 
     /**
@@ -53,8 +61,11 @@ class BaseResponse extends Response implements ResponseInterface
     public function send()
     {
 
+        $data = [BaseResponse::RESOURCES_KEY => $this->data];
+        $data = array_merge($data, $this->additionalData);
+
         $json['message'] = $this->message;
-        $json['data'] = $this->data;
+        $json['data'] = $data;
         $json['response'] = $this->reponseCode;
 
         return response()->json($json, $this->code);

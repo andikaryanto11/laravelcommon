@@ -2,9 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
-use LaravelCommon\App\Repositories\BaseRepository;
 use LaravelCommon\ViewModels\AbstractCollection;
-use LaravelCommon\ViewModels\PaggedCollection;
 
 class CollectionResponse extends BaseResponse
 {
@@ -15,9 +13,6 @@ class CollectionResponse extends BaseResponse
              $newData = $data->proceed()->getElements();
         }
 
-        $json = ['_resources' => $newData];
-        $mergeJson = array_merge($json, $additionalData); 
-
-        parent::__construct($message, 200, $responseCode, $mergeJson);
+        parent::__construct($message, 200, $responseCode, $newData, $additionalData);
     }
 }

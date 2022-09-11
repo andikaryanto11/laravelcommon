@@ -8,7 +8,7 @@ use LaravelCommon\App\ViewModels\ScopeViewModel;
 use LaravelOrm\Exception\DatabaseException;
 use LaravelOrm\Exception\EntityException;
 
-class ScopeRepository extends BaseRepository implements
+class ScopeRepository extends Repository implements
     ScopeRepositoryInterface
 {
     /**

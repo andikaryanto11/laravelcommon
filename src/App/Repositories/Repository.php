@@ -6,11 +6,10 @@ use Exception;
 use LaravelCommon\App\Services\CollectionQueryParameters;
 use LaravelCommon\ViewModels\PaggedCollection;
 use LaravelOrm\Interfaces\IEntity;
-use LaravelOrm\Repository\Repository;
+use LaravelOrm\Repository\Repository as LaravelOrmRepository;
 
-class BaseRepository extends Repository implements RepositoryInterface
+class Repository extends LaravelOrmRepository implements RepositoryInterface
 {
-
     /**
      * Undocumented variable
      *

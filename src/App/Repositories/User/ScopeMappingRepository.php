@@ -3,11 +3,11 @@
 namespace LaravelCommon\App\Repositories\User;
 
 use LaravelCommon\App\Entities\User\ScopeMapping;
-use LaravelCommon\App\Repositories\BaseRepository;
+use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\App\ViewModels\User\ScopeMappingCollection;
 use LaravelCommon\App\ViewModels\User\ScopeMappingViewModel;
 
-class ScopeMappingRepository extends BaseRepository implements
+class ScopeMappingRepository extends Repository implements
     ScopeMappingRepositoryInterface
 {
     /**
