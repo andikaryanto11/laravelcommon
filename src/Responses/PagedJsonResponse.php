@@ -31,7 +31,7 @@ class PagedJsonResponse extends CollectionResponse
             $json['_links'] = $links;
         }
 
-        parent::__construct($message, $responseCode, $newData, $json);
+        parent::__construct($message, 200, $responseCode, $newData, $json);
     }
 
     /**

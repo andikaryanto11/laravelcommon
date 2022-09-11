@@ -17,4 +17,12 @@ class UserHydrator extends Hydrator
     {
         return UserRepository::class;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getKey(): string
+    {
+        return 'user';
+    }
 }

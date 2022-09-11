@@ -22,6 +22,16 @@ class Hydrator
     }
 
     /**
+     * Key of hydrator, will be a routing parameter.
+     *
+     * @return string
+     */
+    public function getKey(): string
+    {
+        throw new Exception('"getKey" needs to be overriden on your hydrator classes');
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param  Request  $request
@@ -112,7 +122,7 @@ class Hydrator
     private function getEntity(Request $request)
     {
 
-        $id = $request->route()->parameter('id');
+        $id = $request->route()->parameter($this->getKey());
         $repositoryClass = $this->repositoryClass();
 
         $repository = new $repositoryClass();
