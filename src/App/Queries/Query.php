@@ -20,8 +20,8 @@ abstract class Query extends QueriesQuery
      */
     public function getPagedCollection()
     {
-        $page = null;
-        $size = null;
+        $page = 0;
+        $size = 0;
         $this->filterDefaultRequestParameter();
         $totalRecord = $this->count();
 
