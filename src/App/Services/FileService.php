@@ -32,6 +32,13 @@ class FileService
     protected bool $hashedName = false;
 
     /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected array $fileTypes = [];
+
+    /**
      * Use-timed will auto add prefix datetime name of your file name.
      *
      * @param boolean $useTimed
@@ -56,6 +63,20 @@ class FileService
     }
 
     /**
+     * Filter allow type of file that are allowed to be uploaded
+     *
+     * @param array $fileTypes
+     * @return FileService
+     */
+    public function allowedFileTypes(array $fileTypes = []): FileService
+    {
+        foreach ($fileTypes as $fileType) {
+            $this->fileTypes[] = strtolower($fileType);
+        }
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @param UploadedFile $uploadedFile
@@ -65,6 +86,15 @@ class FileService
      */
     public function upload(UploadedFile $uploadedFile, string $path): File
     {
+        $fileType = $uploadedFile->getClientOriginalExtension();
+
+        if (
+            !empty($this->fileTypes) &&
+            !in_array(strtolower($fileType), $this->fileTypes)
+        ) {
+            throw new Exception("file type of '$fileType' is not allowed");
+        }
+
         $dateTime = new DateTime();
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
@@ -135,7 +165,7 @@ class FileService
     public function unlinkFiles()
     {
         foreach ($this->files as $file) {
-            Storage::unlink($file->getName());
+            Storage::delete($file->getName());
         }
     }
 }
