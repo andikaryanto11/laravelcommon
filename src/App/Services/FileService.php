@@ -5,6 +5,7 @@ namespace LaravelCommon\App\Services;
 use DateTime;
 use Exception;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use LaravelCommon\App\Entities\_Reserved\File;
 
 class FileService
@@ -60,9 +61,9 @@ class FileService
      * @param UploadedFile $uploadedFile
      * @param string $name
      * @throws Exception
-     * @return FileService
+     * @return File
      */
-    public function upload(UploadedFile $uploadedFile, string $path): FileService
+    public function upload(UploadedFile $uploadedFile, string $path): File
     {
         $dateTime = new DateTime();
         $year = $dateTime->format('Y');
@@ -86,8 +87,7 @@ class FileService
         $file->setMimeType($type);
         $file->setSize($size);
         $this->addFile($file);
-
-        return $this;
+        return $file;
     }
 
     /**
@@ -125,5 +125,17 @@ class FileService
     public function getFiles()
     {
         return $this->files;
+    }
+
+    /**
+     * Unlink files
+     *
+     * @return void
+     */
+    public function unlinkFiles()
+    {
+        foreach ($this->files as $file) {
+            Storage::unlink($file->getName());
+        }
     }
 }
