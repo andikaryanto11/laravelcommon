@@ -8,6 +8,7 @@ use Exception;
 use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Entities\User\Token;
 use LaravelCommon\App\Repositories\User\TokenRepository;
+use LaravelCommon\App\Services\Jwt;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\UnauthorizedResponse;
 use LaravelCommon\System\Http\Request;
@@ -23,14 +24,23 @@ class CheckToken
     protected TokenRepository $tokenRepository;
 
     /**
+     *
+     * @var Jwt
+     */
+    protected Jwt $jwt;
+
+    /**
      * Undocumented function
      *
      * @param TokenRepository $tokenRepository
+     * @param Jwt $jwt
      */
     public function __construct(
-        TokenRepository $tokenRepository
+        TokenRepository $tokenRepository,
+        Jwt $jwt
     ) {
         $this->tokenRepository = $tokenRepository;
+        $this->jwt = $jwt;
     }
 
     /**
@@ -64,7 +74,14 @@ class CheckToken
                 if ($userToken->getExpiredAt() < $now) {
                     return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
-                $userToken->getUser();
+                $user = $userToken->getUser();
+
+                $jwtPayload = $this->jwt->decodeUserToken($authorization);
+
+                if ($user->getPassword() != $jwtPayload->password) {
+                    return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
+                }
+
                 $request->setUserToken($userToken);
             } else {
                 return new UnauthorizedResponse('No Authorization header found', ResponseConst::NOT_AUTHORIZED);

@@ -16,7 +16,7 @@ class CreateUserTokens extends Migration
         Schema::create('user_tokens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('token');
+            $table->string('token', '500');
             $table->dateTime('expired_at');
             $table->auditable();
             $table->timestamps();
