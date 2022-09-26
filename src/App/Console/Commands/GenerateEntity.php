@@ -124,7 +124,7 @@ class GenerateEntity extends Command
         $this->createYmlFile();
         $this->createEntityFile();
     }
-    
+
     protected function createEntityFile()
     {
 

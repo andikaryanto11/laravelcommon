@@ -7,12 +7,25 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use LaravelCommon\App\Services\RollbarLoggerService;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BaseResponse;
 
 class ControllerAfter
 {
     public const NAME = 'controller-after';
+
+    /**
+     *
+     * @var RollbarLoggerService
+     */
+    protected RollbarLoggerService $rollbarLoggerService;
+
+    public function __construct(
+        RollbarLoggerService $rollbarLoggerService
+    ) {
+        $this->rollbarLoggerService = $rollbarLoggerService;
+    }
     /**
      * Handle an incoming request.
      *
@@ -33,6 +46,13 @@ class ControllerAfter
             $response instanceof JsonResponse
         ) {
             if ($response->exception) {
+                if ($this->rollbarLoggerService->isSetup()) {
+                    $this->rollbarLoggerService->error(
+                        json_encode($response->exception->getTrace()),
+                        $response->exception->getTrace()
+                    );
+                }
+
                 if ($response->exception instanceof ResponsableException) {
                     return $response->exception->getResponse()->send();
                 } else {
