@@ -1,0 +1,26 @@
+LaravelCommon\App\Entities\LoggingConfig:
+  table: logging_configs
+  primaryKey: id
+  props: 
+    id:  
+      type: int
+      isEntity: false
+      field: id 
+    name: 
+      type: string
+      isEntity: false
+      field: name
+      rule: required
+    isEnabled: 
+      type: bool
+      isEntity: false
+      field: is_enabled
+      rule: required
+    createdAt: 
+      type: DateTime
+      isEntity: false
+      field: created_at
+    createdBy: 
+      type: string
+      isEntity: false
+      field: created_by

@@ -48,6 +48,7 @@ class ControllerAfter
             if ($response->exception) {
                 if ($this->rollbarLoggerService->isSetup()) {
                     $this->rollbarLoggerService->error(
+                        "common_exception",
                         json_encode($response->exception->getTrace()),
                         $response->exception->getTrace()
                     );
