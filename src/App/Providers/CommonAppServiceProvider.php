@@ -50,9 +50,10 @@ class CommonAppServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                GenerateEntity::class,
                 CreateLoggingName::class,
-                EnableLoggingName::class
+                CreateScope::class,
+                EnableLoggingName::class,
+                GenerateEntity::class
             ]);
         }
     }
