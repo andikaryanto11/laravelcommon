@@ -5,6 +5,7 @@ namespace LaravelCommon\App\Providers;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Console\Commands\CreateLoggingName;
+use LaravelCommon\App\Console\Commands\CreateScope;
 use LaravelCommon\App\Console\Commands\EnableLoggingName;
 use LaravelCommon\App\Console\Commands\GenerateEntity;
 use LaravelCommon\App\Http\Middleware\CheckScope;
@@ -50,9 +51,10 @@ class CommonAppServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                GenerateEntity::class,
                 CreateLoggingName::class,
-                EnableLoggingName::class
+                CreateScope::class,
+                EnableLoggingName::class,
+                GenerateEntity::class
             ]);
         }
     }
