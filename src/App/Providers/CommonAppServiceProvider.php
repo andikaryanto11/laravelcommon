@@ -19,7 +19,6 @@ use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
 class CommonAppServiceProvider extends ServiceProvider
 {
     public $bindings = [
-        // Request::class => RequestRequest::class,
         Blueprint::class => SchemaBlueprint::class
     ];
 
@@ -82,9 +81,7 @@ class CommonAppServiceProvider extends ServiceProvider
         $router = $this->app['router'];
 
         $router->aliasMiddleware(ControllerAfter::NAME, ControllerAfter::class);
-        // $router->aliasMiddleware('route-checker', RouteChecker::class);
         $router->pushMiddlewareToGroup('api', ControllerAfter::class);
-        // $router->pushMiddlewareToGroup('api', RouteChecker::class);
 
         $router->aliasMiddleware(CheckToken::NAME, CheckToken::class);
         $router->aliasMiddleware(CheckScope::NAME, CheckScope::class);
