@@ -8,15 +8,11 @@ use LaravelOrm\Entities\EntityList;
 
 class User extends BaseEntity
 {
-    /**
-     * @var Groupuser
-     */
-    private ?Groupuser $groupuser  = null;
 
     /**
      * @var string
      */
-    private ?string $username  = null;
+    private ?string $user  = null;
 
     /**
      * @var string
@@ -31,48 +27,34 @@ class User extends BaseEntity
     /**
      * @var string
      */
-    private ?string $photo  = null;
+    private ?string $role  = null;
 
     /**
-     * @var bool
+     * @var string
      */
-    private bool $isActive  = false;
+    private ?string $rememberToken  = null;
 
     /**
-     * @var EntityList
+     * @var DateTime
      */
-    private ?EntityList $userScopeMappings  = null;
-
-    /**
-     * Undocumented variable
-     *
-     * @var bool
-     */
-    private bool $isDeleted = false;
-
-    /**
-     * Undocumented variable
-     *
-     * @var DateTime|null
-     */
-    private ?DateTime $deletedAt = null;
+    private ?DateTime $emailVerifiedAt  = null;
 
 
     /**
-     * @return ?Groupuser
+     * @return ?string
      */
-    protected function getGroupuser(): ?Groupuser
+    protected function getUser(): ?string
     {
-        return $this->groupuser;
+        return $this->user;
     }
 
     /**
-     * @param Groupuser $groupuser
+     * @param string $user
      * @return User
      */
-    protected function setGroupuser(Groupuser $groupuser): User
+    protected function setUser(string $user): User
     {
-        $this->groupuser = $groupuser;
+        $this->user = $user;
         return $this;
     }
 
@@ -133,60 +115,18 @@ class User extends BaseEntity
     /**
      * @return ?string
      */
-    protected function getPhoto(): ?string
+    protected function getRole(): ?string
     {
-        return $this->photo;
+        return $this->role;
     }
 
     /**
-     * @param string $photo
+     * @param string $role
      * @return User
      */
-    protected function setPhoto(string $photo): User
+    protected function setRole(string $role): User
     {
-        $this->photo = $photo;
-        return $this;
-    }
-
-    /**
-     * @return ?bool
-     */
-    protected function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return User
-     */
-    protected function setIsActive(bool $isActive): User
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
-    /**
-     * Get the value of userScopeMappings
-     *
-     * @return  ?EntityList
-     */
-    protected function getUserScopeMappings(): ?EntityList
-    {
-        return $this->userScopeMappings;
-    }
-
-    /**
-     * Set the value of userScopeMappings
-     *
-     * @param  EntityList  $userScopeMappings
-     *
-     * @return  self
-     */
-    protected function setUserScopeMappings(EntityList $userScopeMappings): User
-    {
-        $this->userScopeMappings = $userScopeMappings;
-
+        $this->role = $role;
         return $this;
     }
 
@@ -205,50 +145,51 @@ class User extends BaseEntity
         return $this;
     }
 
+
     /**
-     * Get undocumented variable
+     * Get the value of rememberToken
      *
-     * @return  bool
-     */
-    protected function getIsDeleted(): bool
+     * @return  string
+     */ 
+    public function getRememberToken()
     {
-        return $this->isDeleted;
+        return $this->rememberToken;
     }
 
     /**
-     * Set undocumented variable
+     * Set the value of rememberToken
      *
-     * @param  bool  $isDeleted  Undocumented variable
+     * @param  string  $rememberToken
      *
      * @return  self
-     */
-    protected function setIsDeleted(bool $isDeleted): self
+     */ 
+    public function setRememberToken(string $rememberToken)
     {
-        $this->isDeleted = $isDeleted;
+        $this->rememberToken = $rememberToken;
 
         return $this;
     }
 
     /**
-     * Get undocumented variable
+     * Get the value of emailVerifiedAt
      *
-     * @return  DateTime|null
-     */
-    protected function getDeletedAt(): ?DateTime
+     * @return  DateTime
+     */ 
+    public function getEmailVerifiedAt()
     {
-        return $this->deletedAt;
+        return $this->emailVerifiedAt;
     }
 
     /**
-     * Set undocumented variable
+     * Set the value of emailVerifiedAt
      *
-     * @param  DateTime|null  $deletedAt  Undocumented variable
+     * @param  DateTime  $emailVerifiedAt
      *
      * @return  self
-     */
-    protected function setDeletedAt(Datetime $deletedAt): self
+     */ 
+    public function setEmailVerifiedAt(DateTime $emailVerifiedAt)
     {
-        $this->deletedAt = $deletedAt;
+        $this->emailVerifiedAt = $emailVerifiedAt;
 
         return $this;
     }
