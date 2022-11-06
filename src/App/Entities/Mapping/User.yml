@@ -24,7 +24,7 @@ LaravelCommon\App\Entities\User:
         type: string
         isEntity: false
         field: password
-        rule: 'password'role
+        rule: 'password'
     rememberToken: 
         type: string
         isEntity: false
