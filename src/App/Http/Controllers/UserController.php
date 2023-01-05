@@ -2,13 +2,10 @@
 
 namespace LaravelCommon\App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LaravelCommon\App\Repositories\UserRepository;
-use LaravelCommon\App\Services\UserService;
-use LaravelCommon\App\ViewModels\User\TokenViewModel;
-use LaravelCommon\App\ViewModels\UserCollection;
-use LaravelCommon\Responses\SuccessResponse;
+use LaravelCommon\Responses\PagedJsonResponse;
+use LaravelCommon\System\Http\Request as HttpRequest;
 
 class UserController extends Controller
 {
@@ -30,10 +27,10 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function getAll(Request $request)
+    public function getAll(HttpRequest $request)
     {
-        $users = $this->userRepository->gather();
+        $users = $this->userRepository;
 
-        return new SuccessResponse('OK', [], $users);
+        return new PagedJsonResponse('OK', [], $users);
     }
 }

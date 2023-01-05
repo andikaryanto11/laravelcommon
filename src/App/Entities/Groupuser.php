@@ -97,7 +97,7 @@ class Groupuser extends BaseEntity
      *
      * @return  self
      */
-    protected function setGroupuserScopeMapppings(EntityList $groupuserScopeMappings): self
+    protected function setGroupuserScopeMappings(EntityList $groupuserScopeMappings): self
     {
         $this->groupuserScopeMappings = $groupuserScopeMappings;
 
