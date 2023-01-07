@@ -13,6 +13,8 @@ abstract class AbstractViewModel
     protected $isAutoAddResource = true;
 
     protected $entity;
+
+    protected $resource;
     /**
      * @param IEntity $entity
      */
@@ -26,11 +28,31 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        $array = $this->toArray();
+        $this->resource = $this->toArray();
         if ($this->getIsAutoAddResource()) {
-            $this->addResource($array);
+            $this->addResource();
         }
-        return $array;
+        return $this->resource;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @param AbstractViewModel|AbstractCollection $value
+     * @return void
+     */
+    public function embedResource(
+        string $key,
+        AbstractViewModel|AbstractCollection $value
+    ) {
+        if ($value instanceof AbstractViewModel) {
+            $this->resource[$key] = $value->toArray();
+        }
+
+        if ($value instanceof AbstractCollection) {
+            $this->resource[$key] = $value->finalProcceed();
+        }
     }
 
     /**
@@ -41,7 +63,7 @@ abstract class AbstractViewModel
     /**
      * Add resource to view model
      */
-    abstract public function addResource(array &$element);
+    abstract public function addResource();
 
     /**
      *  set auto add Resource

@@ -1,12 +1,11 @@
 <?php
 
-namespace LaravelCommon\App\ViewModels\User;
+namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\App\Entities\User\Token;
+use LaravelCommon\App\Entities\Scope;
 use LaravelCommon\ViewModels\AbstractViewModel;
-use stdClass;
 
-class TokenViewModel extends AbstractViewModel
+class ScopeViewModel extends AbstractViewModel
 {
     /**
      * @var bool $autoAddResource;
@@ -14,7 +13,7 @@ class TokenViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var Token $entity
+     * @var Scope $entity
      */
     protected $entity;
 
@@ -32,8 +31,8 @@ class TokenViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'token' => $this->entity->getToken(),
-            'expired_at' => $this->entity->getExpiredAt()->format('Y-m-d H:i:s')
+            'id' => $this->entity->getId(),
+            'name' => $this->entity->getName()
         ];
     }
 }

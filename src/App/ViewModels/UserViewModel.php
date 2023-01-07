@@ -22,14 +22,14 @@ class UserViewModel extends AbstractViewModel
     /**
      * @inheritdoc
      */
-    public function addResource(array &$element)
+    public function addResource()
     {
         /**
          * @var Groupuser $groupuser
          */
         $groupuser = $this->entity->getGroupuser();
         if (!empty($groupuser)) {
-            $element['groupuser'] = (new GroupuserViewModel($groupuser))->toArray();
+            $this->embedResource('groupuser', new GroupuserViewModel($groupuser));
         }
         return $this;
     }

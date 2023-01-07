@@ -45,8 +45,7 @@ abstract class AbstractCollection
      */
     public function addItem(AbstractViewModel $viewModel): void
     {
-        $items = $viewModel->toArray();
-        $viewModel->addResource($items, $this->collection);
+        $items = $viewModel->finalArray();
         $this->element[] = $items;
     }
 
