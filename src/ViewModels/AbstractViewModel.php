@@ -47,7 +47,7 @@ abstract class AbstractViewModel
         AbstractViewModel|AbstractCollection $value
     ) {
         if ($value instanceof AbstractViewModel) {
-            $this->resource[$key] = $value->toArray();
+            $this->resource[$key] = $value->finalArray();
         }
 
         if ($value instanceof AbstractCollection) {
