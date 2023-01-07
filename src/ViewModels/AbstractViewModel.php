@@ -3,6 +3,7 @@
 namespace LaravelCommon\ViewModels;
 
 use Illuminate\Http\Request;
+use LaravelCommon\Responses\BaseResponse;
 use LaravelOrm\Entities\EntityList;
 use LaravelOrm\Interfaces\IEntity;
 
@@ -75,12 +76,16 @@ abstract class AbstractViewModel
         string $key,
         AbstractViewModel|AbstractCollection $value
     ) {
-        if ($value instanceof AbstractViewModel) {
-            $this->resource[$key] = $value->finalArray();
-        }
 
-        if ($value instanceof AbstractCollection) {
-            $this->resource[$key] = $value->finalProcceed();
+        if ($this->request != null && $this->request->getPathInfo() == '/graphql') {
+        } else {
+            if ($value instanceof AbstractViewModel) {
+                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
+            }
+
+            if ($value instanceof AbstractCollection) {
+                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalProcceed()];
+            }
         }
     }
 

@@ -41,7 +41,7 @@ class Repository extends LaravelOrmRepository implements RepositoryInterface
 
         $collection = $this->collect($filter);
         $collectionClass = $this->collectionClass();
-        $collection = new $collectionClass($collection);
+        $collection = new $collectionClass($collection, request());
         $collection->setPage($filter['limit']['page']);
         $collection->setSize($filter['limit']['size']);
         $collection->setTotalRecord($totalRecord);

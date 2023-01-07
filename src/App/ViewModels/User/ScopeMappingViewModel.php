@@ -28,12 +28,12 @@ class ScopeMappingViewModel extends AbstractViewModel
     {
         $user = $this->entity->getUser();
         if (!empty($user)) {
-            $this->embedResource('user', new UserViewModel($user));
+            $this->embedResource('user', new UserViewModel($user, $this->request));
         }
 
         $scope = $this->entity->getScope();
         if (!empty($scope)) {
-            $this->embedResource('scope', new ScopeViewModel($scope));
+            $this->embedResource('scope', new ScopeViewModel($scope, $this->request));
         }
         return $this;
     }

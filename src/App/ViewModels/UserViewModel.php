@@ -29,7 +29,7 @@ class UserViewModel extends AbstractViewModel
          */
         $groupuser = $this->entity->getGroupuser();
         if (!empty($groupuser)) {
-            $this->embedResource('groupuser', new GroupuserViewModel($groupuser));
+            $this->embedResource('groupuser', new GroupuserViewModel($groupuser, $this->request));
         }
         return $this;
     }

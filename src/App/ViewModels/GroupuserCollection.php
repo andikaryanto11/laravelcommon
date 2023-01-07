@@ -12,6 +12,6 @@ class GroupuserCollection extends PaggedCollection
      */
     public function shape(IEntity $entity)
     {
-        $this->addItem(new GroupuserViewModel($entity));
+        $this->addItem(new GroupuserViewModel($entity, $this->request));
     }
 }

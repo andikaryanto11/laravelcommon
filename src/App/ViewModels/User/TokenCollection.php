@@ -12,6 +12,6 @@ class TokenCollection extends PaggedCollection
      */
     public function shape(IEntity $entity)
     {
-        $this->addItem(new TokenViewModel($entity));
+        $this->addItem(new TokenViewModel($entity, $this->request));
     }
 }

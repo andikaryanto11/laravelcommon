@@ -12,6 +12,6 @@ class ScopeMappingCollection extends PaggedCollection
      */
     public function shape(IEntity $entity)
     {
-        $this->addItem(new ScopeMappingViewModel($entity));
+        $this->addItem(new ScopeMappingViewModel($entity, $this->request));
     }
 }

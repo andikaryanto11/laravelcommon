@@ -12,6 +12,6 @@ class LoggingConfigCollection extends PaggedCollection
      */
     public function shape(IEntity $entity)
     {
-        $this->addItem(new LoggingConfigViewModel($entity));
+        $this->addItem(new LoggingConfigViewModel($entity, $this->request));
     }
 }
