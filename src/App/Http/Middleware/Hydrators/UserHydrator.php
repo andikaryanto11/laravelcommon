@@ -8,7 +8,7 @@ use LaravelCommon\App\Repositories\UserRepository;
 
 class UserHydrator extends Hydrator
 {
-    public const NAME = 'common.hydrator.user';
+    public const NAME = 'common.app.middelware.hydrator.user';
     /**
      *
      * @return string

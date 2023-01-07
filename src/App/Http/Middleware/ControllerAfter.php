@@ -13,7 +13,7 @@ use LaravelCommon\Responses\BaseResponse;
 
 class ControllerAfter
 {
-    public const NAME = 'controller-after';
+    public const NAME = 'common.app.middleware.controller-after';
 
     /**
      *

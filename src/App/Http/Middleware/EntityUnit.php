@@ -13,7 +13,7 @@ use Nette\Schema\Expect;
 
 class EntityUnit
 {
-    public const NAME = 'entity-unit';
+    public const NAME = 'common.app.middlware.entity-unit';
 
     /**
      * Undocumented variable

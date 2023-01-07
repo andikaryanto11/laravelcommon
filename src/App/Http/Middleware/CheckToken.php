@@ -15,7 +15,7 @@ use LaravelCommon\System\Http\Request;
 
 class CheckToken
 {
-    public const NAME = 'check-token';
+    public const NAME = 'common.app.middlware.check-token';
 
     /**
      *
