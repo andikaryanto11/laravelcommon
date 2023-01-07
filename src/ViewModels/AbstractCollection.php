@@ -2,20 +2,28 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Http\Request;
 use LaravelOrm\Entities\EntityList;
 use LaravelOrm\Interfaces\IEntity;
 
 abstract class AbstractCollection
 {
     protected $collection;
+
+    /**
+     * @var ?Request
+     */
+    protected $request;
+
     protected array $element = [];
 
     /**
      * @param array|EntityList $collection
      */
-    public function __construct($collection)
+    public function __construct($collection, ?Request $request = null)
     {
         $this->collection = $collection;
+        $this->request = $request;
     }
 
     /**

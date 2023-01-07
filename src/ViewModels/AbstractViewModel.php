@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Http\Request;
 use LaravelOrm\Entities\EntityList;
 use LaravelOrm\Interfaces\IEntity;
 
@@ -14,13 +15,24 @@ abstract class AbstractViewModel
 
     protected $entity;
 
+    /**
+     * @var ?Request
+     */
+    protected $request;
+
+    /**
+     *
+     * @var array
+     */
     protected $resource;
+
     /**
      * @param IEntity $entity
      */
-    public function __construct(IEntity $entity)
+    public function __construct(IEntity $entity, ?Request $request = null)
     {
         $this->entity = $entity;
+        $this->request = $request;
     }
 
     /**
@@ -28,7 +40,24 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        $this->resource = $this->toArray();
+        if (method_exists($this->entity, 'getId')) {
+            $this->resource['id'] = $this->entity->getId();
+        }
+
+        $this->resource = array_merge($this->resource, $this->toArray());
+
+        if (method_exists($this->entity, 'getCreatedAt')) {
+            $this->resource['created_at'] =  !is_null($this->entity->getCreatedAt())
+            ? $this->entity->getCreatedAt()->format('Y-m-d H:i:s')
+            : null;
+        }
+
+        if (method_exists($this->entity, 'getUpdatedAt')) {
+            $this->resource['updated_at'] = !is_null($this->entity->getUpdatedAt())
+                ? $this->entity->getUpdatedAt()->format('Y-m-d H:i:s')
+                : null;
+        }
+
         if ($this->getIsAutoAddResource()) {
             $this->addResource();
         }
