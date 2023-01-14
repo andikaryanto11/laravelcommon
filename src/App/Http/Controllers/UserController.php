@@ -2,10 +2,13 @@
 
 namespace LaravelCommon\App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LaravelCommon\App\Repositories\UserRepository;
+use LaravelCommon\App\ViewModels\UserViewModel;
+use LaravelCommon\Responses\JsonResponse;
 use LaravelCommon\Responses\PagedJsonResponse;
-use LaravelCommon\System\Http\Request as HttpRequest;
+use LaravelCommon\Responses\SuccessResponse;
 
 class UserController extends Controller
 {
@@ -27,7 +30,14 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function getAll(HttpRequest $request)
+    public function store(Request $request)
+    {
+        $user = $request->getResource();
+
+        return new SuccessResponse('OK', [], new UserViewModel($user));
+    }
+
+    public function getAll(Request $request)
     {
         $users = $this->userRepository;
 

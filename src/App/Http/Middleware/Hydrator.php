@@ -11,6 +11,9 @@ use LaravelOrm\Exception\EntityException;
 
 class Hydrator
 {
+
+    protected $resource;
+
     /**
      * Undocumented function
      *
@@ -70,8 +73,8 @@ class Hydrator
      */
     public function get(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
     }
 
     /**
@@ -84,8 +87,9 @@ class Hydrator
     {
         $repositoryClass = $this->repositoryClass();
         $repository = new $repositoryClass();
-        $resource = $repository->newEntity();
-        $request->hyrdateResource($resource);
+        $this->resource = $repository->newEntity();
+        $request->hyrdateResource($this->resource);
+        $this->hydrateObjects($request->input());
     }
 
     /**
@@ -96,8 +100,8 @@ class Hydrator
      */
     private function delete(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
     }
 
     /**
@@ -108,9 +112,21 @@ class Hydrator
      */
     private function patch(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
-        $request->hyrdateResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
+        
+        $request->hyrdateResource($this->resource);
+    }
+
+    /**
+     * hydrate resource
+     *
+     * @param array $input
+     * @return void
+     */
+    protected function hydrateObjects(array $input) 
+    {
+
     }
 
     /**
