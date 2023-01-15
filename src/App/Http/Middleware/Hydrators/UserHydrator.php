@@ -11,7 +11,7 @@ class UserHydrator extends Hydrator
 {
     public const NAME = 'common.app.middelware.hydrator.user';
 
-    /** 
+    /**
      * @var GroupuserRepository
      */
     protected GroupuserRepository $groupuserRepository;
@@ -22,8 +22,7 @@ class UserHydrator extends Hydrator
      */
     public function __construct(
         GroupuserRepository $groupuserRepository
-    )
-    {
+    ) {
         $this->groupuserRepository = $groupuserRepository;
     }
 
@@ -47,13 +46,13 @@ class UserHydrator extends Hydrator
     /**
      * @inheritDoc
      */
-    protected function hydrateObjects(array $input) 
+    protected function hydrateObjects()
     {
-        if(array_key_exists('groupuser_id', $input)) {
-            $groupuser = $this->groupuserRepository->find($input['groupuser_id']);
-            if($groupuser){
-                $this->resource->setGroupuser($groupuser);
-            }
-        }
+        return [
+            'groupuser_id' => [
+                [$this->resource, 'setGroupuser'],
+                [$this->groupuserRepository, 'find']
+            ]
+        ];
     }
 }
