@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5d477fe13209db2fd053d80b5c45420",
+    "content-hash": "b4212c6778a86d76590eba01118b4c2c",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -160,16 +160,16 @@
         },
         {
             "name": "rollbar/rollbar",
-            "version": "v3.1.3",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollbar/rollbar-php.git",
-                "reference": "d6ec7a387429b119c65105eed6b17ee4802b6119"
+                "reference": "169cee9ef78139558d6a3e5f680afb5853f4228e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollbar/rollbar-php/zipball/d6ec7a387429b119c65105eed6b17ee4802b6119",
-                "reference": "d6ec7a387429b119c65105eed6b17ee4802b6119",
+                "url": "https://api.github.com/repos/rollbar/rollbar-php/zipball/169cee9ef78139558d6a3e5f680afb5853f4228e",
+                "reference": "169cee9ef78139558d6a3e5f680afb5853f4228e",
                 "shasum": ""
             },
             "require": {
@@ -217,9 +217,9 @@
             "support": {
                 "email": "support@rollbar.com",
                 "issues": "https://github.com/rollbar/rollbar-php/issues",
-                "source": "https://github.com/rollbar/rollbar-php/tree/v3.1.3"
+                "source": "https://github.com/rollbar/rollbar-php/tree/v3.1.4"
             },
-            "time": "2022-05-16T21:12:08+00:00"
+            "time": "2022-10-31T21:23:43+00:00"
         }
     ],
     "packages-dev": [
@@ -229,12 +229,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "96f3bbe99212343f781684ff6dbdb64e7aa10fa3"
+                "reference": "91438736fca597260dc78f9a25bd6d2360ec76b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/96f3bbe99212343f781684ff6dbdb64e7aa10fa3",
-                "reference": "96f3bbe99212343f781684ff6dbdb64e7aa10fa3",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/91438736fca597260dc78f9a25bd6d2360ec76b6",
+                "reference": "91438736fca597260dc78f9a25bd6d2360ec76b6",
                 "shasum": ""
             },
             "require": {
@@ -270,14 +270,15 @@
             "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
-                "standards"
+                "standards",
+                "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2022-08-13T07:18:23+00:00"
+            "time": "2022-12-22T21:47:28+00:00"
         }
     ],
     "aliases": [],
