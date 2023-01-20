@@ -22,7 +22,7 @@ class GroupuserViewModel extends AbstractViewModel
     /**
      * @inheritdoc
      */
-    public function addResource(array &$element)
+    public function addResource()
     {
 
         return $this;

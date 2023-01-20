@@ -30,7 +30,7 @@ abstract class Query extends QueriesQuery
         $collection = $this->getIterator();
 
         $collectionClass = $this->collectionClass();
-        $collection = new $collectionClass($collection);
+        $collection = new $collectionClass($collection, request());
         $collection->setPage($page);
         $collection->setSize($size);
         $collection->setTotalRecord($totalRecord);

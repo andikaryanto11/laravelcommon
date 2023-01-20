@@ -13,6 +13,6 @@ class UserCollection extends PaggedCollection
      */
     public function shape(IEntity $entity)
     {
-        $this->addItem(new UserViewModel($entity));
+        $this->addItem(new UserViewModel($entity, $this->request));
     }
 }

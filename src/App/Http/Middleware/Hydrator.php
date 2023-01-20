@@ -11,6 +11,8 @@ use LaravelOrm\Exception\EntityException;
 
 class Hydrator
 {
+    protected $resource;
+
     /**
      * Undocumented function
      *
@@ -70,8 +72,8 @@ class Hydrator
      */
     public function get(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
     }
 
     /**
@@ -84,8 +86,9 @@ class Hydrator
     {
         $repositoryClass = $this->repositoryClass();
         $repository = new $repositoryClass();
-        $resource = $repository->newEntity();
-        $request->hyrdateResource($resource);
+        $this->resource = $repository->newEntity();
+        $request->hyrdateResource($this->resource);
+        $this->hydrate($request->input());
     }
 
     /**
@@ -96,8 +99,8 @@ class Hydrator
      */
     private function delete(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
     }
 
     /**
@@ -108,9 +111,43 @@ class Hydrator
      */
     private function patch(Request $request)
     {
-        $resource = $this->getEntity($request);
-        $request->setResource($resource);
-        $request->hyrdateResource($resource);
+        $this->resource = $this->getEntity($request);
+        $request->setResource($this->resource);
+
+        $request->hyrdateResource($this->resource);
+    }
+
+    /**
+     * hydrate resource
+     *
+     * @param array $input
+     * @return array
+     */
+    protected function hydrateObjects()
+    {
+    }
+
+    private function hydrate(array $input)
+    {
+        $hydrateObjects = $this->hydrateObjects();
+
+        foreach ($hydrateObjects as $key => $hydrateObject) {
+            if (array_key_exists($key, $input)) {
+                if (count($hydrateObject) == 2) {
+                    $repoMethod = $hydrateObject[1][1];
+                    $resource = $hydrateObject[1][0]->$repoMethod($input[$key]);
+                    if ($resource) {
+                        $entityMethod = $hydrateObject[0][1];
+                        $hydrateObject[0][0]->$entityMethod($resource);
+                    }
+                }
+
+                if (count($hydrateObject) == 1) {
+                    $entityMethod = $hydrateObject[0][1];
+                    $hydrateObject[0][0]->$entityMethod($resource);
+                }
+            }
+        }
     }
 
     /**

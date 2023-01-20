@@ -2,6 +2,8 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Http\Request;
+use LaravelCommon\Responses\BaseResponse;
 use LaravelOrm\Entities\EntityList;
 use LaravelOrm\Interfaces\IEntity;
 
@@ -13,12 +15,25 @@ abstract class AbstractViewModel
     protected $isAutoAddResource = true;
 
     protected $entity;
+
+    /**
+     * @var ?Request
+     */
+    protected $request;
+
+    /**
+     *
+     * @var array
+     */
+    protected $resource;
+
     /**
      * @param IEntity $entity
      */
-    public function __construct(IEntity $entity)
+    public function __construct(IEntity $entity, ?Request $request = null)
     {
         $this->entity = $entity;
+        $this->request = $request;
     }
 
     /**
@@ -26,11 +41,52 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        $array = $this->toArray();
-        if ($this->getIsAutoAddResource()) {
-            $this->addResource($array);
+        if (method_exists($this->entity, 'getId')) {
+            $this->resource['id'] = $this->entity->getId();
         }
-        return $array;
+
+        $this->resource = array_merge($this->resource, $this->toArray());
+
+        if (method_exists($this->entity, 'getCreatedAt')) {
+            $this->resource['created_at'] =  !is_null($this->entity->getCreatedAt())
+            ? $this->entity->getCreatedAt()->format('Y-m-d H:i:s')
+            : null;
+        }
+
+        if (method_exists($this->entity, 'getUpdatedAt')) {
+            $this->resource['updated_at'] = !is_null($this->entity->getUpdatedAt())
+                ? $this->entity->getUpdatedAt()->format('Y-m-d H:i:s')
+                : null;
+        }
+
+        if ($this->getIsAutoAddResource()) {
+            $this->addResource();
+        }
+        return $this->resource;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @param AbstractViewModel|AbstractCollection $value
+     * @return void
+     */
+    public function embedResource(
+        string $key,
+        AbstractViewModel|AbstractCollection $value
+    ) {
+
+        if ($this->request != null && $this->request->getPathInfo() == '/graphql') {
+        } else {
+            if ($value instanceof AbstractViewModel) {
+                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
+            }
+
+            if ($value instanceof AbstractCollection) {
+                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalProcceed()];
+            }
+        }
     }
 
     /**
@@ -41,7 +97,7 @@ abstract class AbstractViewModel
     /**
      * Add resource to view model
      */
-    abstract public function addResource(array &$element);
+    abstract public function addResource();
 
     /**
      *  set auto add Resource
