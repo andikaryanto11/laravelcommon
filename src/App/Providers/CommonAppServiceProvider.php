@@ -40,22 +40,22 @@ class CommonAppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $this->loadMigrationsFrom(__DIR__ . '/../../Database/migrations');
+        // $this->loadMigrationsFrom(__DIR__ . '/../../Database/migrations');
 
-        $this->loadRoutesFrom(__DIR__ . '/../../Routes/api.php');
+        // $this->loadRoutesFrom(__DIR__ . '/../../Routes/api.php');
 
         $this->publishConfig();
 
         $this->registerMiddleware();
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                CreateLoggingName::class,
-                CreateScope::class,
-                EnableLoggingName::class,
-                GenerateEntity::class
-            ]);
-        }
+        // if ($this->app->runningInConsole()) {
+        //     $this->commands([
+        //         CreateLoggingName::class,
+        //         CreateScope::class,
+        //         EnableLoggingName::class,
+        //         GenerateEntity::class
+        //     ]);
+        // }
     }
 
     /**
