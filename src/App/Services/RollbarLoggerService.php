@@ -29,12 +29,12 @@ class RollbarLoggerService
         $this->loggingConfigQuery = $loggingConfigQuery;
         $appEnv = env('APP_ENV');
         $this->accessToken = config('common-config')['env'][env('APP_ENV')]['rollbar_access_token'];
-        Rollbar::init(
-            [
-                'access_token' => $this->accessToken,
-                'environtment' => $appEnv
-            ]
-        );
+        // Rollbar::init(
+        //     [
+        //         'access_token' => $this->accessToken,
+        //         'environtment' => $appEnv
+        //     ]
+        // );
     }
 
     /**
@@ -44,7 +44,7 @@ class RollbarLoggerService
      */
     public function isSetup(): bool
     {
-        return !empty($this->accessToken);
+        return false
     }
 
     /**
@@ -159,7 +159,7 @@ class RollbarLoggerService
             ->whereIsEnabled();
 
         if ($loggingQuery->getIterator()->count() > 0) {
-            Rollbar::log($level, $message, $trace);
+            // Rollbar::log($level, $message, $trace);
         }
     }
 }
