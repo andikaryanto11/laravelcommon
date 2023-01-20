@@ -48,14 +48,14 @@ class CommonAppServiceProvider extends ServiceProvider
 
         $this->registerMiddleware();
 
-        // if ($this->app->runningInConsole()) {
-        //     $this->commands([
-        //         CreateLoggingName::class,
-        //         CreateScope::class,
-        //         EnableLoggingName::class,
-        //         GenerateEntity::class
-        //     ]);
-        // }
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                // CreateLoggingName::class,
+                CreateScope::class,
+                // EnableLoggingName::class,
+                GenerateEntity::class
+            ]);
+        }
     }
 
     /**
