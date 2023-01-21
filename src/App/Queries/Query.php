@@ -57,7 +57,7 @@ abstract class Query extends QueriesQuery
         }
         if (isset(request()->page)) {
             $page = request()->page;
-            $this->offset(request()->page - 1 * $size);
+            $this->offset((request()->page - 1) * $size);
         }
     }
 
