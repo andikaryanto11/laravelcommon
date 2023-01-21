@@ -53,6 +53,10 @@ class Hydrator
             $this->get($request);
         }
 
+        if (strtoupper($request->method())  == 'PUT') {
+            $this->put($request);
+        }
+
         if (strtoupper($request->method()) == 'PATCH') {
             $this->patch($request);
         }
@@ -89,6 +93,24 @@ class Hydrator
         $this->resource = $repository->newEntity();
         $request->hyrdateResource($this->resource);
         $this->hydrate($request->input());
+        $this->afterHydrate($request);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function put(Request $request)
+    {
+        $this->resource = $this->getEntity($request);
+        $request->hyrdateResource($this->resource);
+        $this->hydrate($request->input());
+    }
+
+    public function afterHydrate(Request $request) {
+        return $this;
     }
 
     /**
