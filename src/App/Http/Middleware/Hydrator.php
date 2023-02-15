@@ -41,27 +41,27 @@ class Hydrator
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$methods)
+    public function handle(Request $request, Closure $next, $method)
     {
         $request->setHydrator($this);
 
-        if (strtoupper($request->method()) == 'POST') {
+        if (strtoupper($method) == 'POST') {
             $this->post($request);
         }
 
-        if (strtoupper($request->method())  == 'GET') {
+        if (strtoupper($method)  == 'GET') {
             $this->get($request);
         }
 
-        if (strtoupper($request->method())  == 'PUT') {
+        if (strtoupper($method)  == 'PUT') {
             $this->put($request);
         }
 
-        if (strtoupper($request->method()) == 'PATCH') {
+        if (strtoupper($method) == 'PATCH') {
             $this->patch($request);
         }
 
-        if (strtoupper($request->method()) == 'DELETE') {
+        if (strtoupper($method) == 'DELETE') {
             $this->delete($request);
         }
 

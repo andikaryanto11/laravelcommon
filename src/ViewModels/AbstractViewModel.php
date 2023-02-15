@@ -78,6 +78,13 @@ abstract class AbstractViewModel
     ) {
 
         if ($this->request != null && $this->request->getPathInfo() == '/graphql') {
+            if ($value instanceof AbstractViewModel) {
+                $this->resource[$key] = $value->finalArray();
+            }
+
+            if ($value instanceof AbstractCollection) {
+                $this->resource[$key] = $value->finalProcceed();
+            }
         } else {
             if ($value instanceof AbstractViewModel) {
                 $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
