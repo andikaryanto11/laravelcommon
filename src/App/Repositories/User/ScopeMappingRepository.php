@@ -7,8 +7,7 @@ use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\App\ViewModels\User\ScopeMappingCollection;
 use LaravelCommon\App\ViewModels\User\ScopeMappingViewModel;
 
-class ScopeMappingRepository extends Repository implements
-    ScopeMappingRepositoryInterface
+class ScopeMappingRepository extends Repository
 {
     /**
     * Constrcutor

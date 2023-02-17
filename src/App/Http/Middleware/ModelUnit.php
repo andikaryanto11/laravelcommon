@@ -8,29 +8,26 @@ use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\System\Http\Request;
-use LaravelOrm\Entities\EntityUnit as EntitiesEntityUnit;
-use Nette\Schema\Expect;
+use LaravelCommon\Utilities\Database\ModelUnit as DatabaseModelUnit;
 
-class EntityUnit
+class ModelUnit
 {
-    public const NAME = 'common.app.middlware.entity-unit';
+    public const NAME = 'common.app.middlware.model-unit';
 
     /**
-     * Undocumented variable
      *
-     * @var EntitiesEntityUnit
+     * @var DatabaseModelUnit
      */
-    protected EntitiesEntityUnit $entityUnit;
+    protected DatabaseModelUnit $modelUnit;
 
     /**
-     * Undocumented function
      *
-     * @param EntitiesEntityUnit $entityUnit
+     * @param DatabaseModelUnit $modelUnit
      */
     public function __construct(
-        EntitiesEntityUnit $entityUnit
+        DatabaseModelUnit $modelUnit
     ) {
-        $this->entityUnit = $entityUnit;
+        $this->modelUnit = $modelUnit;
     }
 
     /**
@@ -48,12 +45,12 @@ class EntityUnit
 
         try {
             if (strtoupper($request->method()) == 'DELETE') {
-                $this->entityUnit->prepareRemove($resource);
+                $this->modelUnit->prepareRemove($resource);
             } else {
-                $this->entityUnit->preparePersistence($resource);
+                $this->modelUnit->preparePersistence($resource);
             }
 
-            $this->entityUnit->flush();
+            $this->modelUnit->flush();
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }

@@ -2,8 +2,8 @@
 
 namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\App\Entities\Groupuser;
-use LaravelCommon\App\Entities\User;
+use LaravelCommon\App\Models\Groupuser;
+use LaravelCommon\App\Models\User;
 use LaravelCommon\ViewModels\AbstractViewModel;
 use stdClass;
 
@@ -15,9 +15,9 @@ class UserViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var User $entity
+     * @var User $model
      */
-    protected $entity;
+    protected $model;
 
     /**
      * @inheritdoc
@@ -27,7 +27,7 @@ class UserViewModel extends AbstractViewModel
         /**
          * @var Groupuser $groupuser
          */
-        $groupuser = $this->entity->getGroupuser();
+        $groupuser = $this->model->groupuser;
         if (!empty($groupuser)) {
             $this->embedResource('groupuser', new GroupuserViewModel($groupuser, $this->request));
         }
@@ -40,12 +40,11 @@ class UserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'id' => $this->entity->getId(),
-            'username' => $this->entity->getUsername(),
-            "is_active" => (bool)$this->entity->getIsActive(),
-            "email" => $this->entity->getEmail(),
-            "is_deleted" => $this->entity->getIsDeleted(),
-            "deleted_at" => $this->entity->getDeletedAt(),
+            'username' => $this->model->username,
+            "is_active" => (bool)$this->model->is_active,
+            "email" => $this->model->email,
+            "is_deleted" => $this->model->is_deleted,
+            "deleted_at" => $this->model->deleted_at,
         ];
     }
 }

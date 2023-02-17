@@ -6,8 +6,7 @@ use LaravelCommon\App\Entities\User;
 use LaravelCommon\App\ViewModels\UserCollection;
 use LaravelCommon\App\ViewModels\UserViewModel;
 
-class UserRepository extends Repository implements
-    UserRepositoryInterface
+class UserRepository extends Repository
 {
  /**
     * Constrcutor

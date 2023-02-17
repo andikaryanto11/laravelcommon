@@ -2,9 +2,9 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use LaravelOrm\Entities\EntityList;
-use LaravelOrm\Interfaces\IEntity;
 
 abstract class AbstractCollection
 {
@@ -29,7 +29,7 @@ abstract class AbstractCollection
     /**
      * Eloquent to View Model
      */
-    abstract public function shape(IEntity $entity);
+    abstract public function shape(Model $model);
 
     /**
      * proceed shaping to view model

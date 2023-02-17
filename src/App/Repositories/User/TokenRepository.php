@@ -7,8 +7,7 @@ use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\App\ViewModels\User\TokenCollection;
 use LaravelCommon\App\ViewModels\User\TokenViewModel;
 
-class TokenRepository extends Repository implements
-    TokenRepositoryInterface
+class TokenRepository extends Repository
 {
     /**
     * Constrcutor

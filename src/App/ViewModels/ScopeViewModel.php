@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\App\Entities\Scope;
+use LaravelCommon\App\Models\Scope;
 use LaravelCommon\ViewModels\AbstractViewModel;
 
 class ScopeViewModel extends AbstractViewModel
@@ -13,9 +13,9 @@ class ScopeViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var Scope $entity
+     * @var Scope $model
      */
-    protected $entity;
+    protected $model;
 
     /**
      * @inheritdoc
@@ -31,8 +31,7 @@ class ScopeViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'id' => $this->entity->getId(),
-            'name' => $this->entity->getName()
+            'name' => $this->model->name
         ];
     }
 }

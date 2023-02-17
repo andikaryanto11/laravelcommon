@@ -2,12 +2,11 @@
 
 namespace LaravelCommon\App\Services;
 
+use LaravelCommon\Utilities\Database\ModelUnit;
 use DateTime;
-use LaravelCommon\App\Entities\User;
-use LaravelCommon\App\Repositories\GroupuserRepository;
-use LaravelCommon\App\Repositories\UserRepository;
+use LaravelCommon\App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use LaravelCommon\App\Entities\User\Token;
+use LaravelCommon\App\Queries\UserQuery;
 use LaravelOrm\Entities\EntityManager;
 
 class UserService
@@ -15,16 +14,16 @@ class UserService
     /**
      * Undocumented variable
      *
-     * @var UserRepository
+     * @var UserQuery
      */
-    protected UserRepository $userRepository;
+    protected UserQuery $userQuery;
 
     /**
      * Undocumented variable
      *
-     * @var EntityManager
+     * @var ModelUnit
      */
-    protected EntityManager $entityManager;
+    protected ModelUnit $modelUnit;
 
     /**
      * Undocumented variable
@@ -36,17 +35,17 @@ class UserService
     /**
      *
      *
-     * @param UserRepository $userRepository
-     * @param EntityManager $entityManager
+     * @param UserQuery $userRepository
+     * @param ModelUnit $entityManager
      * @param Jwt $jwt
      */
     public function __construct(
-        UserRepository $userRepository,
-        EntityManager $entityManager,
+        UserQuery $userQuery,
+        ModelUnit $modelUnit,
         Jwt $jwt
     ) {
-        $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
+        $this->userQuery = $userQuery;
+        $this->modelUnit = $modelUnit;
         $this->jwt = $jwt;
     }
 
@@ -59,28 +58,24 @@ class UserService
      */
     public function generateToken(string $username, string $password)
     {
-        $param = [
-            'where' => [
-                ['username', '=', $username]
-            ]
-        ];
 
         /**
          * @var User
          */
-        $user = $this->userRepository->findOne($param);
+        $user = $this->userQuery->whereUsername($username)->getIterator()->first();
 
         if (empty($user)) {
             return null;
         }
 
-        if (!Hash::check($password, $user->getPassword())) {
+        if (!Hash::check($password, $user->password)) {
             return null;
         }
 
         $userToken = $this->jwt->createUserToken($user);
 
-        $this->entityManager->persist($userToken);
+        $this->modelUnit->preparePersistence($userToken);
+        $this->modelUnit->flush();
 
         return $userToken;
     }
