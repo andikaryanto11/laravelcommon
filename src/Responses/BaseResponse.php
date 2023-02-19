@@ -2,10 +2,6 @@
 
 namespace LaravelCommon\Responses;
 
-use LaravelCommon\App\Services\UrlLink;
-use LaravelCommon\ViewModels\AbstractCollection;
-use LaravelCommon\ViewModels\AbstractViewModel;
-use LaravelCommon\ViewModels\PaggedCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseResponse extends Response implements ResponseInterface

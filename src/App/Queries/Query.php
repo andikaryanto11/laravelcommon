@@ -3,88 +3,81 @@
 namespace LaravelCommon\App\Queries;
 
 use Exception;
-use LaravelOrm\Entities\EntityList;
-use LaravelOrm\Queries\Query as QueriesQuery;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Processors\Processor;
+use Illuminate\Database\Query\Grammars\Grammar;
+use Illuminate\Database\Query\Builder;
 
-abstract class Query extends QueriesQuery
+class Query extends Builder
 {
+    protected $model;
+
     /**
+     * Create a new query builder instance.
+     *
+     * @param  \Illuminate\Database\ConnectionInterface  $connection
+     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
+     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
+     * @return void
+     */
+    public function __construct(
+        Model $model,
+        ConnectionInterface $connection,
+        Grammar $grammar = null,
+        Processor $processor = null
+    ) {
+        $this->model = $model;
+        $grammar = $connection->query()->getGrammar();
+        parent::__construct($connection, $grammar, $processor);
+        $table = $model->getTable();
+        $this->from($table)->select('*');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $columns
+     * @return Collection
+     */
+    public function getIterator($columns = ['*'])
+    {
+        $models = $this->get($columns)->all();
+
+        $identityClass = get_class($this->model);
+        return $identityClass::hydrate($models);
+    }
+
+    /**
+     * Reset Query
+     *
+     * @return $this
+     */
+    public function reset()
+    {
+        $this->groups = [];
+        $this->wheres = [];
+        return $this;
+    }
+
+    public function getTable()
+    {
+        return $this->model->getTable();
+    }
+
+    /**
+     *
+     *
      * @return string
      */
-    abstract public function collectionClass();
-
-    /**
-     * Get paged collection data
-     *
-     * @return PaggedCollection
-     */
-    public function getPagedCollection()
+    public function identityClass()
     {
-        $page = 0;
-        $size = 0;
-        $this->filterDefaultRequestParameter();
-        $totalRecord = $this->count();
-
-        $this->limitDefaultReuqestParameter($page, $size);
-
-        $collection = $this->getIterator();
-
-        $collectionClass = $this->collectionClass();
-        $collection = new $collectionClass($collection, request());
-        $collection->setPage($page);
-        $collection->setSize($size);
-        $collection->setTotalRecord($totalRecord);
-        return $collection;
+        return get_class($this->model);
     }
 
-    /**
-     * Default limit by using request page and size query params
-     *
-     * @param integer $page
-     * @param integer $size
-     * @return void
-     */
-    private function limitDefaultReuqestParameter(int &$page, int &$size)
+    public function collectionClass()
     {
-        $colelctionPagingConfig = app('config')->get('common-config');
-        $size = $colelctionPagingConfig['collection_paging']['size'];
-
-        $this->limit($size);
-
-        if (isset(request()->size)) {
-            $size = request()->size;
-            $this->limit($size);
-        }
-        if (isset(request()->page)) {
-            $page = request()->page;
-            $this->offset(request()->page - 1 * $size);
-        }
-    }
-
-    /**
-     * Default limit by using request order_by, order_direction, search_by, search_value query params
-     *
-     * @return void
-     */
-    private function filterDefaultRequestParameter()
-    {
-
-        if (isset(request()->order_by)) {
-            $column = request()->order_by;
-            $this->orderBy($column);
-        }
-
-        if (isset(request()->order_by) && isset(request()->order_direction)) {
-            $column = request()->order_by;
-            $direction = strtoupper(request()->order_direction) == 'DESC' ? 'DESC' : 'ASC';
-            $this->orderBy($column, $direction);
-        }
-
-
-        if (isset(request()->search_by) && isset(request()->search_value)) {
-            $column = request()->search_by;
-            $value = request()->search_value;
-            $this->where($column, 'like', '%' . $value . '%');
-        }
+        throw new Exception('"Query::collectionClass needs to be overridden"');
     }
 }

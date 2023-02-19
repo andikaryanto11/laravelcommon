@@ -8,8 +8,7 @@ use LaravelCommon\App\ViewModels\ScopeViewModel;
 use LaravelOrm\Exception\DatabaseException;
 use LaravelOrm\Exception\EntityException;
 
-class ScopeRepository extends Repository implements
-    ScopeRepositoryInterface
+class ScopeRepository extends Repository
 {
     /**
      * Constrcutor
@@ -37,23 +36,5 @@ class ScopeRepository extends Repository implements
     public function viewModelClass(): string
     {
         return ScopeViewModel::class;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $name
-     * @throws DatabaseException
-     * @return Scope
-     */
-    public function getScopeByName(string $name): Scope
-    {
-        return $this->findOneOrFail(
-            [
-                'where' => [
-                    ['name', '=', $name]
-                ]
-            ]
-        );
     }
 }

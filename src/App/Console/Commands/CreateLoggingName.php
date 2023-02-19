@@ -4,7 +4,6 @@ namespace LaravelCommon\App\Console\Commands;
 
 use Illuminate\Console\Command;
 use LaravelCommon\App\Entities\LoggingConfig;
-use LaravelCommon\App\Utilities\EntityUnit;
 
 class CreateLoggingName extends Command
 {
@@ -23,21 +22,6 @@ class CreateLoggingName extends Command
      */
     protected $description = 'Create logging config data name';
 
-    /**
-     * @var EntityUnit
-     */
-    protected EntityUnit $entityUnit;
-
-    /**
-     *
-     * @param EntityUnit $entityUnit
-     */
-    public function __construct(
-        EntityUnit $entityUnit
-    ) {
-        $this->entityUnit = $entityUnit;
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -52,8 +36,6 @@ class CreateLoggingName extends Command
         $loggingConfig = new LoggingConfig();
         $loggingConfig->setName($name);
 
-        $this->entityUnit->preparePersistence($loggingConfig);
-        $this->entityUnit->flush();
         $this->info("$name name is created");
         return 0;
     }

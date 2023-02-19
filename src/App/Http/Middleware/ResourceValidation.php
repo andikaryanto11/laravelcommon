@@ -26,7 +26,7 @@ class ResourceValidation
     {
         $resource = $request->getResource();
         try {
-            $resource->validate();
+            // $resource->validate();
         } catch (ValidationException $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
         } catch (EntityException $e) {

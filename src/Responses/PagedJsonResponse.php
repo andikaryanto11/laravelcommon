@@ -2,60 +2,116 @@
 
 namespace LaravelCommon\Responses;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Schema;
 use LaravelCommon\App\Queries\Query;
-use LaravelCommon\App\Repositories\Repository;
-use LaravelCommon\App\Services\UrlLink;
-use LaravelCommon\ViewModels\PaggedCollection;
+use LaravelCommon\Responses\CollectionResponse;
 
 class PagedJsonResponse extends CollectionResponse
 {
-    public function __construct(string $message, $responseCode = [], $data = null)
+    /**
+     * @var Query
+     */
+    protected ?Query $query = null;
+    protected LengthAwarePaginator $paginator;
+
+    public function __construct(string $message, $responseCode = [], Query $query = null)
     {
 
-        $newData = $this->buildData($data);
+        $this->query = $query;
+        $newData = $this->getPagedCollection();
         $json = [];
         if (!is_null($newData)) {
             $json = [
                 '_paging' => [
-                    'next_page' => $newData->getNextPage(),
-                    'prev_page' => $newData->getPreviousPage(),
-                    'total_page' => $newData->getTotalPage(),
-                    'page' => $newData->getPage(),
-                    'size' => $newData->getSize(),
-                    'total_record' => $newData->getTotalRecord()
+                    'page' =>  $this->paginator->currentPage(),
+                    'limit' => $this->paginator->perPage(),
+                    'total_data' => $this->paginator->total()
                 ]
             ];
 
-            $links = UrlLink::createLinks($newData);
-
-            $json['_links'] = $links;
+            $json['_links'] = [
+                'next_page' => $this->paginator->nextPageUrl(),
+                'prev_page' => $this->paginator->previousPageUrl(),
+                'current_page' => $this->paginator->url($this->paginator->currentPage())
+            ];
         }
 
         parent::__construct($message, 200, $responseCode, $newData, $json);
     }
 
     /**
+     * getPagedCollection
+     *
+     * @return PagedCollection
+     */
+    private function getPagedCollection()
+    {
+        $this->paginator = $this->filterAndSortFromRequest();
+        $collectionClass = $this->query->collectionClass();
+        $identityClass = $this->query->identityClass();
+
+        $models = $identityClass::hydrate($this->paginator->items());
+
+        $collection = new $collectionClass($models);
+        $collection->setPage($this->paginator->currentPage());
+        $collection->setSize($this->paginator->total());
+        $collection->setTotalRecord($this->paginator->total());
+        return $collection;
+    }
+
+    /**
      * Undocumented function
      *
-     * @return PaggedCollection
+     * @return LengthAwarePaginator
      */
-    private function buildData($data = null)
+    private function filterAndSortFromRequest()
     {
+        $request = request();
+        $table = $this->query->getTable();
+        $sortDirection = 'ASC';
+        $sortColumn = null;
+        $size = config("common-config")['collection_paging']['size'];
+        $page = 1;
 
-        if (is_null($data)) {
-            return null;
+
+        if (isset($request->order_direction)) {
+            $sortDirection = strtolower($request->order_direction);
         }
 
-        $newData = null;
-        if ($data instanceof Repository) {
-            $filters = $data->getFilters();
-            $newData = $data->gather($filters);
+        if (isset($request->order_by)) {
+            $sortColumn = $request->order_by;
         }
 
-        if ($data instanceof Query) {
-            $newData = $data->getPagedCollection();
+        if (!is_null($sortColumn)) {
+            $this->query->orderBy($table . '.' . $sortColumn, $sortDirection);
         }
 
-        return $newData;
+        if (isset($request->size)) {
+            $size = $request->size;
+        }
+
+        if (isset($request->page)) {
+            $page = $request->page;
+        }
+
+        if (isset($request->keyword)) {
+            $keyword = $request->keyword;
+            $searchColumns = Schema::getColumnListing($this->query->getTable());
+            foreach ($searchColumns as $column) {
+                $this->query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
+            }
+        } else {
+            if (isset($request->search_by) && isset($request->search_value)) {
+                $searchBy = $request->search_by;
+                $searchValue = $request->search_value;
+                $this->query->where($searchBy, 'like', '%' . $searchValue . '%');
+            }
+
+            if (isset($request->search_value)) {
+            }
+        }
+
+        return$this->query->paginate($size, ['*'], 'page', $page);
     }
 }

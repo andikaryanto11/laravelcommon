@@ -2,11 +2,13 @@
 
 namespace LaravelCommon\App\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
 use DateTime;
 use Exception;
 use LaravelCommon\App\Consts\ResponseConst;
-use LaravelCommon\App\Entities\User\Token;
+use LaravelCommon\App\Models\User\Token;
+use LaravelCommon\App\Queries\User\TokenQuery;
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\App\Services\Jwt;
 use LaravelCommon\Responses\BadRequestResponse;
@@ -19,9 +21,9 @@ class CheckToken
 
     /**
      *
-     * @var TokenRepository
+     * @var TokenQuery
      */
-    protected TokenRepository $tokenRepository;
+    protected TokenQuery $tokenQuery;
 
     /**
      *
@@ -32,14 +34,14 @@ class CheckToken
     /**
      * Undocumented function
      *
-     * @param TokenRepository $tokenRepository
+     * @param TokenQuery $tokenRepository
      * @param Jwt $jwt
      */
     public function __construct(
-        TokenRepository $tokenRepository,
+        TokenQuery $tokenQuery,
         Jwt $jwt
     ) {
-        $this->tokenRepository = $tokenRepository;
+        $this->tokenQuery = $tokenQuery;
         $this->jwt = $jwt;
     }
 
@@ -55,30 +57,24 @@ class CheckToken
         try {
             if ($request->hasHeader('Authorization')) {
                 $authorization = $request->header('Authorization');
-                $now = new DateTime();
 
-                $param = [
-                    'where' => [
-                        ['token', '=', $authorization],
-                    ]
-                ];
 
                 /**
                  * @var Token $userToken
                  */
-                $userToken = $this->tokenRepository->findOne($param);
+                $userToken = $this->tokenQuery->whereToken($authorization)->getIterator()->first();
                 if (empty($userToken)) {
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
-                if ($userToken->getExpiredAt() < $now) {
+                if ($userToken->expired_at < Carbon::now()) {
                     return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
-                $user = $userToken->getUser();
+                $user = $userToken->user;
 
                 $jwtPayload = $this->jwt->decodeUserToken($authorization);
 
-                if ($user->getPassword() != $jwtPayload->password) {
+                if ($user->password != $jwtPayload->password) {
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 

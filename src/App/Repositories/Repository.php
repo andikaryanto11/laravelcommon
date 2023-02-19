@@ -3,71 +3,56 @@
 namespace LaravelCommon\App\Repositories;
 
 use Exception;
-use LaravelCommon\App\Services\CollectionQueryParameters;
-use LaravelCommon\ViewModels\PaggedCollection;
-use LaravelOrm\Interfaces\IEntity;
-use LaravelOrm\Repository\Repository as LaravelOrmRepository;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class Repository extends LaravelOrmRepository implements RepositoryInterface
+class Repository
 {
     /**
-     * Undocumented variable
      *
-     * @var array
+     * @var string
      */
-    protected array $filters = [];
+    protected string $modelClass;
+
+    public function __construct(
+        string $modelClass
+    ) {
+        $this->modelClass = $modelClass;
+    }
+
 
     /**
-     * Get view collection and paged the collection
      *
-     * @param array $filter
-     * @return PaggedCollection
+     * @param mixed $id
+     * @return mixed
      */
-    public function gather($filter = [])
+    public function find($id)
     {
-
-        $colelctionPagingConfig = app('config')->get('common-config');
-
-        $filter['limit'] = [
-            'page' => 1,
-            'size' => $colelctionPagingConfig['collection_paging']['size']
-        ];
-
-        $filter = CollectionQueryParameters::getCollectionParameters($filter);
-
-        $countParams = $filter;
-        unset($countParams['limit']);
-        $totalRecord = $this->count($countParams);
-
-        $collection = $this->collect($filter);
-        $collectionClass = $this->collectionClass();
-        $collection = new $collectionClass($collection, request());
-        $collection->setPage($filter['limit']['page']);
-        $collection->setSize($filter['limit']['size']);
-        $collection->setTotalRecord($totalRecord);
-        return $collection;
+        $modelClass = $this->modelClass;
+        return $modelClass::find($id);
     }
 
     /**
-     * Set filters
      *
-     * @param array $filters
-     * @return self
+     * @param mixed $id
+     * @throws ModelNotFoundException
+     * @return mixed
      */
-    public function addFilters(array $filters = []): self
+    public function findOrFail($id)
     {
-        $this->filters = $filters;
-        return $this;
+        $modelClass = $this->modelClass;
+        return $modelClass::findOrFail($id);
     }
 
     /**
-     * Undocumented function
      *
-     * @return array
+     * @param mixed $id
+     * @return mixed
      */
-    public function getFilters(): array
+    public function findOrNew($id)
     {
-        return $this->filters;
+        $modelClass = $this->modelClass;
+        return $modelClass::findOrNew($id);
     }
 
     /**
@@ -89,7 +74,17 @@ class Repository extends LaravelOrmRepository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function validateEntity(IEntity $entity): void
+    public function validateEntity(Model $model): void
     {
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function newModel()
+    {
+        $modelClass = $this->modelClass;
+        return new $modelClass();
     }
 }

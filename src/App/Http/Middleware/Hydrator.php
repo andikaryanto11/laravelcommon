@@ -4,14 +4,26 @@ namespace LaravelCommon\App\Http\Middleware;
 
 use Closure;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\Exceptions\ResponsableException;
-use LaravelCommon\Responses\NoDataFoundResponse;
+use LaravelCommon\Responses\NoContentResponse;
+use LaravelCommon\Responses\NotFoundResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelOrm\Exception\EntityException;
 
 class Hydrator
 {
     protected $resource;
+
+    protected Repository $repository;
+
+    public function __construct(
+        Repository $repository
+    ) {
+        $this->repository = $repository;
+    }
 
     /**
      * Undocumented function
@@ -43,7 +55,7 @@ class Hydrator
      */
     public function handle(Request $request, Closure $next, $method)
     {
-        $request->setHydrator($this);
+        // $request->setHydrator($this);
 
         if (strtoupper($method) == 'POST') {
             $this->post($request);
@@ -76,7 +88,7 @@ class Hydrator
      */
     public function get(Request $request)
     {
-        $this->resource = $this->getEntity($request);
+        $this->resource = $this->getModel($request);
         $request->setResource($this->resource);
     }
 
@@ -90,9 +102,9 @@ class Hydrator
     {
         $repositoryClass = $this->repositoryClass();
         $repository = new $repositoryClass();
-        $this->resource = $repository->newEntity();
-        $request->hyrdateResource($this->resource);
-        $this->hydrate($request->input());
+        $this->resource = $repository->newModel();
+        $request->setResource($this->resource);
+        $this->hydrate($this->resource, $request);
         $this->afterHydrate($request);
     }
 
@@ -104,12 +116,13 @@ class Hydrator
      */
     private function put(Request $request)
     {
-        $this->resource = $this->getEntity($request);
-        $request->hyrdateResource($this->resource);
-        $this->hydrate($request->input());
+        $this->resource = $this->getModel($request);
+        $request->setResource($this->resource);
+        $this->hydrate($this->resource, $request);
     }
 
-    public function afterHydrate(Request $request) {
+    public function afterHydrate(Request $request)
+    {
         return $this;
     }
 
@@ -121,7 +134,7 @@ class Hydrator
      */
     private function delete(Request $request)
     {
-        $this->resource = $this->getEntity($request);
+        $this->resource = $this->getModel($request);
         $request->setResource($this->resource);
     }
 
@@ -133,10 +146,10 @@ class Hydrator
      */
     private function patch(Request $request)
     {
-        $this->resource = $this->getEntity($request);
+        $this->resource = $this->getModel($request);
         $request->setResource($this->resource);
 
-        $request->hyrdateResource($this->resource);
+        $this->hydrate($this->resource, $request);
     }
 
     /**
@@ -147,29 +160,42 @@ class Hydrator
      */
     protected function hydrateObjects()
     {
+        return [];
     }
 
-    private function hydrate(array $input)
+    /**
+     * Hydrate model
+     *
+     * @param Model $model
+     * @param Request $request
+     * @return void
+     */
+    private function hydrate(Model $model, Request $request)
     {
-        $hydrateObjects = $this->hydrateObjects();
-
-        foreach ($hydrateObjects as $key => $hydrateObject) {
-            if (array_key_exists($key, $input)) {
-                if (count($hydrateObject) == 2) {
-                    $repoMethod = $hydrateObject[1][1];
-                    $resource = $hydrateObject[1][0]->$repoMethod($input[$key]);
-                    if ($resource) {
-                        $entityMethod = $hydrateObject[0][1];
-                        $hydrateObject[0][0]->$entityMethod($resource);
-                    }
-                }
-
-                if (count($hydrateObject) == 1) {
-                    $entityMethod = $hydrateObject[0][1];
-                    $hydrateObject[0][0]->$entityMethod($resource);
-                }
-            }
+        $input = $request->input();
+        foreach ($input as $key => $value) {
+            $model->$key = $value;
         }
+
+        // $hydrateObjects = $this->hydrateObjects();
+
+        // foreach ($hydrateObjects as $key => $hydrateObject) {
+        //     if (array_key_exists($key, $input)) {
+        //         if (count($hydrateObject) == 2) {
+        //             $repoMethod = $hydrateObject[1][1];
+        //             $resource = $hydrateObject[1][0]->$repoMethod($input[$key]);
+        //             if ($resource) {
+        //                 $entityMethod = $hydrateObject[0][1];
+        //                 $hydrateObject[0][0]->$entityMethod($resource);
+        //             }
+        //         }
+
+        //         if (count($hydrateObject) == 1) {
+        //             $entityMethod = $hydrateObject[0][1];
+        //             $hydrateObject[0][0]->$entityMethod($resource);
+        //         }
+        //     }
+        // }
     }
 
     /**
@@ -178,17 +204,17 @@ class Hydrator
      * @param Request $request
      * @return mixed
      */
-    private function getEntity(Request $request)
+    private function getModel(Request $request)
     {
 
         $id = $request->route()->parameter($this->getKey());
-        $repositoryClass = $this->repositoryClass();
+        // $repositoryClass = $this->repositoryClass();
 
-        $repository = new $repositoryClass();
+        // $repository = new $repositoryClass();
         try {
-            $resource = $repository->findOrFail($id);
-        } catch (EntityException $e) {
-            throw new ResponsableException($e->getMessage(), new NoDataFoundResponse('No Data Found'));
+            $resource = $this->repository->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            throw new ResponsableException($e->getMessage(), new NotFoundResponse('No Data Found'));
         }
 
         return $resource;

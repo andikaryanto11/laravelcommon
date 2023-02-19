@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
-class PageNotFoundResponse extends BaseResponse
+class NotFoundResponse extends BaseResponse
 {
     public function __construct(string $message, $responseCode = [], $data = null)
     {

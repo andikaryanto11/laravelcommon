@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCommon\App\Queries;
+namespace LaravelCommon\App\Queries\User;
 
 use Illuminate\Database\ConnectionInterface;
 use LaravelCommon\App\Models\LoggingConfig;
@@ -8,29 +8,32 @@ use LaravelCommon\App\Queries\Query;
 use LaravelCommon\App\ViewModels\LoggingConfigCollection;
 use Illuminate\Database\Query\Processors\Processor;
 use Illuminate\Database\Query\Grammars\Grammar;
+use LaravelCommon\App\Models\User\Token;
+use LaravelCommon\App\ViewModels\User\TokenCollection;
 
-class LoggingConfigQuery extends Query
+class TokenQuery extends Query
 {
     /**
      * Create a new query builder instance.
      *
+     * @param  Token  $token
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
      * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
      * @return void
      */
     public function __construct(
-        LoggingConfig $loggingConfig,
+        Token $token,
         ConnectionInterface $connection,
         Grammar $grammar = null,
         Processor $processor = null
     ) {
-        parent::__construct($loggingConfig, $connection, $grammar, $processor);
+        parent::__construct($token, $connection, $grammar, $processor);
     }
 
     public function collectionClass()
     {
-        return LoggingConfigCollection::class;
+        return TokenCollection::class;
     }
 
     /**
@@ -39,20 +42,9 @@ class LoggingConfigQuery extends Query
      * @param string $name
      * @return $this
      */
-    public function whereName(string $name): LoggingConfigQuery
+    public function whereToken(string $token): TokenQuery
     {
-        $this->where('name', '=', $name);
-        return $this;
-    }
-
-    /**
-    * find logging by enabled
-    *
-    * @return $this
-    */
-    public function whereIsEnabled(): LoggingConfigQuery
-    {
-        $this->where('is_enabled', '=', 1);
+        $this->where('token', '=', $token);
         return $this;
     }
 }

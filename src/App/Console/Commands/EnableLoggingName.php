@@ -4,7 +4,6 @@ namespace LaravelCommon\App\Console\Commands;
 
 use LaravelCommon\App\Queries\LoggingConfigQuery;
 use Illuminate\Console\Command;
-use LaravelCommon\App\Utilities\EntityUnit;
 
 class EnableLoggingName extends Command
 {
@@ -29,22 +28,15 @@ class EnableLoggingName extends Command
      */
     protected LoggingConfigQuery $loggingConfigQuery;
 
-    /**
-     * @var EntityUnit
-     */
-    protected EntityUnit $entityUnit;
 
     /**
      *
      * @param LoggingConfigQuery $loggingConfigQuery
-     * @param EntityUnit $entityUnit
      */
     public function __construct(
         LoggingConfigQuery $loggingConfigQuery,
-        EntityUnit $entityUnit
     ) {
         $this->loggingConfigQuery = $loggingConfigQuery;
-        $this->entityUnit = $entityUnit;
         parent::__construct();
     }
 
@@ -67,9 +59,6 @@ class EnableLoggingName extends Command
 
         if (!is_null($loggingConfig)) {
             $loggingConfig->setIsEnabled($enable);
-
-            $this->entityUnit->preparePersistence($loggingConfig);
-            $this->entityUnit->flush();
         }
         $this->info("command run successfully");
         return 0;

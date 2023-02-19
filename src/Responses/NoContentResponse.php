@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
-class NoDataFoundResponse extends BaseResponse
+class NoContentResponse extends BaseResponse
 {
     public function __construct(string $message, $responseCode = [], $data = null)
     {
