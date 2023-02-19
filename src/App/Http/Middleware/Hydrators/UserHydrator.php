@@ -17,22 +17,21 @@ class UserHydrator extends Hydrator
     protected GroupuserRepository $groupuserRepository;
 
     /**
-     *
-     * @param GroupuserRepository $groupuserRepository
+     * @var UserRepository
      */
-    public function __construct(
-        GroupuserRepository $groupuserRepository
-    ) {
-        $this->groupuserRepository = $groupuserRepository;
-    }
+    protected UserRepository $userRepository;
 
     /**
      *
-     * @return string
+     * @param GroupuserRepository $groupuserRepository
+     * @param UserRepository $userRepository
      */
-    public function repositoryClass(): string
-    {
-        return UserRepository::class;
+    public function __construct(
+        GroupuserRepository $groupuserRepository,
+        UserRepository $userRepository
+    ) {
+        parent::__construct($userRepository);
+        $this->groupuserRepository = $groupuserRepository;
     }
 
     /**
