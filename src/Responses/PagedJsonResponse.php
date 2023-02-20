@@ -112,6 +112,6 @@ class PagedJsonResponse extends CollectionResponse
             }
         }
 
-        return$this->query->paginate($size, ['*'], 'page', $page);
+        return $this->query->paginate($size, ['*'], 'page', $page);
     }
 }
