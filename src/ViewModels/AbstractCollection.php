@@ -4,7 +4,7 @@ namespace LaravelCommon\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use LaravelOrm\Entities\EntityList;
+use Illuminate\Database\Eloquent\Collection;
 
 abstract class AbstractCollection
 {
@@ -18,7 +18,7 @@ abstract class AbstractCollection
     protected array $element = [];
 
     /**
-     * @param array|EntityList $collection
+     * @param array|Collection $collection
      */
     public function __construct($collection, ?Request $request = null)
     {
