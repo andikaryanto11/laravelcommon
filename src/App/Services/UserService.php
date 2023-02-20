@@ -2,12 +2,11 @@
 
 namespace LaravelCommon\App\Services;
 
-use LaravelCommon\Utilities\Database\ModelUnit;
 use DateTime;
 use LaravelCommon\App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use LaravelCommon\App\Queries\UserQuery;
-use LaravelOrm\Entities\EntityManager;
+use LaravelCommon\Utilities\Database\ModelUnit;
 
 class UserService
 {
