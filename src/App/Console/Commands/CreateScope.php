@@ -62,7 +62,7 @@ class CreateScope extends Command
         $name = $this->argument('name');
         $scope = $this->scopeRepository->newEntity();
         $scope->setName($name);
-        $this->modelUnit->preparePersistence($scope);
+        $this->modelUnit->persist($scope);
         $this->modelUnit->flush();
         $this->info('Scope created');
         return 0;

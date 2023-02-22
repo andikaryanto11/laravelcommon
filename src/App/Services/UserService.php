@@ -73,7 +73,7 @@ class UserService
 
         $userToken = $this->jwt->createUserToken($user);
 
-        $this->modelUnit->preparePersistence($userToken);
+        $this->modelUnit->persist($userToken);
         $this->modelUnit->flush();
 
         return $userToken;

@@ -2,13 +2,14 @@
 
 namespace LaravelCommon\Utilities\Database;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ModelScope
 {
     public const PERFORM_ADD_UPDATE = '1addUpdate';
     public const PERFORM_DELETE = '2delete';
+    protected bool $isTransactionStarted = false;
 
     /**
      *
@@ -20,7 +21,7 @@ class ModelScope
      *
      * @var array
      */
-    private array $entities = [];
+    private array $models = [];
 
     private function __construct()
     {
@@ -50,8 +51,8 @@ class ModelScope
     public function addModel(string $perfom, Model $model, $needValidate = true)
     {
         $isModelExist = false;
-        if (isset($this->entities)) {
-            foreach ($this->entities as $existedModel) {
+        if (isset($this->models)) {
+            foreach ($this->models as $existedModel) {
                 if ($model === $existedModel['model'] && $perfom === $model['perform']) {
                     $isModelExist = true;
                     break;
@@ -60,7 +61,7 @@ class ModelScope
         }
 
         if (!$isModelExist) {
-            $this->entities[] = [
+            $this->models[] = [
                 'perform' => $perfom,
                 'model' => $model,
                 'needValidate' => $needValidate
@@ -69,24 +70,24 @@ class ModelScope
     }
 
     /**
-     * Sort the entities
+     * Sort the models
      *
      * @return ModelScope
      */
     public function sort()
     {
-        ksort($this->entities);
+        ksort($this->models);
         return $this;
     }
 
     /**
-     * Get entities scope
+     * Get models scope
      *
      * @return array
      */
-    public function getEntities()
+    public function getModels()
     {
-        return $this->entities;
+        return $this->models;
     }
 
     /**
@@ -96,6 +97,45 @@ class ModelScope
      */
     public function clean()
     {
-        $this->entities = [];
+        $this->models = [];
+    }
+
+    /**
+     * Determine if db transaction started;
+     *
+     * @return void
+     */
+    public function startTransaction()
+    {
+        DB::beginTransaction();
+        $this->isTransactionStarted = true;
+    }
+
+    /**
+     * Rollback transaction
+     *
+     * @return void
+     */
+    public function rollback()
+    {
+        DB::rollBack();
+        $this->isTransactionStarted = false;
+    }
+
+
+    /**
+     * Commit transaction
+     *
+     * @return void
+     */
+    public function commit()
+    {
+        DB::commit();
+        $this->isTransactionStarted = false;
+    }
+
+    public function transactionHasStarted()
+    {
+        return $this->isTransactionStarted;
     }
 }

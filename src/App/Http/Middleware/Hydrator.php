@@ -36,16 +36,6 @@ class Hydrator
     }
 
     /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function repositoryClass(): string
-    {
-        throw new Exception('"repositoryClass" needs to be overriden on your hydrator classes');
-    }
-
-    /**
      * Handle an incoming request.
      *
      * @param  Request  $request
@@ -99,9 +89,7 @@ class Hydrator
      */
     private function post(Request $request)
     {
-        $repositoryClass = $this->repositoryClass();
-        $repository = new $repositoryClass();
-        $this->resource = $repository->newModel();
+        $this->resource = $this->repository->newModel();
         $request->setResource($this->resource);
         $this->hydrate($this->resource, $request);
         $this->afterHydrate($request);

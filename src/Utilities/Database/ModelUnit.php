@@ -22,10 +22,16 @@ class ModelUnit
      * @throws ValidationException
      * @return ModelUnit
      */
-    public function preparePersistence(Model $model)
+    public function persist(Model $model)
     {
         $modelScope = ModelScope::getInstance();
-        $modelScope->addModel(ModelScope::PERFORM_ADD_UPDATE, $model, false);
+        if (!$modelScope->transactionHasStarted()) {
+            $modelScope->startTransaction();
+        }
+
+        $model->save();
+
+        // $modelScope->addModel(ModelScope::PERFORM_ADD_UPDATE, $model, false);
         return $this;
     }
 
@@ -35,10 +41,21 @@ class ModelUnit
      * @param Model $model
      * @return ModelUnit
      */
-    public function prepareRemove(Model $model)
+    public function remove(Model $model)
     {
         $modelScope = ModelScope::getInstance();
-        $modelScope->addModel(ModelScope::PERFORM_DELETE, $model);
+        $modelScope = ModelScope::getInstance();
+        if (!$modelScope->transactionHasStarted()) {
+            $modelScope->startTransaction();
+        }
+
+        if (method_exists($model, 'trashed')) {
+            $model->trashed();
+        } else {
+            $model->forceDelete();
+        }
+
+        // $modelScope->addModel(ModelScope::PERFORM_DELETE, $model);
         return $this;
     }
 
@@ -51,28 +68,26 @@ class ModelUnit
     {
         $modelScope = ModelScope::getInstance();
 
-        DB::beginTransaction();
-
         try {
-            $modelScope->sort();
-            foreach ($modelScope->getEntities() as $value) {
-                $model = $value['model'];
-                if ($value['perform'] == ModelScope::PERFORM_ADD_UPDATE) {
-                    $model->save();
-                } elseif ($value['perform'] == ModelScope::PERFORM_DELETE) {
-                    if (method_exists($model, 'trashed')) {
-                        $model->trashed();
-                    } else {
-                        $model->forceDelete();
-                    }
-                }
-            }
+            // $modelScope->sort();
+            // foreach ($modelScope->getModels() as $value) {
+            //     $model = $value['model'];
+            //     if ($value['perform'] == ModelScope::PERFORM_ADD_UPDATE) {
+            //         $model->save();
+            //     } elseif ($value['perform'] == ModelScope::PERFORM_DELETE) {
+            //         if (method_exists($model, 'trashed')) {
+            //             $model->trashed();
+            //         } else {
+            //             $model->forceDelete();
+            //         }
+            //     }
+            // }
 
-            DB::commit();
-            $modelScope->clean();
+            $modelScope->commit();
+            // $modelScope->clean();
         } catch (Exception $e) {
-            DB::rollBack();
-            $modelScope->clean();
+            $modelScope->rollback();
+            // $modelScope->clean();
             throw $e;
         }
     }

@@ -45,9 +45,9 @@ class ModelUnit
 
         try {
             if (strtoupper($request->method()) == 'DELETE') {
-                $this->modelUnit->prepareRemove($resource);
+                $this->modelUnit->remove($resource);
             } else {
-                $this->modelUnit->preparePersistence($resource);
+                $this->modelUnit->persist($resource);
             }
 
             $this->modelUnit->flush();
