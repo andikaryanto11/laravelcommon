@@ -13,7 +13,7 @@ use LaravelCommon\Responses\NotFoundResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelOrm\Exception\EntityException;
 
-class call_user_method_array
+class Hydrator
 {
     protected $resource;
 
