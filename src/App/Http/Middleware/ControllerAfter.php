@@ -41,6 +41,10 @@ class ControllerAfter
             return $response->send();
         }
 
+        if ($response instanceof JsonResponse) {
+            return $response;
+        }
+
         if (
             $response instanceof Response ||
             $response instanceof JsonResponse

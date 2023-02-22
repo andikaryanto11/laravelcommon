@@ -13,15 +13,25 @@ use LaravelCommon\Responses\NotFoundResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelOrm\Exception\EntityException;
 
-class Hydrator
+class call_user_method_array
 {
     protected $resource;
 
+    protected $key;
+
     protected Repository $repository;
 
+    /**
+     * Hydrator constructor
+     *
+     * @param string $key
+     * @param Repository $repository
+     */
     public function __construct(
+        string $key,
         Repository $repository
     ) {
+        $this->key = $key;
         $this->repository = $repository;
     }
 
@@ -36,16 +46,6 @@ class Hydrator
     }
 
     /**
-     * Key of hydrator, will be a routing parameter.
-     *
-     * @return string
-     */
-    public function getKey(): string
-    {
-        throw new Exception('"getKey" needs to be overriden on your hydrator classes');
-    }
-
-    /**
      * Handle an incoming request.
      *
      * @param  Request  $request
@@ -55,7 +55,6 @@ class Hydrator
      */
     public function handle(Request $request, Closure $next, $method)
     {
-        // $request->setHydrator($this);
 
         if (strtoupper($method) == 'POST') {
             $this->post($request);
@@ -206,11 +205,7 @@ class Hydrator
      */
     private function getModel(Request $request)
     {
-
-        $id = $request->route()->parameter($this->getKey());
-        // $repositoryClass = $this->repositoryClass();
-
-        // $repository = new $repositoryClass();
+        $id = $request->route()->parameter($this->key);
         try {
             $resource = $this->repository->findOrFail($id);
         } catch (ModelNotFoundException $e) {
