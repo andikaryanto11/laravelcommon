@@ -56,6 +56,17 @@ class Repository
     }
 
     /**
+     *
+     * @param mixed $id
+     * @return mixed
+     */
+    public function all()
+    {
+        $modelClass = $this->modelClass;
+        return $modelClass::all();
+    }
+
+    /**
      * @inheritDoc
      */
     public function collectionClass(): string
