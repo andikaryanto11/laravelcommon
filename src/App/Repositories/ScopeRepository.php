@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\Repositories;
 
-use LaravelCommon\App\Entities\Scope;
+use LaravelCommon\App\Models\Scope;
 use LaravelCommon\App\ViewModels\ScopeCollection;
 use LaravelCommon\App\ViewModels\ScopeViewModel;
 use LaravelOrm\Exception\DatabaseException;

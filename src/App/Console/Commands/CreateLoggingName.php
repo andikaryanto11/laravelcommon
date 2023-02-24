@@ -3,7 +3,7 @@
 namespace LaravelCommon\App\Console\Commands;
 
 use Illuminate\Console\Command;
-use LaravelCommon\App\Entities\LoggingConfig;
+use LaravelCommon\App\Models\LoggingConfig;
 
 class CreateLoggingName extends Command
 {

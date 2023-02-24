@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\Repositories\User;
 
-use LaravelCommon\App\Entities\User\ScopeMapping;
+use LaravelCommon\App\Models\User\ScopeMapping;
 use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\App\ViewModels\User\ScopeMappingCollection;
 use LaravelCommon\App\ViewModels\User\ScopeMappingViewModel;

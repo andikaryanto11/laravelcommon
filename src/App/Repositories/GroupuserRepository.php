@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\Repositories;
 
-use LaravelCommon\App\Entities\Groupuser;
+use LaravelCommon\App\Models\Groupuser;
 use LaravelCommon\App\ViewModels\GroupuserCollection;
 use LaravelCommon\App\ViewModels\GroupuserViewModel;
 

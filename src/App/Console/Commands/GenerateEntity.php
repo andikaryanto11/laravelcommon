@@ -167,7 +167,7 @@ class GenerateEntity extends Command
         $entityFile = "<?php
 namespace App\\{$this->getNameSpace()};
 
-use LaravelCommon\App\Entities\BaseEntity;
+use LaravelCommon\App\Models\BaseEntity;
 
 class {$this->getClassName()} extends BaseEntity
 {

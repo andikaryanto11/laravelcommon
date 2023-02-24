@@ -6,7 +6,7 @@ use DateTime;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use LaravelCommon\App\Entities\_Reserved\File;
+use LaravelCommon\App\Models\_Reserved\File;
 
 class FileService
 {

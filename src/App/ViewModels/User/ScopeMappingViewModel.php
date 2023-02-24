@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\ViewModels\User;
 
-use LaravelCommon\App\Entities\User;
+use LaravelCommon\App\Models\User;
 use LaravelCommon\App\Models\User\ScopeMapping;
 use LaravelCommon\App\ViewModels\ScopeViewModel;
 use LaravelCommon\App\ViewModels\UserViewModel;

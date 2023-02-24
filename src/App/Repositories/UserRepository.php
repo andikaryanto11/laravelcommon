@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\Repositories;
 
-use LaravelCommon\App\Entities\User;
+use LaravelCommon\App\Models\User;
 use LaravelCommon\App\ViewModels\UserCollection;
 use LaravelCommon\App\ViewModels\UserViewModel;
 
