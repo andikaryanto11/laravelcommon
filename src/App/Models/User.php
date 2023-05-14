@@ -2,14 +2,15 @@
 
 namespace LaravelCommon\App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LaravelCommon\App\Models\User\ScopeMapping;
-use TraitAuditableModel;
 
 // use Laravel\Sanctum\HasApiTokens;
 
@@ -20,12 +21,8 @@ class User extends Authenticatable
     use Notifiable;
     use TraitAuditableModel;
 
-    protected string $username;
-    // protected Groupuser $groupuser;
-    protected string $email;
-    protected string $password;
-    protected ?string $photo = null;
     protected bool $is_active = true;
+    protected bool $is_deleted = false;
 
     /**
      * The attributes that are mass assignable.
@@ -73,6 +70,15 @@ class User extends Authenticatable
     private function scopeMappings()
     {
         return $this->hasMany(ScopeMapping::class);
+    }
+
+    /**
+     *
+     * @return Collection
+     */
+    public function getScopeMappings()
+    {
+        return $this->scopeMappings;
     }
 
     /**
@@ -159,13 +165,59 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public function getGroupuser()
+    public function getGroupuser(): Groupuser
     {
-        $this->groupuser;
+        return $this->groupuser;
     }
 
-    public function setGroupuser(Groupuser $groupuser)
+    /**
+     *
+     * @param Groupuser $groupuser
+     * @return $this
+     */
+    public function setGroupuser(Groupuser $groupuser): User
     {
         $this->groupuser()->associate($groupuser);
+        return $this;
+    }
+
+    /**
+     * Get the value of is_active
+     */ 
+    public function getIsDeleted(): bool
+    {
+        return $this->is_deleted;
+    }
+
+    /**
+     * Set the value of is_deleted
+     *
+     * @return  self
+     */ 
+    public function setIsDeleted($isDeleted): User
+    {
+        $this->is_deleted = $isDeleted;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return ?Carbon
+     */
+    public function getDeletedAt(): ?Carbon
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     *
+     * @param Carbon $deleted_at
+     * @return Token
+     */
+    public function setDeletedAt(Carbon $deletedAt): User
+    {
+        $this->deleted_at = $deletedAt;
+        return $this;
     }
 }

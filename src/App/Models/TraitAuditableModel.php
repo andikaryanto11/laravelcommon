@@ -1,9 +1,32 @@
 <?php
 
+namespace LaravelCommon\App\Models;
+
 use Carbon\Carbon;
 
 trait TraitAuditableModel
 {
+
+    /**
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @param mixed $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     /**
      * Get the value of created_by
      */ 
@@ -47,7 +70,7 @@ trait TraitAuditableModel
     /**
      * Get the value of created_at
      */ 
-    public function getCreatedAt(): ?Carbon
+    public function getCreatedAtUtc(): ?Carbon
     {
         return $this->created_at;
     }
@@ -57,7 +80,7 @@ trait TraitAuditableModel
      *
      * @return  self
      */ 
-    public function setCreatedAt(?Carbon $createdAt)
+    public function setCreatedAtUtc(?Carbon $createdAt)
     {
         $this->created_at = $createdAt;
 
@@ -67,7 +90,7 @@ trait TraitAuditableModel
     /**
      * Get the value of updated_at
      */ 
-    public function getUpdatedAt(): ?Carbon
+    public function getUpdatedAtUtc(): ?Carbon
     {
         return $this->updated_at;
     }
@@ -77,7 +100,7 @@ trait TraitAuditableModel
      *
      * @return  self
      */ 
-    public function setUpdatedAt(?Carbon $updatedAt)
+    public function setUpdatedAtUtc(?Carbon $updatedAt)
     {
         $this->updated_at = $updatedAt;
 

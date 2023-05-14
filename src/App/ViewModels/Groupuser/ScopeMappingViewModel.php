@@ -1,13 +1,14 @@
 <?php
 
-namespace LaravelCommon\App\ViewModels;
+namespace LaravelCommon\App\ViewModels\Groupuser;
 
-use LaravelCommon\App\Models\Groupuser;
-use LaravelCommon\App\Models\User;
+use LaravelCommon\App\Models\Groupuser\ScopeMapping;
+use LaravelCommon\App\ViewModels\GroupuserViewModel;
+use LaravelCommon\App\ViewModels\ScopeViewModel;
 use LaravelCommon\ViewModels\AbstractViewModel;
 use stdClass;
 
-class UserViewModel extends AbstractViewModel
+class ScopeMappingViewModel extends AbstractViewModel
 {
     /**
      * @var bool $autoAddResource;
@@ -15,7 +16,7 @@ class UserViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var User $model
+     * @var ScopeMapping $model
      */
     protected $model;
 
@@ -24,12 +25,14 @@ class UserViewModel extends AbstractViewModel
      */
     public function addResource()
     {
-        /**
-         * @var Groupuser $groupuser
-         */
         $groupuser = $this->model->getGroupuser();
         if (!empty($groupuser)) {
             $this->embedResource('groupuser', new GroupuserViewModel($groupuser, $this->request));
+        }
+
+        $scope = $this->model->getScope();
+        if (!empty($scope)) {
+            $this->embedResource('scope', new ScopeViewModel($scope, $this->request));
         }
         return $this;
     }
@@ -40,11 +43,7 @@ class UserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'username' => $this->model->getUsername(),
-            "is_active" => (bool)$this->model->getIsActive(),
-            "email" => $this->model->getEmail(),
-            "is_deleted" => $this->model->getIsDeleted(),
-            "deleted_at" => $this->model->getDeletedAt()
+
         ];
     }
 }

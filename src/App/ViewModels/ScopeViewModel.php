@@ -31,7 +31,7 @@ class ScopeViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'name' => $this->model->name
+            'name' => $this->model->getName()
         ];
     }
 }

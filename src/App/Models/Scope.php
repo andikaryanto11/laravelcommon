@@ -10,6 +10,7 @@ use LaravelCommon\App\Models\User\ScopeMapping;
 class Scope extends Model
 {
     use HasFactory;
+    use TraitAuditableModel;
 
 
     /**
@@ -27,5 +28,25 @@ class Scope extends Model
     public function groupuserScopeMappings()
     {
         return $this->hasMany(GroupuserScopeMapping::class);
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     *
+     * @param string $name
+     * @return Scope
+     */
+    public function setName(string $name): Scope
+    {
+        $this->name = $name;
+        return $this;
     }
 }

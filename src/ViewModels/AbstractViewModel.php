@@ -40,7 +40,7 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        $this->resource['id'] = $this->model->id;
+        $this->resource['id'] = $this->model->getId();
 
         $this->resource = array_merge($this->resource, $this->toArray());
 
@@ -80,11 +80,11 @@ abstract class AbstractViewModel
             }
         } else {
             if ($value instanceof AbstractViewModel) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
+                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalArray();
             }
 
             if ($value instanceof AbstractCollection) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalProcceed()];
+                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalProcceed();
             }
         }
     }

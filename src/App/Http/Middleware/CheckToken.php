@@ -67,14 +67,14 @@ class CheckToken
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
-                if ($userToken->expired_at < Carbon::now()) {
+                if ($userToken->getExpiredAt() < Carbon::now()) {
                     return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
                 }
-                $user = $userToken->user;
+                $user = $userToken->getUser();
 
                 $jwtPayload = $this->jwt->decodeUserToken($authorization);
 
-                if ($user->password != $jwtPayload->password) {
+                if ($user->getPassword() != $jwtPayload->password) {
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
