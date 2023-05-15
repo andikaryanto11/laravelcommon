@@ -12,24 +12,6 @@ class Scope extends Model
     use HasFactory;
     use TraitAuditableModel;
 
-
-    /**
-     *
-     * @return HasMany
-     */
-    public function userScopeMappings()
-    {
-        return $this->hasMany(ScopeMapping::class);
-    }
-    /**
-     *
-     * @return HasMany
-     */
-    public function groupuserScopeMappings()
-    {
-        return $this->hasMany(GroupuserScopeMapping::class);
-    }
-
     /**
      *
      * @return string

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,27 +59,58 @@ class User extends Authenticatable
      *
      * @return BelongsTo
      */
-    private function groupuser()
+    protected function groupuser()
     {
         return $this->belongsTo(Groupuser::class);
     }
 
     /**
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    private function scopeMappings()
+    protected function scopes()
     {
-        return $this->hasMany(ScopeMapping::class);
+        return $this->belongsToMany(Scope::class, 'user_scopes');
     }
 
     /**
      *
      * @return Collection
      */
-    public function getScopeMappings()
+    public function getScopes()
     {
-        return $this->scopeMappings;
+        return $this->scopes;
+    }
+
+    /**
+     *
+     * @return Collection
+     */
+    public function setScopes(Collection $scopes)
+    {
+        return $this->scopes()->sync($scopes);
+    }
+
+    /**
+     *
+     * @param Scope $scope
+     * @return User
+     */
+    public function addScope(Scope $scope): User
+    {
+        $this->scopes()->attach($scope);
+        return $this;
+    }
+
+    /**
+     *
+     * @param Scope $scope
+     * @return User
+     */
+    public function removeScope(Scope $scope): User
+    {
+        $this->scopes()->detach($scope);
+        return $this;
     }
 
     /**
@@ -103,7 +135,7 @@ class User extends Authenticatable
 
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail(): string
     {
         return $this->email;
@@ -113,7 +145,7 @@ class User extends Authenticatable
      * Set the value of email
      *
      * @return  self
-     */ 
+     */
     public function setEmail(string $email): User
     {
         $this->email = $email;
@@ -123,7 +155,7 @@ class User extends Authenticatable
 
     /**
      * Get the value of password
-     */ 
+     */
     public function getPassword(): string
     {
         return $this->password;
@@ -133,7 +165,7 @@ class User extends Authenticatable
      * Set the value of password
      *
      * @return  self
-     */ 
+     */
     public function setPassword(string $password): User
     {
         $this->password = $password;
@@ -143,7 +175,7 @@ class User extends Authenticatable
 
     /**
      * Get the value of is_active
-     */ 
+     */
     public function getIsActive(): bool
     {
         return $this->is_active;
@@ -153,7 +185,7 @@ class User extends Authenticatable
      * Set the value of is_active
      *
      * @return  self
-     */ 
+     */
     public function setIsActive($isActive): User
     {
         $this->is_active = $isActive;
@@ -165,7 +197,7 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public function getGroupuser(): Groupuser
+    public function getGroupuser(): ?Groupuser
     {
         return $this->groupuser;
     }
@@ -183,7 +215,7 @@ class User extends Authenticatable
 
     /**
      * Get the value of is_active
-     */ 
+     */
     public function getIsDeleted(): bool
     {
         return $this->is_deleted;
@@ -193,7 +225,7 @@ class User extends Authenticatable
      * Set the value of is_deleted
      *
      * @return  self
-     */ 
+     */
     public function setIsDeleted($isDeleted): User
     {
         $this->is_deleted = $isDeleted;

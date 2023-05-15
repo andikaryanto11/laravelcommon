@@ -2,10 +2,9 @@
 
 namespace LaravelCommon\App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use LaravelCommon\App\Models\Groupuser\ScopeMapping;
 
 class Groupuser extends Model
 {
@@ -14,20 +13,51 @@ class Groupuser extends Model
 
     /**
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function scopeMappings()
+    protected function scopes()
     {
-        return $this->hasMany(ScopeMapping::class);
+        return $this->belongsToMany(Scope::class, 'groupuser_scopes');
     }
 
     /**
      *
      * @return Collection
      */
-    public function getScopeMappings()
+    public function getScopes()
     {
-        return $this->scopeMappings;
+        return $this->scopes;
+    }
+
+    /**
+     *
+     * @return Collection
+     */
+    public function setScopes(Collection $scopes)
+    {
+        return $this->scopes()->sync($scopes);
+    }
+
+    /**
+     *
+     * @param Scope $scope
+     * @return Groupuser
+     */
+    public function addScope(Scope $scope): Groupuser
+    {
+        $this->scopes()->attach($scope);
+        return $this;
+    }
+
+    /**
+     *
+     * @param Scope $scope
+     * @return Groupuser
+     */
+    public function removeScope(Scope $scope): Groupuser
+    {
+        $this->scopes()->detach($scope);
+        return $this;
     }
 
     /**

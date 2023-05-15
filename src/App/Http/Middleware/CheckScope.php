@@ -25,11 +25,10 @@ class CheckScope
         $user = $request->getUserToken()->getUser();
         $groupuser = $user->getGroupuser();
 
-        $userScopesMappings = $user->getScopeMappings();
+        $userScopes = $user->getScopes();
         if (count($scopes) > 0) {
             if (!empty($userScopesMappings)) {
-                foreach ($userScopesMappings as $userScopesMapping) {
-                    $userScope = $userScopesMapping->getScope();
+                foreach ($userScopes as $userScope) {
                     if (in_array($userScope->getName(), $scopes) || $userScope->getName() == 'superadmin') {
                         $isAuthorized = true;
                         break;
@@ -38,10 +37,9 @@ class CheckScope
             }
 
             if (!$isAuthorized && !empty($groupuser)) {
-                $groupuserScopeMappings = $groupuser->getScopeMappings();
+                $groupuserScopes = $groupuser->getScopes();
                 if (!empty($groupuserScopes)) {
-                    foreach ($groupuserScopeMappings as $groupuserScopeMapping) {
-                        $groupScope = $groupuserScopeMapping->getScope();
+                    foreach ($groupuserScopes as $groupScope) {
                         if (in_array($groupScope->getName(), $scopes)  || $groupScope->getName() == 'superadmin') {
                             $isAuthorized = true;
                             break;
