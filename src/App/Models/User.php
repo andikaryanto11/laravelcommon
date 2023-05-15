@@ -79,7 +79,7 @@ class User extends Authenticatable
      */
     public function getScopes()
     {
-        return $this->scopes;
+        return $this->scopes()->get();
     }
 
     /**
@@ -199,7 +199,7 @@ class User extends Authenticatable
      */
     public function getGroupuser(): ?Groupuser
     {
-        return $this->groupuser;
+        return $this->groupuser()->first();
     }
 
     /**

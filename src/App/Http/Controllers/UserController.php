@@ -4,6 +4,7 @@ namespace LaravelCommon\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use LaravelCommon\App\Queries\UserQuery;
 use LaravelCommon\App\Repositories\UserRepository;
 use LaravelCommon\App\ViewModels\UserViewModel;
 use LaravelCommon\Responses\JsonResponse;
@@ -15,19 +16,19 @@ class UserController extends Controller
     /**
      * Undocumented variable
      *
-     * @var UserRepository
+     * @var UserQuery
      */
-    protected UserRepository $userRepository;
+    protected UserQuery $userQuery;
 
     /**
      * Undocumented function
      *
-     * @param UserRepository $userRepository
+     * @param UserQuery $userRepository
      */
     public function __construct(
-        UserRepository $userRepository
+        UserQuery $userQuery
     ) {
-        $this->userRepository = $userRepository;
+        $this->userQuery = $userQuery;
     }
 
     public function store(Request $request)
@@ -39,7 +40,7 @@ class UserController extends Controller
 
     public function getAll(Request $request)
     {
-        $users = $this->userRepository;
+        $users = $this->userQuery;
 
         return new PagedJsonResponse('OK', [], $users);
     }

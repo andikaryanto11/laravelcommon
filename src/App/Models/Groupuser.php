@@ -26,7 +26,7 @@ class Groupuser extends Model
      */
     public function getScopes()
     {
-        return $this->scopes;
+        return $this->scopes()->get();
     }
 
     /**

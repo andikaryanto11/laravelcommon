@@ -56,7 +56,8 @@ class CheckToken
     {
         try {
             if ($request->hasHeader('Authorization')) {
-                $authorization = $request->header('Authorization');
+                $bearerAuthorization = $request->header('Authorization');
+                $authorization = explode(' ', $bearerAuthorization)[1];
 
 
                 /**

@@ -67,7 +67,7 @@ class UserService
             return null;
         }
 
-        if (!Hash::check($password, $user->password)) {
+        if (!Hash::check($password, $user->getPassword())) {
             return null;
         }
 
