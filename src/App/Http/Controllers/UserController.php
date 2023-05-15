@@ -35,13 +35,13 @@ class UserController extends Controller
     {
         $user = $request->getResource();
 
-        return new SuccessResponse('OK', [], new UserViewModel($user));
+        return new SuccessResponse('OK', [], new UserViewModel($user, $request));
     }
 
     public function getAll(Request $request)
     {
         $users = $this->userQuery;
 
-        return new PagedJsonResponse('OK', [], $users);
+        return new PagedJsonResponse('OK', [], $users, $request);
     }
 }

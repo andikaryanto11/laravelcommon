@@ -35,6 +35,11 @@ abstract class AbstractViewModel
         $this->request = $request;
     }
 
+    public function link()
+    {
+        return '#unimplemented';
+    }
+
     /**
      * Convert instance to array add auto add resource available
      */
@@ -51,6 +56,8 @@ abstract class AbstractViewModel
         $this->resource['updated_at'] = !is_null($this->model->updated_at)
             ? $this->model->updated_at->format('Y-m-d H:i:s')
             : null;
+
+        $this->resource['_link']['self'] =  config('app.url') . $this->link();
 
         if ($this->getIsAutoAddResource()) {
             $this->addResource();

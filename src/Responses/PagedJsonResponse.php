@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
+use App\System\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use LaravelCommon\App\Queries\Query;
@@ -13,12 +14,14 @@ class PagedJsonResponse extends CollectionResponse
      * @var Query
      */
     protected ?Query $query = null;
+    protected ?Request $request = null;
     protected LengthAwarePaginator $paginator;
 
-    public function __construct(string $message, $responseCode = [], Query $query = null)
+    public function __construct(string $message, $responseCode = [], Query $query = null, ?Request $request = null)
     {
 
         $this->query = $query;
+        $this->request = $request;
         $newData = $this->getPagedCollection();
         $json = [];
         if (!is_null($newData)) {
@@ -53,7 +56,7 @@ class PagedJsonResponse extends CollectionResponse
 
         $models = $identityClass::hydrate($this->paginator->items());
 
-        $collection = new $collectionClass($models);
+        $collection = new $collectionClass($models, $this->request);
         $collection->setPage($this->paginator->currentPage());
         $collection->setSize($this->paginator->total());
         $collection->setTotalRecord($this->paginator->total());

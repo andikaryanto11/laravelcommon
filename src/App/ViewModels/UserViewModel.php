@@ -19,6 +19,11 @@ class UserViewModel extends AbstractViewModel
      */
     protected $model;
 
+    public function link()
+    {
+        return '/user/' . $this->model->getId();
+    }
+
     /**
      * @inheritdoc
      */
