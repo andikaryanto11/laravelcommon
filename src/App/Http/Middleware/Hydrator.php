@@ -10,12 +10,13 @@ use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\NotFoundResponse;
 use Illuminate\Http\Request;
+use LaravelCommon\App\Exceptions\ModelException;
 
 class Hydrator
 {
     protected array $hydrateKeys = [];
 
-    protected Model $entity;
+    protected Model $model;
 
     protected $key;
 
@@ -83,8 +84,8 @@ class Hydrator
      */
     public function get(Request $request)
     {
-        $this->entity = $this->getModel($request);
-        $request->setResource($this->entity);
+        $this->model = $this->getModel($request);
+        $request->setResource($this->model);
     }
 
     /**
@@ -95,8 +96,8 @@ class Hydrator
      */
     private function post(Request $request)
     {
-        $this->entity = $this->repository->newModel();
-        $request->setResource($this->entity);
+        $this->model = $this->repository->newModel();
+        $request->setResource($this->model);
         $this->hydrate();
         $this->afterHydrate($request);
     }
@@ -109,8 +110,8 @@ class Hydrator
      */
     private function put(Request $request)
     {
-        $this->entity = $this->getModel($request);
-        $request->setResource($this->entity);
+        $this->model = $this->getModel($request);
+        $request->setResource($this->model);
         $this->hydrate();
     }
 
@@ -131,8 +132,8 @@ class Hydrator
      */
     private function delete(Request $request)
     {
-        $this->entity = $this->getModel($request);
-        $request->setResource($this->entity);
+        $this->model = $this->getModel($request);
+        $request->setResource($this->model);
     }
 
     /**
@@ -143,8 +144,8 @@ class Hydrator
      */
     private function patch(Request $request)
     {
-        $this->entity = $this->getModel($request);
-        $request->setResource($this->entity);
+        $this->model = $this->getModel($request);
+        $request->setResource($this->model);
 
         $this->hydrate();
     }
@@ -159,7 +160,7 @@ class Hydrator
     }
 
     /**
-     * Get entity instance
+     * Get model instance
      *
      * @param Request $request
      * @return mixed
@@ -180,17 +181,17 @@ class Hydrator
      * Undocumented function
      *
      * @param string $key
-     * @param array $entitySetter
+     * @param array $modelSetter
      * @param array $relatedObjectGetter
      * @return Hydrator
      */
-    public function when(string $key, array $entitySetter, array $relatedObjectGetter = []): Hydrator
+    public function when(string $key, array $modelSetter, array $relatedObjectGetter = []): Hydrator
     {
         $input = $this->request->input();
 
         $keyArr = explode('.', $key);
-        $entity = $entitySetter[0];
-        $entitySetterFunction = $entitySetter[1];
+        $model = $modelSetter[0];
+        $modelSetterFunction = $modelSetter[1];
         $field = $keyArr[0];
 
         if (isset($input[$field]) && !empty($relatedObjectGetter)) {
@@ -201,11 +202,15 @@ class Hydrator
             $relatedFunction = $relatedObjectGetter[1];
             $relatedObject = $relatedRepository->$relatedFunction($relatedValue);
 
-            $entity->$entitySetterFunction($relatedObject);
+            if(is_null($relatedObject)) {
+                throw new ModelException($field . ' with ID ' . $relatedValue . ' not found');
+            }
+
+            $model->$modelSetterFunction($relatedObject);
         }
 
         if (isset($input[$field]) && empty($relatedObjectGetter)) {
-            $entity->$entitySetterFunction($input[$field]);
+            $model->$modelSetterFunction($input[$field]);
         }
 
         return $this;
