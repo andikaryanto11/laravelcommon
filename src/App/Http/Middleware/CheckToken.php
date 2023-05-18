@@ -57,8 +57,17 @@ class CheckToken
         try {
             if ($request->hasHeader('Authorization')) {
                 $bearerAuthorization = $request->header('Authorization');
-                $authorization = explode(' ', $bearerAuthorization)[1];
+                if (empty($bearerAuthorization)) {
+                    return new BadRequestResponse('Token is empty', ResponseConst::INVALID_CREDENTIAL);
+                }
 
+                $authorizationArr = explode(' ', $bearerAuthorization);
+
+                if (count($authorizationArr) == 1) {
+                    return new BadRequestResponse('Token is invalid', ResponseConst::INVALID_CREDENTIAL);
+                }
+
+                $authorization = $authorizationArr[1];
 
                 /**
                  * @var Token $userToken
@@ -69,7 +78,7 @@ class CheckToken
                 }
 
                 if ($userToken->getExpiredAt() < Carbon::now()) {
-                    return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
+                    return new BadRequestResponse('Token Expired', ResponseConst::SESSION_EXPIRED);
                 }
                 $user = $userToken->getUser();
 

@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use LaravelOrm\Exception\ValidationException;
+use LaravelCommon\Exceptions\ValidationException;
 
 class ModelUnit
 {

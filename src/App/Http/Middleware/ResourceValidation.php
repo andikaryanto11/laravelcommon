@@ -8,8 +8,8 @@ use Exception;
 use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BadRequestResponse;
-use LaravelOrm\Exception\EntityException;
-use LaravelOrm\Exception\ValidationException;
+use LaravelCommon\Exceptions\ModelException;
+use LaravelCommon\Exceptions\ValidationException;
 
 class ResourceValidation
 {
@@ -29,7 +29,7 @@ class ResourceValidation
             // $resource->validate();
         } catch (ValidationException $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
-        } catch (EntityException $e) {
+        } catch (ModelException $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA));
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::FAILED_SAVE_DATA));

@@ -27,7 +27,7 @@ class CheckScope
 
         $userScopes = $user->getScopes();
         if (count($scopes) > 0) {
-            if (!empty($userScopesMappings)) {
+            if (!empty($userScopes)) {
                 foreach ($userScopes as $userScope) {
                     if (in_array($userScope->getName(), $scopes) || $userScope->getName() == 'superadmin') {
                         $isAuthorized = true;

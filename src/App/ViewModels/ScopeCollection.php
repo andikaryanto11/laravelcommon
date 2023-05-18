@@ -4,7 +4,6 @@ namespace LaravelCommon\App\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use LaravelCommon\ViewModels\PaggedCollection;
-use LaravelOrm\Interfaces\IEntity;
 
 class ScopeCollection extends PaggedCollection
 {

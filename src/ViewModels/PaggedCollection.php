@@ -2,9 +2,6 @@
 
 namespace LaravelCommon\ViewModels;
 
-use LaravelOrm\Entities\EntityList;
-use LaravelOrm\Interfaces\IEntity;
-
 abstract class PaggedCollection extends AbstractCollection
 {
     protected ?int $page = null;
