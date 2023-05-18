@@ -10,7 +10,9 @@ use LaravelCommon\App\Repositories\Repository;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\NotFoundResponse;
 use Illuminate\Http\Request;
+use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Exceptions\ModelException;
+use LaravelCommon\Responses\BadRequestResponse;
 
 class Hydrator
 {
@@ -53,25 +55,29 @@ class Hydrator
 
         $this->request = $request;
         $this->method = $method;
-        if (strtoupper($method) == 'POST') {
-            $this->post($request);
-        }
+        try{
+            if (strtoupper($method) == 'POST') {
+                $this->post($request);
+            }
 
-        if (strtoupper($method)  == 'GET') {
-            $this->get($request);
-        }
+            if (strtoupper($method)  == 'GET') {
+                $this->get($request);
+            }
 
-        if (strtoupper($method)  == 'PUT') {
-            $this->put($request);
-        }
+            if (strtoupper($method)  == 'PUT') {
+                $this->put($request);
+            }
 
-        if (strtoupper($method) == 'PATCH') {
-            $this->patch($request);
-        }
+            if (strtoupper($method) == 'PATCH') {
+                $this->patch($request);
+            }
 
-        if (strtoupper($method) == 'DELETE') {
-            $this->delete($request);
-        }
+            if (strtoupper($method) == 'DELETE') {
+                $this->delete($request);
+            }
+         } catch(Exception $e) {
+            return new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA);
+         }
 
         return $next($request);
     }
