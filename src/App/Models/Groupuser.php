@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Groupuser extends Model
 {
     use HasFactory;
-    use TraitAuditableModel;
+    use TraitModel;
 
     /**
      *

@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use LaravelCommon\App\Models\TraitAuditableModel;
+use LaravelCommon\App\Models\TraitModel;
 use LaravelCommon\App\Models\User;
 
 class Token extends Model
 {
     use HasFactory;
-    use TraitAuditableModel;
+    use TraitModel;
 
 
     protected $table = 'user_tokens';

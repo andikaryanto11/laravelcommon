@@ -3,15 +3,12 @@
 namespace LaravelCommon\App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use LaravelCommon\App\Models\User\ScopeMapping;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
 
 // use Laravel\Sanctum\HasApiTokens;
 
@@ -20,8 +17,7 @@ class User extends Authenticatable
     // use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use TraitAuditableModel;
-
+    use TraitModel;
     protected bool $is_active = true;
     protected bool $is_deleted = false;
 
@@ -79,7 +75,7 @@ class User extends Authenticatable
      */
     public function getScopes()
     {
-        return $this->scopes()->get();
+        return $this->scopes()->getCollection();
     }
 
     /**
@@ -88,7 +84,7 @@ class User extends Authenticatable
      */
     public function setScopes(Collection $scopes)
     {
-        return $this->scopes()->sync($scopes);
+        return $this->scopes()->set($scopes);
     }
 
     /**
@@ -98,7 +94,7 @@ class User extends Authenticatable
      */
     public function addScope(Scope $scope): User
     {
-        $this->scopes()->attach($scope);
+        $this->scopes()->add($scope);
         return $this;
     }
 
@@ -109,7 +105,7 @@ class User extends Authenticatable
      */
     public function removeScope(Scope $scope): User
     {
-        $this->scopes()->detach($scope);
+        $this->scopes()->remove($scope);
         return $this;
     }
 

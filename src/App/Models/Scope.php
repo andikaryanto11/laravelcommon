@@ -10,7 +10,7 @@ use LaravelCommon\App\Models\User\ScopeMapping;
 class Scope extends Model
 {
     use HasFactory;
-    use TraitAuditableModel;
+    use TraitModel;
 
     /**
      *

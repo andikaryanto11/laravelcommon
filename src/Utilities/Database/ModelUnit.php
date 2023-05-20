@@ -7,7 +7,10 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
 use LaravelCommon\Exceptions\ValidationException;
+use ReflectionClass;
+use ReflectionProperty;
 
 class ModelUnit
 {
@@ -30,6 +33,23 @@ class ModelUnit
         }
 
         $model->save();
+
+        $reflectionClass = new ReflectionClass($model);
+        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
+
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $value = $property->getValue($model);
+
+            if ($value instanceof BelongsToMany) {
+                if($value->getSyncedCollection()->count() > 0) {
+                    $value->doSync();
+                } else {
+                    $value->doAttach();
+                    $value->doDetach();
+                }
+            }
+        }
 
         // $modelScope->addModel(ModelScope::PERFORM_ADD_UPDATE, $model, false);
         return $this;

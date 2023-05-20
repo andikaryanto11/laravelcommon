@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class LoggingConfig extends Model
 {
     use HasFactory;
-    use TraitAuditableModel;
+    use TraitModel;
 
     /**
      *

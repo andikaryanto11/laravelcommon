@@ -27,14 +27,14 @@ class RollbarLoggerService
         LoggingConfigQuery $loggingConfigQuery
     ) {
         $this->loggingConfigQuery = $loggingConfigQuery;
-        $appEnv = env('APP_ENV');
-        $this->accessToken = config('common-config')['env'][env('APP_ENV')]['rollbar_access_token'];
-        Rollbar::init(
-            [
-                'access_token' => $this->accessToken,
-                'environtment' => $appEnv
-            ]
-        );
+        // $appEnv = env('APP_ENV');
+        // $this->accessToken = config('common-config')['env'][env('APP_ENV')]['rollbar_access_token'];
+        // Rollbar::init(
+        //     [
+        //         'access_token' => $this->accessToken,
+        //         'environtment' => $appEnv
+        //     ]
+        // );
     }
 
     /**
@@ -44,6 +44,7 @@ class RollbarLoggerService
      */
     public function isSetup(): bool
     {
+        return false;
         return !empty($this->accessToken);
     }
 
