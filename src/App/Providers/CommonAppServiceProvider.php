@@ -2,15 +2,12 @@
 
 namespace LaravelCommon\App\Providers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Console\Commands\CreateLoggingName;
 use LaravelCommon\App\Console\Commands\CreateScope;
 use LaravelCommon\App\Console\Commands\EnableLoggingName;
 use LaravelCommon\App\Console\Commands\GenerateEntity;
-use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
 use LaravelCommon\App\Http\Middleware\CheckScope;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\ControllerAfter;

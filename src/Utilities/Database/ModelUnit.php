@@ -2,12 +2,9 @@
 
 namespace LaravelCommon\Utilities\Database;
 
-use App\Exceptions\DbQueryException;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
-use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyCollection;
 use LaravelCommon\Exceptions\ValidationException;
 use ReflectionClass;
 use ReflectionProperty;
@@ -38,10 +35,11 @@ class ModelUnit
         $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
 
         foreach ($properties as $property) {
-            $property->setAccessible(true);
-            $value = $property->getValue($model);
-
-            if ($value instanceof BelongsToMany) {
+            if($property->getType() == BelongsToManyCollection::class)
+            {
+                $value = $property->getValue($model);
+                $value->setParentModel($model);
+    
                 if($value->getSyncedCollection()->count() > 0) {
                     $value->doSync();
                 } else {
@@ -51,7 +49,6 @@ class ModelUnit
             }
         }
 
-        // $modelScope->addModel(ModelScope::PERFORM_ADD_UPDATE, $model, false);
         return $this;
     }
 

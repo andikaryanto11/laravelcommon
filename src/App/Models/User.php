@@ -5,10 +5,9 @@ namespace LaravelCommon\App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyCollection;
 
 // use Laravel\Sanctum\HasApiTokens;
 
@@ -20,6 +19,14 @@ class User extends Authenticatable
     use TraitModel;
     protected bool $is_active = true;
     protected bool $is_deleted = false;
+
+    protected BelongsToManyCollection $scopes;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->scopes = new BelongsToManyCollection(Scope::class, 'user_scopes');
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -53,29 +60,11 @@ class User extends Authenticatable
 
     /**
      *
-     * @return BelongsTo
-     */
-    protected function groupuser()
-    {
-        return $this->belongsTo(Groupuser::class);
-    }
-
-    /**
-     *
-     * @return BelongsToMany
-     */
-    protected function scopes()
-    {
-        return $this->belongsToMany(Scope::class, 'user_scopes');
-    }
-
-    /**
-     *
-     * @return Collection
+     * @return BelongsToManyCollection
      */
     public function getScopes()
     {
-        return $this->scopes()->getCollection();
+        return $this->scopes;
     }
 
     /**
@@ -84,7 +73,7 @@ class User extends Authenticatable
      */
     public function setScopes(Collection $scopes)
     {
-        return $this->scopes()->set($scopes);
+        return $this->scopes->set($scopes);
     }
 
     /**
@@ -94,7 +83,7 @@ class User extends Authenticatable
      */
     public function addScope(Scope $scope): User
     {
-        $this->scopes()->add($scope);
+        $this->scopes->add($scope);
         return $this;
     }
 
@@ -105,7 +94,7 @@ class User extends Authenticatable
      */
     public function removeScope(Scope $scope): User
     {
-        $this->scopes()->remove($scope);
+        $this->scopes->remove($scope);
         return $this;
     }
 
@@ -195,7 +184,7 @@ class User extends Authenticatable
      */
     public function getGroupuser(): ?Groupuser
     {
-        return $this->groupuser()->first();
+        return $this->belongsTo(Groupuser::class)->first();
     }
 
     /**
@@ -205,7 +194,7 @@ class User extends Authenticatable
      */
     public function setGroupuser(Groupuser $groupuser): User
     {
-        $this->groupuser()->associate($groupuser);
+        $this->belongsTo(Groupuser::class)->associate($groupuser);
         return $this;
     }
 
