@@ -5,28 +5,29 @@ namespace LaravelCommon\App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyCollection;
 
 class Groupuser extends Model
 {
     use HasFactory;
     use TraitModel;
 
-    /**
-     *
-     * @return BelongsToMany
-     */
-    protected function scopes()
+
+    protected BelongsToManyCollection $scopes;
+
+    public function __construct(array $attributes = [])
     {
-        return $this->belongsToMany(Scope::class, 'groupuser_scopes');
+        parent::__construct($attributes);
+        $this->scopes = new BelongsToManyCollection(Scope::class, 'groupuser_scopes');
     }
 
     /**
      *
-     * @return Collection
+     * @return BelongsToManyCollection
      */
     public function getScopes()
     {
-        return $this->scopes()->get();
+        return $this->scopes;
     }
 
     /**
@@ -35,7 +36,7 @@ class Groupuser extends Model
      */
     public function setScopes(Collection $scopes)
     {
-        return $this->scopes()->sync($scopes);
+        return $this->scopes->set($scopes);
     }
 
     /**
@@ -45,7 +46,7 @@ class Groupuser extends Model
      */
     public function addScope(Scope $scope): Groupuser
     {
-        $this->scopes()->attach($scope);
+        $this->scopes->add($scope);
         return $this;
     }
 
@@ -56,7 +57,7 @@ class Groupuser extends Model
      */
     public function removeScope(Scope $scope): Groupuser
     {
-        $this->scopes()->detach($scope);
+        $this->scopes->remove($scope);
         return $this;
     }
 
