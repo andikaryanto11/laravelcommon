@@ -25,7 +25,7 @@ class User extends Authenticatable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->scopes = new BelongsToManyCollection(Scope::class, 'user_scopes');
+        $this->scopes = new BelongsToManyCollection($this, Scope::class, 'user_scopes');
     }
 
     /**
@@ -184,7 +184,7 @@ class User extends Authenticatable
      */
     public function getGroupuser(): ?Groupuser
     {
-        return $this->belongsTo(Groupuser::class)->first();
+        return $this->belongsTo(Groupuser::class, 'groupuser_id')->getResults();
     }
 
     /**
@@ -194,7 +194,7 @@ class User extends Authenticatable
      */
     public function setGroupuser(Groupuser $groupuser): User
     {
-        $this->belongsTo(Groupuser::class)->associate($groupuser);
+        $this->belongsTo(Groupuser::class, 'groupuser_id')->associate($groupuser);
         return $this;
     }
 

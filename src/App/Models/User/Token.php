@@ -23,20 +23,11 @@ class Token extends Model
 
     /**
      *
-     * @return BelongsTo
+     * @return
      */
-    protected function user()
+    public function getUser()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     *
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
+        return $this->belongsTo(User::class, 'user_id')->getResults();
     }
 
     /**
@@ -46,7 +37,7 @@ class Token extends Model
      */
     public function setUser(User $user): Token
     {
-        $this->user()->associate($user);
+        $this->belongsTo(User::class, 'user_id')->associate($user);
         return $this;
     }
 

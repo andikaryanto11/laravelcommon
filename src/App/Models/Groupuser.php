@@ -18,7 +18,7 @@ class Groupuser extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->scopes = new BelongsToManyCollection(Scope::class, 'groupuser_scopes');
+        $this->scopes = new BelongsToManyCollection($this, Scope::class, 'groupuser_scopes');
     }
 
     /**

@@ -26,6 +26,7 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
     /**
      * Create a new belongs to many relationship instance.
      *
+     * @param  Model  $parentModel
      * @param  string  $related
      * @param  string|null  $table
      * @param  string|null  $foreignPivotKey
@@ -36,6 +37,7 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
      * @return void
      */
     public function __construct(
+        Model $parentModel,
         string $related, 
         ?string $table = null, 
         ?string $foreignPivotKey = null, 
@@ -47,6 +49,7 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
         $this->addModelCollection = new Collection();
         $this->removeModelCollection = new Collection();
         $this->syncModelColection = new Collection();
+        $this->parentModel = $parentModel;
         $this->related = $related;
         $this->table = $table;
         $this->foreignPivotKey = $foreignPivotKey;
