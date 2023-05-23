@@ -5,7 +5,7 @@ namespace LaravelCommon\App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyCollection;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyRelation;
 
 class Groupuser extends Model
 {
@@ -13,17 +13,17 @@ class Groupuser extends Model
     use TraitModel;
 
 
-    protected BelongsToManyCollection $scopes;
+    protected BelongsToManyRelation $scopes;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->scopes = new BelongsToManyCollection($this, Scope::class, 'groupuser_scopes');
+        $this->scopes = new BelongsToManyRelation($this, Scope::class, 'groupuser_scopes');
     }
 
     /**
      *
-     * @return BelongsToManyCollection
+     * @return BelongsToManyRelation
      */
     public function getScopes()
     {

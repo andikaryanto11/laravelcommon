@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToRelation;
 use LaravelCommon\App\Models\TraitModel;
 use LaravelCommon\App\Models\User;
 
@@ -21,13 +22,21 @@ class Token extends Model
         'expired_at' => 'datetime'
     ];
 
+    protected BelongsToRelation $user;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->user = new BelongsToRelation($this, User::class, 'user_id');
+    }
+
     /**
      *
      * @return
      */
     public function getUser()
     {
-        return $this->belongsTo(User::class, 'user_id')->getResults();
+        return $this->user->get();
     }
 
     /**
@@ -37,7 +46,7 @@ class Token extends Model
      */
     public function setUser(User $user): Token
     {
-        $this->belongsTo(User::class, 'user_id')->associate($user);
+        $this->user->set($user);
         return $this;
     }
 

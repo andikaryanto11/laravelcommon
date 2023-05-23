@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyRelation;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToRelation;
 
 // use Laravel\Sanctum\HasApiTokens;
 
@@ -21,11 +22,13 @@ class User extends Authenticatable
     protected bool $is_deleted = false;
 
     protected BelongsToManyRelation $scopes;
+    protected BelongsToRelation $groupuser;
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->scopes = new BelongsToManyRelation($this, Scope::class, 'user_scopes');
+        $this->groupuser = new BelongsToRelation($this, Groupuser::class, 'groupuser_id');
     }
 
     /**
@@ -184,7 +187,7 @@ class User extends Authenticatable
      */
     public function getGroupuser(): ?Groupuser
     {
-        return $this->belongsTo(Groupuser::class, 'groupuser_id')->getResults();
+        return $this->groupuser->get();
     }
 
     /**
@@ -194,7 +197,7 @@ class User extends Authenticatable
      */
     public function setGroupuser(Groupuser $groupuser): User
     {
-        $this->belongsTo(Groupuser::class, 'groupuser_id')->associate($groupuser);
+        $this->groupuser->set($groupuser);
         return $this;
     }
 

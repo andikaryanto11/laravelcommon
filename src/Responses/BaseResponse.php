@@ -2,9 +2,9 @@
 
 namespace LaravelCommon\Responses;
 
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response as HttpResponse;
 
-class BaseResponse extends Response implements ResponseInterface
+class BaseResponse extends HttpResponse implements ResponseInterface
 {
     public const RESOURCES_KEY = '_resources';
 
