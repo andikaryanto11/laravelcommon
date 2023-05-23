@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use IteratorAggregate;
 
-class BelongsToManyCollection implements IteratorAggregate //  extends RelationsBelongsToManyCollection
+class BelongsToManyRelation implements IteratorAggregate
 {
     protected Collection $addModelCollection;
     protected Collection $removeModelCollection;
@@ -72,9 +72,9 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
      * Add model to collection
      * 
      * @param Model $model
-     * @return BelongsToManyCollection
+     * @return BelongsToManyRelation
      */
-    public function add(Model $model): BelongsToManyCollection
+    public function add(Model $model): BelongsToManyRelation
     {
         $this->addModelCollection->add($model);
         return $this;
@@ -84,9 +84,9 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
      * Remove model from collection
      *
      * @param Model $model
-     * @return BelongsToManyCollection
+     * @return BelongsToManyRelation
      */
-    public function remove(Model $model): BelongsToManyCollection
+    public function remove(Model $model): BelongsToManyRelation
     {
         $inAddedFound = false;
         foreach ($this->addModelCollection as $addModel) {
@@ -111,9 +111,9 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
      * Set collection of model
      *
      * @param Collection $modelCollection
-     * @return BelongsToManyCollection
+     * @return BelongsToManyRelation
      */
-    public function set(Collection $modelCollection): BelongsToManyCollection
+    public function set(Collection $modelCollection): BelongsToManyRelation
     {
         $this->syncModelColection = $modelCollection;
         return $this;
@@ -122,9 +122,9 @@ class BelongsToManyCollection implements IteratorAggregate //  extends Relations
     /**
      *
      * @param Model $parentModel
-     * @return BelongsToManyCollection
+     * @return BelongsToManyRelation
      */
-    public function setParentModel(Model $parentModel): BelongsToManyCollection
+    public function setParentModel(Model $parentModel): BelongsToManyRelation
     {
         $this->parentModel = $parentModel;
         return $this;

@@ -43,6 +43,16 @@ class BaseResponse extends Response implements ResponseInterface
         parent::__construct(json_encode($data), $code);
     }
 
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    public function setAdditional($additionalData)
+    {
+        $this->additionalData = $additionalData;
+    }
+
     /**
      * Get data
      */
