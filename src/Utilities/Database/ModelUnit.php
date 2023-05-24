@@ -4,7 +4,7 @@ namespace LaravelCommon\Utilities\Database;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyCollection;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyRelation;
 use LaravelCommon\Exceptions\ValidationException;
 use ReflectionClass;
 use ReflectionProperty;
@@ -35,8 +35,9 @@ class ModelUnit
         $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
 
         foreach ($properties as $property) {
-            if($property->getType() == BelongsToManyCollection::class)
-            {
+            if($property->getType() &&
+                $property->getType()->getName() == BelongsToManyRelation::class
+            ) {
                 $value = $property->getValue($model);
                 $value->setParentModel($model);
     

@@ -43,7 +43,7 @@ class BaseResponse extends HttpResponse implements ResponseInterface
         parent::__construct(json_encode($data), $code);
     }
 
-    public function setData($data)
+    public function setData($data = null)
     {
         $this->data = $data;
     }

@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use LaravelCommon\App\Services\RollbarLoggerService;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BaseResponse;
+use LaravelCommon\Responses\JsonResponse as ResponsesJsonResponse;
 use LaravelCommon\Responses\PagedJsonResponse;
 use LaravelCommon\ViewModels\AbstractCollection;
 
@@ -64,6 +65,10 @@ class ControllerAfter
                     ];
                     $response->setAdditional($json);
                 }
+                return $response->send();
+            } else if($response instanceof ResponsesJsonResponse) {
+                $data = $response->buildData();
+                $response->setData($data);
                 return $response->send();
             } else {
                 return $response->send();

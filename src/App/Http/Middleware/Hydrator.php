@@ -103,9 +103,10 @@ class Hydrator
     private function post(Request $request)
     {
         $this->model = $this->repository->newModel();
+        $this->beforeHydrate();
         $request->setResource($this->model);
         $this->hydrate();
-        $this->afterHydrate($request);
+        $this->afterHydrate();
     }
 
     /**
@@ -126,6 +127,15 @@ class Hydrator
      * @return $this
      */
     public function afterHydrate()
+    {
+        return $this;
+    }
+
+    /**
+     * Do something before hydrate
+     * @return $this
+     */
+    public function beforeHydrate()
     {
         return $this;
     }

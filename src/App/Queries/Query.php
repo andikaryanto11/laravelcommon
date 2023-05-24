@@ -155,4 +155,15 @@ class Query extends Builder
     {
         throw new Exception('"Query::collectionClass needs to be overridden"');
     }
+
+    /**
+     *
+     * @param array $ids
+     * @return $this
+     */
+    public function whereIdIn(array $ids)
+    {
+        $this->whereIn('id', $ids);
+        return $this;
+    }
 }
