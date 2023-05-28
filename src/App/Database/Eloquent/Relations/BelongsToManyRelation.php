@@ -76,7 +76,16 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     public function add(Model $model): BelongsToManyRelation
     {
-        $this->addModelCollection->add($model);
+        $existCollection = $this->getBelongsToMany()->get();
+        $alreadyIn = $existCollection->filter(
+            function ($existModel) use ($model) {
+                return $existModel->getKey() != $model->getKey();
+            }
+        )->count() > 0;
+
+        if(!$alreadyIn)
+            $this->addModelCollection->add($model);
+
         return $this;
     }
 
@@ -88,12 +97,11 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     public function remove(Model $model): BelongsToManyRelation
     {
-        $inAddedFound = false;
-        foreach ($this->addModelCollection as $addModel) {
-            if ($addModel->getKey() == $model->getKey()) {
-                $inAddedFound;
+        $inAddedFound = $this->addModelCollection->filter(
+            function ($addModel) use ($model) {
+                return $addModel->getKey() == $model->getKey();
             }
-        }
+        )->count() > 0;
 
         if ($inAddedFound) {
             $this->addModelCollection = $this->addModelCollection->filter(
