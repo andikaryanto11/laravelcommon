@@ -20,6 +20,9 @@ class CreateUserTokens extends Migration
             $table->dateTime('expired_at');
             $table->auditable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')->onDelete('cascade');
         });
     }
 
