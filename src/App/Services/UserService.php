@@ -5,6 +5,7 @@ namespace LaravelCommon\App\Services;
 use DateTime;
 use LaravelCommon\App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use LaravelCommon\App\Models\User\Token;
 use LaravelCommon\App\Queries\UserQuery;
 use LaravelCommon\Utilities\Database\ModelUnit;
 
@@ -53,7 +54,7 @@ class UserService
      *
      * @param string $username
      * @param string $password
-     * @return User
+     * @return Token
      */
     public function generateToken(string $username, string $password)
     {
@@ -70,6 +71,18 @@ class UserService
         if (!Hash::check($password, $user->getPassword())) {
             return null;
         }
+
+        return $this->getToken($user);
+    }
+
+    /**
+     * generate user token
+     *
+     * @param User
+     * @return Token
+     */
+    public function getToken(User $user): Token
+    {
 
         $userToken = $this->jwt->createUserToken($user);
 

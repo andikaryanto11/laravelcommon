@@ -64,7 +64,7 @@ class BaseResponse extends HttpResponse implements ResponseInterface
     /**
      * @inheritdoc
      */
-    public function send()
+    public function sendJson()
     {
 
         $data = [BaseResponse::RESOURCES_KEY => $this->data];

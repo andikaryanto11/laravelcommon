@@ -65,13 +65,13 @@ class ControllerAfter
                     ];
                     $response->setAdditional($json);
                 }
-                return $response->send();
+                return $response->sendJson();
             } else if($response instanceof ResponsesJsonResponse) {
                 $data = $response->buildData();
                 $response->setData($data);
-                return $response->send();
+                return $response->sendJson();
             } else {
-                return $response->send();
+                return $response->sendJson();
             }
         }
 

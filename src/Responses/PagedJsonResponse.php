@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
-use App\System\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use LaravelCommon\App\Queries\Query;
