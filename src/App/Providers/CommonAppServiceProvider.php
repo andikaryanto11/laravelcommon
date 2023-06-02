@@ -11,7 +11,7 @@ use LaravelCommon\App\Console\Commands\EnableLoggingName;
 use LaravelCommon\App\Console\Commands\GenerateEntity;
 use LaravelCommon\App\Http\Middleware\CheckScope;
 use LaravelCommon\App\Http\Middleware\CheckToken;
-use LaravelCommon\App\Http\Middleware\ControllerAfter;
+use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\ModelUnit;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
 use LaravelCommon\App\Http\Middleware\ResourceValidation;
@@ -82,7 +82,7 @@ class CommonAppServiceProvider extends ServiceProvider
     {   
         $router = $this->app['router'];
 
-        $router->aliasMiddleware(ControllerAfter::NAME, ControllerAfter::class);
+        $router->aliasMiddleware(ApiResponseMiddleware::NAME, ApiResponseMiddleware::class);
         $router->aliasMiddleware(CheckToken::NAME, CheckToken::class);
         $router->aliasMiddleware(CheckScope::NAME, CheckScope::class);
         $router->aliasMiddleware(ModelUnit::NAME, ModelUnit::class);
@@ -91,13 +91,13 @@ class CommonAppServiceProvider extends ServiceProvider
 
         // Apply middleware to the 'api' middleware group
     //    $router->middlewareGroup('api', [
-    //        ControllerAfter::class,
+    //        ApiResponseMiddleware::class,
     //    ]);
         // $router->middleware('api', [
-        //     ControllerAfter::class,
+        //     ApiResponseMiddleware::class,
         // ]);
 
         $kernel = $this->app->make(Kernel::class);
-        $kernel->pushMiddleware(ControllerAfter::class);
+        $kernel->pushMiddleware(ApiResponseMiddleware::class);
     }
 }

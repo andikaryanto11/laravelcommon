@@ -14,9 +14,9 @@ use LaravelCommon\Responses\JsonResponse as ResponsesJsonResponse;
 use LaravelCommon\Responses\PagedJsonResponse;
 use LaravelCommon\ViewModels\AbstractCollection;
 
-class ControllerAfter
+class ApiResponseMiddleware
 {
-    public const NAME = 'common.app.middleware.controller-after';
+    public const NAME = 'common.app.middleware.api-response';
 
     /**
      *
