@@ -39,67 +39,69 @@ class ControllerAfter
     public function handle(Request $request, Closure $next)
     {
         $response =  $next($request);
-
-        if ($response instanceof BaseResponse) {
-            if($response instanceof PagedJsonResponse){
-                $data = $response->getPagedCollection();
-                if ($data instanceof AbstractCollection) {
-                    $data = $data->proceed()->getElements();
-               }
-                $response->setData($data);
-                if (!is_null($data)) {
-                    $query = $response->getQuery();
-                    $awarePaginator = $query->getAwarePaginator();
-                    $json = [
-                        '_paging' => [
-                            'page' =>  $query->getPage(),
-                            'limit' => $query->getPerPage(),
-                            'total_data' => $query->getTotal()
-                        ]
-                    ];
-        
-                    $json['_links'] = [
-                        'next_page' => $awarePaginator->nextPageUrl(),
-                        'prev_page' => $awarePaginator->previousPageUrl(),
-                        'current_page' => $awarePaginator->url($awarePaginator->currentPage())
-                    ];
-                    $response->setAdditional($json);
+        if ($request->is('api/*')) {
+            if ($response instanceof BaseResponse) {
+                if($response instanceof PagedJsonResponse){
+                    $data = $response->getPagedCollection();
+                    if ($data instanceof AbstractCollection) {
+                        $data = $data->proceed()->getElements();
                 }
-                return $response->sendJson();
-            } else if($response instanceof ResponsesJsonResponse) {
-                $data = $response->buildData();
-                $response->setData($data);
-                return $response->sendJson();
-            } else {
-                return $response->sendJson();
-            }
-        }
-
-        if ($response instanceof JsonResponse) {
-            return $response;
-        }
-
-        if (
-            $response instanceof Response ||
-            $response instanceof JsonResponse
-        ) {
-            if ($response->exception) {
-                if ($this->rollbarLoggerService->isSetup()) {
-                    $this->rollbarLoggerService->error(
-                        "common_exception",
-                        json_encode($response->exception->getTrace()),
-                        $response->exception->getTrace()
-                    );
-                }
-
-                if ($response->exception instanceof ResponsableException) {
-                    return $response->exception->getResponse()->send();
+                    $response->setData($data);
+                    if (!is_null($data)) {
+                        $query = $response->getQuery();
+                        $awarePaginator = $query->getAwarePaginator();
+                        $json = [
+                            '_paging' => [
+                                'page' =>  $query->getPage(),
+                                'limit' => $query->getPerPage(),
+                                'total_data' => $query->getTotal()
+                            ]
+                        ];
+            
+                        $json['_links'] = [
+                            'next_page' => $awarePaginator->nextPageUrl(),
+                            'prev_page' => $awarePaginator->previousPageUrl(),
+                            'current_page' => $awarePaginator->url($awarePaginator->currentPage())
+                        ];
+                        $response->setAdditional($json);
+                    }
+                    return $response->sendJson();
+                } else if($response instanceof ResponsesJsonResponse) {
+                    $data = $response->buildData();
+                    $response->setData($data);
+                    return $response->sendJson();
                 } else {
-                    throw $response->exception;
+                    return $response->sendJson();
                 }
             }
-        }
 
-        throw new Exception('Controller does not return response');
+            if ($response instanceof JsonResponse) {
+                return $response;
+            }
+
+            if (
+                $response instanceof Response ||
+                $response instanceof JsonResponse
+            ) {
+                if ($response->exception) {
+                    if ($this->rollbarLoggerService->isSetup()) {
+                        $this->rollbarLoggerService->error(
+                            "common_exception",
+                            json_encode($response->exception->getTrace()),
+                            $response->exception->getTrace()
+                        );
+                    }
+
+                    if ($response->exception instanceof ResponsableException) {
+                        return $response->exception->getResponse()->send();
+                    } else {
+                        throw $response->exception;
+                    }
+                }
+            }
+
+            throw new Exception('Controller does not return response');
+        }
+        return $response;
     }
 }

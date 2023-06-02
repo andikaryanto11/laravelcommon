@@ -3,6 +3,7 @@
 namespace LaravelCommon\App\Providers;
 
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Console\Commands\CreateLoggingName;
 use LaravelCommon\App\Console\Commands\CreateScope;
@@ -15,6 +16,7 @@ use LaravelCommon\App\Http\Middleware\ModelUnit;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
 use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
+use Illuminate\Contracts\Http\Kernel;
 
 class CommonAppServiceProvider extends ServiceProvider
 {
@@ -77,16 +79,25 @@ class CommonAppServiceProvider extends ServiceProvider
      * @return void
      */
     private function registerMiddleware()
-    {
+    {   
         $router = $this->app['router'];
 
         $router->aliasMiddleware(ControllerAfter::NAME, ControllerAfter::class);
-        $router->pushMiddlewareToGroup('api', ControllerAfter::class);
-
         $router->aliasMiddleware(CheckToken::NAME, CheckToken::class);
         $router->aliasMiddleware(CheckScope::NAME, CheckScope::class);
         $router->aliasMiddleware(ModelUnit::NAME, ModelUnit::class);
         $router->aliasMiddleware(ResourceValidation::NAME, ResourceValidation::class);
         $router->aliasMiddleware(UserHydrator::NAME, UserHydrator::class);
+
+        // Apply middleware to the 'api' middleware group
+    //    $router->middlewareGroup('api', [
+    //        ControllerAfter::class,
+    //    ]);
+        // $router->middleware('api', [
+        //     ControllerAfter::class,
+        // ]);
+
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->pushMiddleware(ControllerAfter::class);
     }
 }
