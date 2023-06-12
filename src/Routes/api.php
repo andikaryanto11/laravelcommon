@@ -3,11 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use LaravelCommon\App\Http\Controllers\AuthController;
 use LaravelCommon\App\Http\Controllers\UserController;
+use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\CheckToken;
-use LaravelCommon\App\Http\Middleware\ControllerAfter;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
 
-Route::middleware([ControllerAfter::NAME])->group(function () {
+Route::middleware([ApiResponseMiddleware::NAME])->group(function () {
     Route::prefix('api')->group(function () {
         Route::post('/auth/generate_token', [AuthController::class, 'generateToken']);
 
