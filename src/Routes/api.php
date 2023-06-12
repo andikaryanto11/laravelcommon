@@ -7,16 +7,16 @@ use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
 
-Route::middleware([ApiResponseMiddleware::NAME])->group(function () {
+Route::middleware([ApiResponseMiddleware::class])->group(function () {
     Route::prefix('api')->group(function () {
         Route::post('/auth/generate_token', [AuthController::class, 'generateToken']);
 
-        Route::middleware([CheckToken::NAME])->group(function () {
+        Route::middleware([CheckToken::class])->group(function () {
             Route::get('/users', [UserController::class, 'getAll']);
             Route::prefix('user')->group(function () {
                 Route::post('', [UserController::class, 'store'])
                     ->middleware(
-                        UserHydrator::NAME
+                        UserHydrator::class
                     );
             });
         });
