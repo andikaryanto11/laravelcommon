@@ -2,12 +2,12 @@
 
 namespace LaravelCommon\Utilities\Database;
 
-use App\Exceptions\DbQueryException;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
-use LaravelOrm\Exception\ValidationException;
+use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyRelation;
+use LaravelCommon\Exceptions\ValidationException;
+use ReflectionClass;
+use ReflectionProperty;
 
 class ModelUnit
 {
@@ -31,7 +31,25 @@ class ModelUnit
 
         $model->save();
 
-        // $modelScope->addModel(ModelScope::PERFORM_ADD_UPDATE, $model, false);
+        $reflectionClass = new ReflectionClass($model);
+        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
+
+        foreach ($properties as $property) {
+            if($property->getType() &&
+                $property->getType()->getName() == BelongsToManyRelation::class
+            ) {
+                $value = $property->getValue($model);
+                $value->setParentModel($model);
+    
+                if($value->getSyncedCollection()->count() > 0) {
+                    $value->doSync();
+                } else {
+                    $value->doAttach();
+                    $value->doDetach();
+                }
+            }
+        }
+
         return $this;
     }
 

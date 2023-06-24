@@ -10,22 +10,25 @@ use LaravelCommon\App\Models\User\ScopeMapping;
 class Scope extends Model
 {
     use HasFactory;
-
+    use TraitModel;
 
     /**
      *
-     * @return HasMany
+     * @return string
      */
-    public function userScopeMappings()
+    public function getName(): string
     {
-        return $this->hasMany(ScopeMapping::class);
+        return $this->name;
     }
+
     /**
      *
-     * @return HasMany
+     * @param string $name
+     * @return Scope
      */
-    public function groupuserScopeMappings()
+    public function setName(string $name): Scope
     {
-        return $this->hasMany(GroupuserScopeMapping::class);
+        $this->name = $name;
+        return $this;
     }
 }

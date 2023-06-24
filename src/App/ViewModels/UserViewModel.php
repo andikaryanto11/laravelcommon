@@ -19,6 +19,11 @@ class UserViewModel extends AbstractViewModel
      */
     protected $model;
 
+    public function link()
+    {
+        return '/user/' . $this->model->getId();
+    }
+
     /**
      * @inheritdoc
      */
@@ -27,7 +32,7 @@ class UserViewModel extends AbstractViewModel
         /**
          * @var Groupuser $groupuser
          */
-        $groupuser = $this->model->groupuser;
+        $groupuser = $this->model->getGroupuser();
         if (!empty($groupuser)) {
             $this->embedResource('groupuser', new GroupuserViewModel($groupuser, $this->request));
         }
@@ -40,11 +45,11 @@ class UserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'username' => $this->model->username,
-            "is_active" => (bool)$this->model->is_active,
-            "email" => $this->model->email,
-            "is_deleted" => $this->model->is_deleted,
-            "deleted_at" => $this->model->deleted_at,
+            'username' => $this->model->getUsername(),
+            "is_active" => (bool)$this->model->getIsActive(),
+            "email" => $this->model->getEmail(),
+            "is_deleted" => $this->model->getIsDeleted(),
+            "deleted_at" => $this->model->getDeletedAt()
         ];
     }
 }

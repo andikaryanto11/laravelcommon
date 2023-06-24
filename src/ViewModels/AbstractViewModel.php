@@ -35,12 +35,17 @@ abstract class AbstractViewModel
         $this->request = $request;
     }
 
+    public function link()
+    {
+        return '#unimplemented';
+    }
+
     /**
      * Convert instance to array add auto add resource available
      */
     public function finalArray()
     {
-        $this->resource['id'] = $this->model->id;
+        $this->resource['id'] = $this->model->getId();
 
         $this->resource = array_merge($this->resource, $this->toArray());
 
@@ -51,6 +56,8 @@ abstract class AbstractViewModel
         $this->resource['updated_at'] = !is_null($this->model->updated_at)
             ? $this->model->updated_at->format('Y-m-d H:i:s')
             : null;
+
+        $this->resource['_link']['self'] =  config('app.url') . $this->link();
 
         if ($this->getIsAutoAddResource()) {
             $this->addResource();
@@ -80,11 +87,11 @@ abstract class AbstractViewModel
             }
         } else {
             if ($value instanceof AbstractViewModel) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
+                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalArray();
             }
 
             if ($value instanceof AbstractCollection) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalProcceed()];
+                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalProcceed();
             }
         }
     }

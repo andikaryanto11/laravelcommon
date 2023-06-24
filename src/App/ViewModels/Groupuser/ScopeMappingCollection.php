@@ -1,17 +1,17 @@
 <?php
 
-namespace LaravelCommon\App\ViewModels;
+namespace LaravelCommon\App\ViewModels\Groupuser;
 
 use Illuminate\Database\Eloquent\Model;
 use LaravelCommon\ViewModels\PaggedCollection;
 
-class ScopeCollection extends PaggedCollection
+class ScopeMappingCollection extends PaggedCollection
 {
     /**
      * @inheritdoc
      */
     public function shape(Model $model)
     {
-        $this->addItem(new ScopeViewModel($model, $this->request));
+        $this->addItem(new ScopeMappingViewModel($model, $this->request));
     }
 }

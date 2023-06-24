@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\Responses;
 
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Schema;
 use LaravelCommon\App\Queries\Query;
@@ -13,31 +14,24 @@ class PagedJsonResponse extends CollectionResponse
      * @var Query
      */
     protected ?Query $query = null;
-    protected LengthAwarePaginator $paginator;
+    protected ?Request $request = null;
 
-    public function __construct(string $message, $responseCode = [], Query $query = null)
+    public function __construct(string $message, $responseCode = [], Query $query = null, ?Request $request = null)
     {
 
         $this->query = $query;
-        $newData = $this->getPagedCollection();
-        $json = [];
-        if (!is_null($newData)) {
-            $json = [
-                '_paging' => [
-                    'page' =>  $this->paginator->currentPage(),
-                    'limit' => $this->paginator->perPage(),
-                    'total_data' => $this->paginator->total()
-                ]
-            ];
+        $this->request = $request;
 
-            $json['_links'] = [
-                'next_page' => $this->paginator->nextPageUrl(),
-                'prev_page' => $this->paginator->previousPageUrl(),
-                'current_page' => $this->paginator->url($this->paginator->currentPage())
-            ];
-        }
-
-        parent::__construct($message, 200, $responseCode, $newData, $json);
+        parent::__construct($message, 200, $responseCode);
+    }
+    
+    /**
+     *
+     * @return Query|null
+     */
+    public function getQuery(): ?Query
+    {
+        return $this->query;
     }
 
     /**
@@ -45,18 +39,17 @@ class PagedJsonResponse extends CollectionResponse
      *
      * @return PagedCollection
      */
-    private function getPagedCollection()
+    public function getPagedCollection()
     {
-        $this->paginator = $this->filterAndSortFromRequest();
+        $this->filterAndSortFromRequest();
         $collectionClass = $this->query->collectionClass();
-        $identityClass = $this->query->identityClass();
 
-        $models = $identityClass::hydrate($this->paginator->items());
+        $models = $this->query->getIterator();
 
-        $collection = new $collectionClass($models);
-        $collection->setPage($this->paginator->currentPage());
-        $collection->setSize($this->paginator->total());
-        $collection->setTotalRecord($this->paginator->total());
+        $collection = new $collectionClass($models, $this->request);
+        $collection->setPage($this->query->getPage());
+        $collection->setSize($this->query->getTotal());
+        $collection->setTotalRecord($this->query->getTotal());
         return $collection;
     }
 
@@ -112,6 +105,6 @@ class PagedJsonResponse extends CollectionResponse
             }
         }
 
-        return $this->query->paginate($size, ['*'], 'page', $page);
+        return $this->query->paging($size, $page);
     }
 }

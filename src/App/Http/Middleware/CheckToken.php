@@ -56,8 +56,18 @@ class CheckToken
     {
         try {
             if ($request->hasHeader('Authorization')) {
-                $authorization = $request->header('Authorization');
+                $bearerAuthorization = $request->header('Authorization');
+                if (empty($bearerAuthorization)) {
+                    return new BadRequestResponse('Token is empty', ResponseConst::INVALID_CREDENTIAL);
+                }
 
+                $authorizationArr = explode(' ', $bearerAuthorization);
+
+                if (count($authorizationArr) == 1) {
+                    return new BadRequestResponse('Token is invalid', ResponseConst::INVALID_CREDENTIAL);
+                }
+
+                $authorization = $authorizationArr[1];
 
                 /**
                  * @var Token $userToken
@@ -67,14 +77,14 @@ class CheckToken
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 
-                if ($userToken->expired_at < Carbon::now()) {
-                    return new BadRequestResponse('Token Expired', ResponseConst::INVALID_CREDENTIAL);
+                if ($userToken->getExpiredAt() < Carbon::now()) {
+                    return new BadRequestResponse('Token Expired', ResponseConst::SESSION_EXPIRED);
                 }
-                $user = $userToken->user;
+                $user = $userToken->getUser();
 
                 $jwtPayload = $this->jwt->decodeUserToken($authorization);
 
-                if ($user->password != $jwtPayload->password) {
+                if ($user->getPassword() != $jwtPayload->password) {
                     return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
                 }
 

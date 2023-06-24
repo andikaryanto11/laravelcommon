@@ -5,6 +5,8 @@ namespace LaravelCommon\App\Http\Middleware\Hydrators;
 use LaravelCommon\App\Http\Middleware\Hydrator;
 use LaravelCommon\App\Repositories\GroupuserRepository;
 use LaravelCommon\App\Repositories\UserRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserHydrator extends Hydrator
 {
@@ -36,13 +38,28 @@ class UserHydrator extends Hydrator
     /**
      * @inheritDoc
      */
-    protected function hydrateObjects()
+    public function hydrate()
     {
-        return [
-            'groupuser_id' => [
-                [$this->resource, 'setGroupuser'],
-                [$this->groupuserRepository, 'find']
-            ]
-        ];
+        $this->when('groupuser.id',
+            [$this->model, 'setGroupuser'],
+            [$this->groupuserRepository, 'find']
+        )->when('username', 
+            [$this->model, 'setUsername']
+        )->when('email', 
+            [$this->model, 'setEmail']
+        );
+    }
+
+    /**
+     *
+     * @inheritdoc
+     */
+    public function afterHydrate()
+    {
+        if(strtoupper($this->request->method()) == 'POST' && isset($this->request->password)) {
+            $this->model->setPassword(Hash::make($this->request->password));
+        }
+
+        return $this;
     }
 }

@@ -22,15 +22,14 @@ class CheckScope
     public function handle(Request $request, Closure $next, ...$scopes)
     {
         $isAuthorized = false;
-        $user = $request->getUserToken()->user;
-        $groupuser = $user->groupuser;
+        $user = $request->getUserToken()->getUser();
+        $groupuser = $user->getGroupuser();
 
-        $userScopesMappings = $user->scopeMappings;
+        $userScopes = $user->getScopes();
         if (count($scopes) > 0) {
-            if (!empty($userScopesMappings)) {
-                foreach ($userScopesMappings as $userScopesMapping) {
-                    $userScope = $userScopesMapping->scope;
-                    if (in_array($userScope->name, $scopes) || $userScope->name == 'superadmin') {
+            if (!empty($userScopes)) {
+                foreach ($userScopes as $userScope) {
+                    if (in_array($userScope->getName(), $scopes) || $userScope->getName() == 'superadmin') {
                         $isAuthorized = true;
                         break;
                     }
@@ -38,11 +37,10 @@ class CheckScope
             }
 
             if (!$isAuthorized && !empty($groupuser)) {
-                $groupuserScopeMappings = $groupuser->scopeMappings;
+                $groupuserScopes = $groupuser->getScopes();
                 if (!empty($groupuserScopes)) {
-                    foreach ($groupuserScopeMappings as $groupuserScopeMapping) {
-                        $groupScope = $groupuserScopeMapping->scope;
-                        if (in_array($groupScope->name, $scopes)  || $groupScope->name == 'superadmin') {
+                    foreach ($groupuserScopes as $groupScope) {
+                        if (in_array($groupScope->getName(), $scopes)  || $groupScope->getName() == 'superadmin') {
                             $isAuthorized = true;
                             break;
                         }

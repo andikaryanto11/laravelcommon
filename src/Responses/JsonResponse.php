@@ -7,12 +7,11 @@ use LaravelCommon\ViewModels\PaggedCollection;
 
 class JsonResponse extends BaseResponse
 {
+    protected $data = null;
     public function __construct(string $message, int $code = 200, $responseCode = [], $data = null)
     {
-
-        $newData = $this->buildData($data);
-
-        parent::__construct($message, $code, $responseCode, $newData);
+        parent::__construct($message, $code, $responseCode);
+        $this->data = $data;
     }
 
     /**
@@ -20,15 +19,17 @@ class JsonResponse extends BaseResponse
      *
      * @return mixed
      */
-    private function buildData($data = null)
+    public function buildData()
     {
-        if (is_null($data)) {
+        if (is_null($this->data)) {
             return null;
         }
 
         $newData = null;
-        if ($data instanceof AbstractViewModel) {
-            $newData = $data->finalArray();
+        if ($this->data instanceof AbstractViewModel) {
+            $newData = $this->data->finalArray();
+        } else {
+            $newData = $this->data;
         }
 
         return $newData;

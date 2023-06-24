@@ -5,7 +5,6 @@ namespace LaravelCommon\App\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use LaravelCommon\App\ViewModels\UserViewModel;
 use LaravelCommon\ViewModels\PaggedCollection;
-use LaravelOrm\Interfaces\IEntity;
 
 class UserCollection extends PaggedCollection
 {
