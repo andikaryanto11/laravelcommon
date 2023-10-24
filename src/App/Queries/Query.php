@@ -66,10 +66,8 @@ class Query extends Builder
         $queryBuilder = $this->onModelContext();
         $models = null;
         if (!is_null($queryBuilder->lengthAwarePaginator)) {
-            echo 'here';
             $models = $queryBuilder->lengthAwarePaginator->items();
         } else {
-            echo 'another here';
             $models = $queryBuilder->get($columns)->all();
         }
 
@@ -96,17 +94,18 @@ class Query extends Builder
         return $this->from($this->table, $this->table)->select($this->getSelectColumns());
     }
 
-    public function onModelContext() {
-        if(!empty($this->joins)) {
+    public function onModelContext()
+    {
+        if (!empty($this->joins)) {
             $newBuilder = new self($this->model, $this->connection,  $this->grammar, $this->getProcessor());
             $this->limit = null;
-            $this->offset = null;         
+            $this->offset = null;
             $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
 
             $newBuilder->fromSelect()
                 ->whereIdIn($ids->toArray())
                 ->paging(
-                    $this->getPerPage(), 
+                    $this->getPerPage(),
                     $this->getPage()
                 );
             $this->lengthAwarePaginator = $newBuilder->lengthAwarePaginator;
