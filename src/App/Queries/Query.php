@@ -56,7 +56,7 @@ class Query extends Builder
     }
 
     /**
-     * Undocumented function 
+     * Undocumented function
      *
      * @param array $columns
      * @return Collection
@@ -97,7 +97,7 @@ class Query extends Builder
     public function onModelContext()
     {
         if (!empty($this->joins)) {
-            $newBuilder = new self($this->model, $this->connection,  $this->grammar, $this->getProcessor());
+            $newBuilder = new self($this->model, $this->connection, $this->grammar, $this->getProcessor());
             $this->limit = null;
             $this->offset = null;
             $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
@@ -178,7 +178,7 @@ class Query extends Builder
         return $this->lengthAwarePaginator?->currentPage();
     }
 
-    /** Get total data 
+    /** Get total data
      *
      * @return int|null
      */
@@ -187,7 +187,7 @@ class Query extends Builder
         return $this->lengthAwarePaginator?->total();
     }
 
-    /** Get total data 
+    /** Get total data
      *
      * @return int|null
      */

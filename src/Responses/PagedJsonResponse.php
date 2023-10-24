@@ -20,7 +20,7 @@ class PagedJsonResponse extends CollectionResponse
 
         parent::__construct($message, 200, $responseCode);
     }
-    
+
     /**
      *
      * @return Query|null
@@ -38,7 +38,7 @@ class PagedJsonResponse extends CollectionResponse
     public function buildData()
     {
         $this->collection->filterAndSortFromRequest();
-        
+
         $data = $this->collection->finalProcceed();
         $this->setData($data);
         if (!is_null($data)) {
@@ -59,5 +59,4 @@ class PagedJsonResponse extends CollectionResponse
             $this->setAdditional($json);
         }
     }
-    
 }

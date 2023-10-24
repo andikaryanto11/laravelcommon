@@ -40,12 +40,15 @@ class UserHydrator extends Hydrator
      */
     public function hydrate()
     {
-        $this->when('groupuser.id',
+        $this->when(
+            'groupuser.id',
             [$this->model, 'setGroupuser'],
             [$this->groupuserRepository, 'find']
-        )->when('username', 
+        )->when(
+            'username',
             [$this->model, 'setUsername']
-        )->when('email', 
+        )->when(
+            'email',
             [$this->model, 'setEmail']
         );
     }
@@ -56,7 +59,7 @@ class UserHydrator extends Hydrator
      */
     public function afterHydrate()
     {
-        if(strtoupper($this->request->method()) == 'POST' && isset($this->request->password)) {
+        if (strtoupper($this->request->method()) == 'POST' && isset($this->request->password)) {
             $this->model->setPassword(Hash::make($this->request->password));
         }
 

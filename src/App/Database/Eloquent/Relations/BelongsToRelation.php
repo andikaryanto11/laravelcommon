@@ -25,16 +25,16 @@ class BelongsToRelation
      */
     public function __construct(
         Model $ownerModel,
-        string $related, 
-        ?string $foreignKey = null, 
-        ?string $ownerKey = null, 
+        string $related,
+        ?string $foreignKey = null,
+        ?string $ownerKey = null,
         ?string $relation = null
     ) {
         $this->ownerModel = $ownerModel;
         $this->related = $related;
         $this->foreignKey = $foreignKey;
         $this->ownerKey = $ownerKey;
-        $this->relation = $relation;        
+        $this->relation = $relation;
     }
 
     /**
@@ -44,7 +44,7 @@ class BelongsToRelation
      */
     public function get(): ?Model
     {
-        if(!is_null($this->ownedModel)) {
+        if (!is_null($this->ownedModel)) {
             return $this->ownedModel;
         }
 
@@ -70,9 +70,9 @@ class BelongsToRelation
     private function getBelongsTo(): BelongsTo
     {
         return $this->ownerModel->belongsTo(
-            $this->related, 
-            $this->foreignKey, 
-            $this->ownerKey, 
+            $this->related,
+            $this->foreignKey,
+            $this->ownerKey,
             $this->relation
         );
     }

@@ -30,7 +30,7 @@ abstract class AbstractCollection
      */
     public function proceed()
     {
-        $this->collection = $this->query->getIterator();        
+        $this->collection = $this->query->getIterator();
         foreach ($this->collection as $item) {
             $this->shape($item);
         }

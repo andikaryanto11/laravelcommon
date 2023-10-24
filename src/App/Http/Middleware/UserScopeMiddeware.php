@@ -21,12 +21,11 @@ class UserScopeMiddeware
     public function handle(Request $request, Closure $next, $method)
     {
         $user = $request->getUserToken()->getUser();
-        try{
-
+        try {
             $this->$method($user);
         } catch (Exception $e) {
             return new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_CREDENTIAL);
-        } 
+        }
 
         return $next($request);
     }
@@ -38,7 +37,7 @@ class UserScopeMiddeware
      */
     public function isPartner(User $user)
     {
-        if(!$this->isAuthorized($user, 'partner')){
+        if (!$this->isAuthorized($user, 'partner')) {
             throw new Exception('User is not partner') ;
         }
     }

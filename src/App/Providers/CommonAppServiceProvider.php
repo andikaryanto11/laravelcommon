@@ -79,7 +79,7 @@ class CommonAppServiceProvider extends ServiceProvider
      * @return void
      */
     private function registerMiddleware()
-    {   
+    {
         $router = $this->app['router'];
 
         $router->aliasMiddleware(ApiResponseMiddleware::NAME, ApiResponseMiddleware::class);

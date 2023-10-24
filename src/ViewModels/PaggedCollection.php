@@ -139,7 +139,7 @@ abstract class PaggedCollection extends AbstractCollection
         return null;
     }
 
-    public function getAwarePaginator() 
+    public function getAwarePaginator()
     {
         return $this->query->getAwarePaginator();
     }
