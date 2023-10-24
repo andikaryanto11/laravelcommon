@@ -5,24 +5,18 @@ namespace LaravelCommon\ViewModels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use LaravelCommon\App\Queries\Query;
 
 abstract class AbstractCollection
 {
-    protected $collection;
-
-    /**
-     * @var ?Request
-     */
-    protected $request;
-
+    protected Collection $collection;
+    protected Query $query;
+    protected ?Request $request;
     protected array $element = [];
 
-    /**
-     * @param array|Collection $collection
-     */
-    public function __construct($collection, ?Request $request = null)
+    public function __construct(Query $query, ?Request $request = null)
     {
-        $this->collection = $collection;
+        $this->query = $query;
         $this->request = $request;
     }
 
@@ -36,6 +30,7 @@ abstract class AbstractCollection
      */
     public function proceed()
     {
+        $this->collection = $this->query->getIterator();
         foreach ($this->collection as $item) {
             $this->shape($item);
         }

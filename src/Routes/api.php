@@ -6,6 +6,7 @@ use LaravelCommon\App\Http\Controllers\UserController;
 use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
+use LaravelCommon\App\Routes\GroupuserRoute;
 
 Route::middleware([ApiResponseMiddleware::class])->group(function () {
     Route::prefix('api')->group(function () {
@@ -24,3 +25,5 @@ Route::middleware([ApiResponseMiddleware::class])->group(function () {
         Route::post('/register-market-organizer', [UserController::class]);
     });
 });
+
+GroupuserRoute::register();

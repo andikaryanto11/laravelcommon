@@ -9,7 +9,6 @@ use LaravelCommon\App\Database\Eloquent\Relations\BelongsToMany;
 
 trait TraitModel
 {
-
     /**
      *
      * @return mixed

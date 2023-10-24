@@ -10,11 +10,17 @@ use Illuminate\Database\Query\Processors\Processor;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Query extends Builder
 {
     protected $model;
+    protected string $table;
     protected ?LengthAwarePaginator $lengthAwarePaginator = null;
+    // protected ConnectionInterface $connection;
+    // protected ?Grammar $grammar = null;
+    // protected ?Processor $processor = null;
 
     /**
      * Create a new query builder instance.
@@ -30,11 +36,23 @@ class Query extends Builder
         Grammar $grammar = null,
         Processor $processor = null
     ) {
-        $this->model = $model;
         $grammar = $connection->query()->getGrammar();
         parent::__construct($connection, $grammar, $processor);
-        $table = $model->getTable();
-        $this->from($table)->select('*');
+
+        $this->model = $model;
+        $this->table = $model->getTable();
+        $this->fromSelect();
+    }
+
+    protected function getSelectColumns()
+    {
+        $columns = Schema::getColumnListing($this->model->getTable());
+        $columnsWithAlias = [];
+        foreach ($columns as $column) {
+            $columnsWithAlias[] = $this->table . '.' . $column; // . ' as ' .  $this->table . '_' . $column;
+        }
+
+        return $columnsWithAlias;
     }
 
     /**
@@ -45,15 +63,55 @@ class Query extends Builder
      */
     public function getIterator($columns = ['*'])
     {
+        $queryBuilder = $this->onModelContext();
         $models = null;
-        if (!is_null($this->lengthAwarePaginator)) {
-            $models = $this->lengthAwarePaginator->items();
+        if (!is_null($queryBuilder->lengthAwarePaginator)) {
+            $models = $queryBuilder->lengthAwarePaginator->items();
         } else {
-            $models = $this->get($columns)->all();
+            $models = $queryBuilder->get($columns)->all();
         }
 
-        $identityClass = get_class($this->model);
+        $identityClass = get_class($queryBuilder->model);
         return $identityClass::hydrate($models);
+    }
+
+    public function joinWith($table, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+    {
+        if (!empty($this->joins)) {
+            foreach ($this->joins as $join) {
+                if ($join->table == $table) {
+                    return $this;
+                }
+            }
+        }
+
+        // echo 'jasasdsaoin';
+        return  $this->join($table, $first, $operator, $second, $type, $where);
+    }
+
+    public function fromSelect()
+    {
+        return $this->from($this->table, $this->table)->select($this->getSelectColumns());
+    }
+
+    public function onModelContext()
+    {
+        if (!empty($this->joins)) {
+            $newBuilder = new self($this->model, $this->connection, $this->grammar, $this->getProcessor());
+            $this->limit = null;
+            $this->offset = null;
+            $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
+
+            $newBuilder->fromSelect()
+                ->whereIdIn($ids->toArray())
+                ->paging(
+                    $this->getPerPage(),
+                    $this->getPage()
+                );
+            $this->lengthAwarePaginator = $newBuilder->lengthAwarePaginator;
+        }
+
+        return $this;
     }
 
     /**
@@ -65,6 +123,10 @@ class Query extends Builder
     {
         $this->groups = [];
         $this->wheres = [];
+        $this->joins = [];
+        $this->columns = [];
+        $this->from = null;
+        $this->lengthAwarePaginator = null;
         return $this;
     }
 
@@ -78,9 +140,9 @@ class Query extends Builder
      * @return Query
      */
     public function paging(
-        int $perPage = 15, 
-        ?int $page = null, 
-        array $columns = ['*'], 
+        int $perPage = 15,
+        ?int $page = null,
+        array $columns = ['*'],
         string $pageName = 'page'
     ): Query {
         $this->lengthAwarePaginator = $this->paginate($perPage, $columns, $pageName, $page);
@@ -116,7 +178,7 @@ class Query extends Builder
         return $this->lengthAwarePaginator?->currentPage();
     }
 
-    /** Get total data 
+    /** Get total data
      *
      * @return int|null
      */
@@ -125,7 +187,7 @@ class Query extends Builder
         return $this->lengthAwarePaginator?->total();
     }
 
-    /** Get total data 
+    /** Get total data
      *
      * @return int|null
      */

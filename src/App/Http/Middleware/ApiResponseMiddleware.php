@@ -12,7 +12,6 @@ use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BaseResponse;
 use LaravelCommon\Responses\JsonResponse as ResponsesJsonResponse;
 use LaravelCommon\Responses\PagedJsonResponse;
-use LaravelCommon\ViewModels\AbstractCollection;
 
 class ApiResponseMiddleware
 {
@@ -41,34 +40,11 @@ class ApiResponseMiddleware
         $response =  $next($request);
         if ($request->is('api/*')) {
             if ($response instanceof BaseResponse) {
-                if($response instanceof PagedJsonResponse){
-                    $data = $response->getPagedCollection();
-                    if ($data instanceof AbstractCollection) {
-                        $data = $data->proceed()->getElements();
-                }
-                    $response->setData($data);
-                    if (!is_null($data)) {
-                        $query = $response->getQuery();
-                        $awarePaginator = $query->getAwarePaginator();
-                        $json = [
-                            '_paging' => [
-                                'page' =>  $query->getPage(),
-                                'limit' => $query->getPerPage(),
-                                'total_data' => $query->getTotal()
-                            ]
-                        ];
-            
-                        $json['_links'] = [
-                            'next_page' => $awarePaginator->nextPageUrl(),
-                            'prev_page' => $awarePaginator->previousPageUrl(),
-                            'current_page' => $awarePaginator->url($awarePaginator->currentPage())
-                        ];
-                        $response->setAdditional($json);
-                    }
-                    return $response->sendJson();
-                } else if($response instanceof ResponsesJsonResponse) {
-                    $data = $response->buildData();
-                    $response->setData($data);
+                if (
+                    $response instanceof PagedJsonResponse ||
+                    $response instanceof ResponsesJsonResponse
+                ) {
+                    $response->buildData();
                     return $response->sendJson();
                 } else {
                     return $response->sendJson();

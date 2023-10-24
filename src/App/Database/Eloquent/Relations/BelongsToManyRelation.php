@@ -15,10 +15,10 @@ class BelongsToManyRelation implements IteratorAggregate
 
     public string $related;
     public ?string $table = null;
-    public ?string $foreignPivotKey = null; 
+    public ?string $foreignPivotKey = null;
     public ?string $relatedPivotKey = null;
-    public ?string $parentKey = null; 
-    public ?string $relatedKey = null; 
+    public ?string $parentKey = null;
+    public ?string $relatedKey = null;
     public ?string $relation = null;
 
     protected Model $parentModel;
@@ -38,12 +38,12 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     public function __construct(
         Model $parentModel,
-        string $related, 
-        ?string $table = null, 
-        ?string $foreignPivotKey = null, 
-        ?string $relatedPivotKey = null,                                  
-        ?string $parentKey = null, 
-        ?string $relatedKey = null, 
+        string $related,
+        ?string $table = null,
+        ?string $foreignPivotKey = null,
+        ?string $relatedPivotKey = null,
+        ?string $parentKey = null,
+        ?string $relatedKey = null,
         ?string $relation = null
     ) {
         $this->addModelCollection = new Collection();
@@ -70,7 +70,7 @@ class BelongsToManyRelation implements IteratorAggregate
 
     /**
      * Add model to collection
-     * 
+     *
      * @param Model $model
      * @return BelongsToManyRelation
      */
@@ -83,8 +83,9 @@ class BelongsToManyRelation implements IteratorAggregate
             }
         )->count() > 0;
 
-        if(!$alreadyIn)
+        if (!$alreadyIn) {
             $this->addModelCollection->add($model);
+        }
 
         return $this;
     }
@@ -174,8 +175,7 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     public function doAttach()
     {
-        if($this->addModelCollection->count() > 0)
-        {
+        if ($this->addModelCollection->count() > 0) {
             foreach ($this->addModelCollection as $addModel) {
                 $this->getBelongsToMany()->attach($addModel);
             }
@@ -190,8 +190,7 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     public function doDetach()
     {
-        if($this->removeModelCollection->count() > 0)
-        {
+        if ($this->removeModelCollection->count() > 0) {
             foreach ($this->removeModelCollection as $removeModel) {
                 $this->getBelongsToMany()->detach($removeModel);
             }

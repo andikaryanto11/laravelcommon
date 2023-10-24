@@ -35,13 +35,14 @@ class ModelUnit
         $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
 
         foreach ($properties as $property) {
-            if($property->getType() &&
+            if (
+                $property->getType() &&
                 $property->getType()->getName() == BelongsToManyRelation::class
             ) {
                 $value = $property->getValue($model);
                 $value->setParentModel($model);
-    
-                if($value->getSyncedCollection()->count() > 0) {
+
+                if ($value->getSyncedCollection()->count() > 0) {
                     $value->doSync();
                 } else {
                     $value->doAttach();

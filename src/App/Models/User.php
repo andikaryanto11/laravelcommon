@@ -18,6 +18,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use TraitModel;
+
     protected bool $is_active = true;
     protected bool $is_deleted = false;
 

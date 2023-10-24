@@ -55,7 +55,7 @@ class Hydrator
 
         $this->request = $request;
         $this->method = $method;
-        try{
+        try {
             if (strtoupper($method) == 'POST') {
                 $this->post($request);
             }
@@ -75,9 +75,9 @@ class Hydrator
             if (strtoupper($method) == 'DELETE') {
                 $this->delete($request);
             }
-         } catch(Exception $e) {
+        } catch (Exception $e) {
             return new BadRequestResponse($e->getMessage(), ResponseConst::INVALID_DATA);
-         }
+        }
 
         return $next($request);
     }
@@ -218,7 +218,7 @@ class Hydrator
             $relatedFunction = $relatedObjectGetter[1];
             $relatedObject = $relatedRepository->$relatedFunction($relatedValue);
 
-            if(is_null($relatedObject)) {
+            if (is_null($relatedObject)) {
                 throw new ModelException($field . ' with ID ' . $relatedValue . ' not found');
             }
 
