@@ -32,6 +32,6 @@ class JsonResponse extends BaseResponse
             $newData = $this->data;
         }
 
-        return $newData;
+        $this->setData($newData);
     }
 }

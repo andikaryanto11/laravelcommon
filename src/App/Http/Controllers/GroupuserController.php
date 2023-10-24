@@ -5,9 +5,9 @@ namespace LaravelCommon\App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Date;
 use LaravelCommon\App\Models\Scope;
 use LaravelCommon\App\Queries\GroupuserQuery;
+use LaravelCommon\App\ViewModels\GroupuserCollection;
 use LaravelCommon\App\ViewModels\UserViewModel;
 use LaravelCommon\Responses\PagedJsonResponse;
 use LaravelCommon\Responses\SuccessResponse;
@@ -45,6 +45,6 @@ class GroupuserController extends Controller
             ->whereUserCreatedAfter(Carbon::create('2023-06-12 18:56:55'))
             ->whereScope((new Scope())->setId(2));
 
-        return new PagedJsonResponse('OK', [], $users, $request);
+        return new PagedJsonResponse('OK', [], new GroupuserCollection($users, $request));
     }
 }

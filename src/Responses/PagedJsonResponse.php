@@ -3,24 +3,20 @@
 namespace LaravelCommon\Responses;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Schema;
 use LaravelCommon\App\Queries\Query;
 use LaravelCommon\Responses\CollectionResponse;
+use LaravelCommon\ViewModels\PaggedCollection;
 
 class PagedJsonResponse extends CollectionResponse
 {
-    /**
-     * @var Query
-     */
+    protected PaggedCollection $collection;
     protected ?Query $query = null;
     protected ?Request $request = null;
 
-    public function __construct(string $message, $responseCode = [], Query $query = null, ?Request $request = null)
+    public function __construct(string $message, $responseCode = [], PaggedCollection $collection)
     {
 
-        $this->query = $query;
-        $this->request = $request;
+        $this->collection = $collection;
 
         parent::__construct($message, 200, $responseCode);
     }
@@ -39,72 +35,29 @@ class PagedJsonResponse extends CollectionResponse
      *
      * @return PagedCollection
      */
-    public function getPagedCollection()
+    public function buildData()
     {
-        $this->filterAndSortFromRequest();
-        $collectionClass = $this->query->collectionClass();
+        $this->collection->filterAndSortFromRequest();
+        
+        $data = $this->collection->finalProcceed();
+        $this->setData($data);
+        if (!is_null($data)) {
+            $awarePaginator = $this->collection->getAwarePaginator();
+            $json = [
+                '_paging' => [
+                    'page' =>  $this->collection->getPage(),
+                    'limit' => $this->collection->getSize(),
+                    'total_data' => $this->collection->getTotalRecord()
+                ]
+            ];
 
-        $models = $this->query->getIterator();
-
-        $collection = new $collectionClass($models, $this->request);
-        $collection->setPage($this->query->getPage());
-        $collection->setSize($this->query->getTotal());
-        $collection->setTotalRecord($this->query->getTotal());
-        return $collection;
+            $json['_links'] = [
+                'next_page' => $awarePaginator->nextPageUrl(),
+                'prev_page' => $awarePaginator->previousPageUrl(),
+                'current_page' => $awarePaginator->url($awarePaginator->currentPage())
+            ];
+            $this->setAdditional($json);
+        }
     }
-
-    /**
-     * Undocumented function
-     *
-     * @return LengthAwarePaginator
-     */
-    private function filterAndSortFromRequest()
-    {
-        $request = request();
-        $table = $this->query->getTable();
-        $sortDirection = 'ASC';
-        $sortColumn = null;
-        $size = config("common-config")['collection_paging']['size'];
-        $page = 1;
-
-
-        if (isset($request->order_direction)) {
-            $sortDirection = strtolower($request->order_direction);
-        }
-
-        if (isset($request->order_by)) {
-            $sortColumn = $request->order_by;
-        }
-
-        if (!is_null($sortColumn)) {
-            $this->query->orderBy($table . '.' . $sortColumn, $sortDirection);
-        }
-
-        if (isset($request->size)) {
-            $size = $request->size;
-        }
-
-        if (isset($request->page)) {
-            $page = $request->page;
-        }
-
-        if (isset($request->keyword)) {
-            $keyword = $request->keyword;
-            $searchColumns = Schema::getColumnListing($this->query->getTable());
-            foreach ($searchColumns as $column) {
-                $this->query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
-            }
-        } else {
-            if (isset($request->search_by) && isset($request->search_value)) {
-                $searchBy = $request->search_by;
-                $searchValue = $request->search_value;
-                $this->query->where($searchBy, 'like', '%' . $searchValue . '%');
-            }
-
-            if (isset($request->search_value)) {
-            }
-        }
-
-        return $this->query->paging($size, $page);
-    }
+    
 }
