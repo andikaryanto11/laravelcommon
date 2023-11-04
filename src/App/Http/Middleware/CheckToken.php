@@ -74,7 +74,7 @@ class CheckToken
                  */
                 $userToken = $this->tokenQuery->whereToken($authorization)->getIterator()->first();
                 if (empty($userToken)) {
-                    return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
+                    return new BadRequestResponse('No Token Match', ResponseConst::INVALID_CREDENTIAL);
                 }
 
                 if ($userToken->getExpiredAt() < Carbon::now()) {

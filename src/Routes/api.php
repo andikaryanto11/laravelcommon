@@ -17,7 +17,7 @@ Route::middleware([ApiResponseMiddleware::class])->group(function () {
             Route::prefix('user')->group(function () {
                 Route::post('', [UserController::class, 'store'])
                     ->middleware(
-                        UserHydrator::class
+                        UserHydrator::class . ':post'
                     );
             });
         });

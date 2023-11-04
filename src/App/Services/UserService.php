@@ -56,13 +56,13 @@ class UserService
      * @param string $password
      * @return Token
      */
-    public function generateToken(string $username, string $password)
+    public function generateToken(string $email, string $password)
     {
 
         /**
          * @var User
          */
-        $user = $this->userQuery->whereUsername($username)->getIterator()->first();
+        $user = $this->userQuery->whereEmail($email)->getIterator()->first();
 
         if (empty($user)) {
             return null;

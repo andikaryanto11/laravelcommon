@@ -49,4 +49,16 @@ class UserQuery extends Query
         $this->where('username', '=', $username);
         return $this;
     }
+
+    /**
+     * find logging by name
+     *
+     * @param string $username
+     * @return $this
+     */
+    public function whereEmail(string $email): UserQuery
+    {
+        $this->where('email', '=', $email);
+        return $this;
+    }
 }
