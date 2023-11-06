@@ -6,6 +6,7 @@ use LaravelCommon\App\Http\Controllers\UserController;
 use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\CheckToken;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
+use LaravelCommon\App\Http\Middleware\ModelUnit;
 use LaravelCommon\App\Routes\GroupuserRoute;
 
 Route::middleware([ApiResponseMiddleware::class])->group(function () {
@@ -17,7 +18,8 @@ Route::middleware([ApiResponseMiddleware::class])->group(function () {
             Route::prefix('user')->group(function () {
                 Route::post('', [UserController::class, 'store'])
                     ->middleware(
-                        UserHydrator::class . ':post'
+                        UserHydrator::class . ':post',
+                        ModelUnit::class
                     );
             });
         });
