@@ -19,7 +19,7 @@ Route::middleware([ApiResponseMiddleware::class])->group(function () {
                 Route::post('', [UserController::class, 'store'])
                     ->middleware(
                         UserHydrator::class . ':post',
-                        ModelUnit::class
+                        ModelUnit::class . ':persist'
                     );
             });
         });

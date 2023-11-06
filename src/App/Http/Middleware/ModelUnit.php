@@ -38,23 +38,45 @@ class ModelUnit
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$method)
+    public function handle(Request $request, Closure $next, $method)
     {
         $response = $next($request);
-        $resource = $request->getResource();
 
         try {
-            if (strtoupper($request->method()) == 'DELETE') {
-                $this->modelUnit->remove($resource);
-            } else {
-                $this->modelUnit->persist($resource);
-            }
-
-            $this->modelUnit->flush();
+            $this->$method($request);
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }
 
         return $response;
+    }
+
+    private function persist($request) {
+        try {            
+            $resource = $request->getResource();
+            $this->modelUnit->persist($resource);
+            $this->modelUnit->flush();
+        } catch (Exception $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
+        }
+    }
+
+    private function remove($request) {
+        try {            
+            $resource = $request->getResource();
+            $this->modelUnit->remove($resource);
+            $this->modelUnit->flush();
+        } catch (Exception $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
+        }
+    }
+
+    private function commit($request)
+    {
+        try {
+            $this->modelUnit->flush();
+        } catch (Exception $e) {
+            throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
+        }
     }
 }
