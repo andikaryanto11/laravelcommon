@@ -52,7 +52,7 @@ class GroupuserQuery extends Query
         return $this;
     }
 
-    public function whereScope(Scope $scope): GroupuserQuery
+    public function whereUserScope(Scope $scope): GroupuserQuery
     {
 
         $this->joinWith('users', 'groupusers.id', '=', 'users.groupuser_id')

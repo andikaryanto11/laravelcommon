@@ -43,7 +43,7 @@ class GroupuserController extends Controller
     {
         $users = $this->groupuserQuery
             ->whereUserCreatedAfter(Carbon::create('2023-06-12 18:56:55'))
-            ->whereScope((new Scope())->setId(2));
+            ->whereUserScope((new Scope())->setId(2));
 
         return new PagedJsonResponse('OK', [], new GroupuserCollection($users, $request));
     }
