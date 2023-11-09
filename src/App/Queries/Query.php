@@ -63,15 +63,15 @@ class Query extends Builder
      */
     public function getIterator($columns = ['*'])
     {
-        $queryBuilder = $this->onModelContext();
+        $this->onModelContext();
         $models = null;
-        if (!is_null($queryBuilder->lengthAwarePaginator)) {
-            $models = $queryBuilder->lengthAwarePaginator->items();
+        if (!is_null($this->lengthAwarePaginator)) {
+            $models = $this->lengthAwarePaginator->items();
         } else {
-            $models = $queryBuilder->get($columns)->all();
+            $models = $this->get($columns)->all();
         }
 
-        $identityClass = get_class($queryBuilder->model);
+        $identityClass = get_class($this->model);
         return $identityClass::hydrate($models);
     }
 
@@ -108,6 +108,9 @@ class Query extends Builder
                     $this->getPerPage(),
                     $this->getPage()
                 );
+
+            $newBuilder->orders = $this->orders;
+
             $this->lengthAwarePaginator = $newBuilder->lengthAwarePaginator;
         }
 
