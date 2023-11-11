@@ -62,4 +62,10 @@ class GroupuserQuery extends Query
 
         return $this;
     }
+
+    public function whereGroupName(string $groupName)
+    {
+        $this->where('group_name', '=', $groupName);
+        return $this;
+    }
 }
