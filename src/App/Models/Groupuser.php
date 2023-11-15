@@ -23,11 +23,11 @@ class Groupuser extends Model
 
     /**
      *
-     * @return BelongsToManyRelation
+     * @return Collection
      */
     public function getScopes()
     {
-        return $this->scopes;
+        return $this->scopes->getIterator();
     }
 
     /**

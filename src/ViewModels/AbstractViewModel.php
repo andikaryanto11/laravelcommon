@@ -4,6 +4,7 @@ namespace LaravelCommon\ViewModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use LaravelCommon\Responses\BaseResponse;
 
 abstract class AbstractViewModel
@@ -74,7 +75,7 @@ abstract class AbstractViewModel
      */
     public function embedResource(
         string $key,
-        AbstractViewModel|AbstractCollection $value
+        AbstractViewModel|Collection $value
     ) {
 
         if ($this->request != null && $this->request->getPathInfo() == '/graphql') {
@@ -82,16 +83,34 @@ abstract class AbstractViewModel
                 $this->resource[$key] = $value->finalArray();
             }
 
-            if ($value instanceof AbstractCollection) {
-                $this->resource[$key] = $value->finalProcceed();
+            // if ($value instanceof Collection) {
+            //     $this->resource[$key] = $value->finalProcceed();
+            // }
+
+            if ($value instanceof Collection) {
+                $viewModelArray = [];
+                foreach($value as $viewmodel) {
+                    /**
+                     * @var AbstractViewModel $viewmodel
+                     */
+                    $viewModelArray[] = $viewmodel->finalArray();
+                }
+                $this->resource[$key] = $viewModelArray;
             }
         } else {
             if ($value instanceof AbstractViewModel) {
                 $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalArray();
             }
 
-            if ($value instanceof AbstractCollection) {
-                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalProcceed();
+            if ($value instanceof Collection) {
+                $viewModelArray = [];
+                foreach($value as $viewmodel) {
+                    /**
+                     * @var AbstractViewModel $viewmodel
+                     */
+                    $viewModelArray[] = $viewmodel->finalArray();
+                }
+                $this->resource[BaseResponse::RESOURCES_KEY][$key] = $viewModelArray;
             }
         }
     }
