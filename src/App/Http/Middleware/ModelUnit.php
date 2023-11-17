@@ -51,8 +51,9 @@ class ModelUnit
         return $response;
     }
 
-    private function persist($request) {
-        try {            
+    private function persist($request)
+    {
+        try {
             $resource = $request->getResource();
             $this->modelUnit->persist($resource);
             $this->modelUnit->flush();
@@ -61,8 +62,9 @@ class ModelUnit
         }
     }
 
-    private function remove($request) {
-        try {            
+    private function remove($request)
+    {
+        try {
             $resource = $request->getResource();
             $this->modelUnit->remove($resource);
             $this->modelUnit->flush();

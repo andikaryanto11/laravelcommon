@@ -89,7 +89,7 @@ abstract class AbstractViewModel
 
             if ($value instanceof Collection) {
                 $viewModelArray = [];
-                foreach($value as $viewmodel) {
+                foreach ($value as $viewmodel) {
                     /**
                      * @var AbstractViewModel $viewmodel
                      */
@@ -104,7 +104,7 @@ abstract class AbstractViewModel
 
             if ($value instanceof Collection) {
                 $viewModelArray = [];
-                foreach($value as $viewmodel) {
+                foreach ($value as $viewmodel) {
                     /**
                      * @var AbstractViewModel $viewmodel
                      */

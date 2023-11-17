@@ -3,7 +3,6 @@
 namespace LaravelCommon\Responses;
 
 use LaravelCommon\ViewModels\AbstractViewModel;
-use LaravelCommon\ViewModels\PaggedCollection;
 
 class JsonResponse extends BaseResponse
 {
