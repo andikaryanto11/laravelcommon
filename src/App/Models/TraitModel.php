@@ -136,4 +136,9 @@ trait TraitModel
     //         $query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName
     //     );
     // }
+
+    public function isEqualTo(Model $model)
+    {
+        return $this->getId() == $model->getId();
+    }
 }
