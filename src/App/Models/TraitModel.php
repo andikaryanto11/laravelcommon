@@ -109,7 +109,8 @@ trait TraitModel
         return $this;
     }
 
-    public function isEqualTo(Model $model) {
+    public function isEqualTo(Model $model)
+    {
         return get_class($this) == get_class($model) &&
             $this->getId() == $model->getId();
     }
