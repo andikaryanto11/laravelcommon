@@ -79,7 +79,7 @@ class BelongsToManyRelation implements IteratorAggregate
         $existCollection = $this->getBelongsToMany()->get();
         $alreadyIn = $existCollection->filter(
             function ($existModel) use ($model) {
-                return $existModel->getKey() != $model->getKey();
+                return !$existModel->isEqualTo($model);
             }
         )->count() > 0;
 
@@ -100,7 +100,7 @@ class BelongsToManyRelation implements IteratorAggregate
     {
         $inAddedFound = $this->addModelCollection->filter(
             function ($addModel) use ($model) {
-                return $addModel->getKey() == $model->getKey();
+                return $addModel->isEqualTo($model);
             }
         )->count() > 0;
 

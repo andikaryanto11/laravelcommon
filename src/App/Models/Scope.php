@@ -12,11 +12,12 @@ class Scope extends Model
     use HasFactory;
     use TraitModel;
 
+
     /**
      *
-     * @return string
+     * @return ?string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

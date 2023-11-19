@@ -4,13 +4,21 @@ namespace LaravelCommon\Utilities\Database;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use LaravelCommon\App\Database\Eloquent\Relations\BelongsToManyRelation;
 use LaravelCommon\Exceptions\ValidationException;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * singleton instance that is created using provider see: CommonAppServiceProvider
+ * we need to this singleton to share between classes while this class is injected
+ * it is responsible to do data transaction in entire application.
+ */
 class ModelUnit
 {
+    private bool $isTransactionStarted = false;
+
     /**
      * Prepare entity that will be validated and persisted.
      * Will persisted after entity unit flush
@@ -24,9 +32,10 @@ class ModelUnit
      */
     public function persist(Model $model)
     {
-        $modelScope = ModelScope::getInstance();
-        if (!$modelScope->transactionHasStarted()) {
-            $modelScope->startTransaction();
+        // $modelScope = ModelScope::getInstance();
+        if (!$this->isTransactionStarted) {
+            DB::beginTransaction();
+            $this->isTransactionStarted = true;
         }
 
         $model->save();
@@ -62,10 +71,10 @@ class ModelUnit
      */
     public function remove(Model $model)
     {
-        $modelScope = ModelScope::getInstance();
-        $modelScope = ModelScope::getInstance();
-        if (!$modelScope->transactionHasStarted()) {
-            $modelScope->startTransaction();
+        // $modelScope = ModelScope::getInstance();
+        if (!$this->isTransactionStarted) {
+            DB::beginTransaction();
+            $this->isTransactionStarted = true;
         }
 
         if (method_exists($model, 'trashed')) {
@@ -85,28 +94,14 @@ class ModelUnit
      */
     public function flush()
     {
-        $modelScope = ModelScope::getInstance();
-
         try {
-            // $modelScope->sort();
-            // foreach ($modelScope->getModels() as $value) {
-            //     $model = $value['model'];
-            //     if ($value['perform'] == ModelScope::PERFORM_ADD_UPDATE) {
-            //         $model->save();
-            //     } elseif ($value['perform'] == ModelScope::PERFORM_DELETE) {
-            //         if (method_exists($model, 'trashed')) {
-            //             $model->trashed();
-            //         } else {
-            //             $model->forceDelete();
-            //         }
-            //     }
-            // }
-
-            $modelScope->commit();
-            // $modelScope->clean();
+            if ($this->isTransactionStarted) {
+                DB::commit();
+            }
         } catch (Exception $e) {
-            $modelScope->rollback();
-            // $modelScope->clean();
+            if ($this->isTransactionStarted) {
+                DB::rollBack();
+            }
             throw $e;
         }
     }

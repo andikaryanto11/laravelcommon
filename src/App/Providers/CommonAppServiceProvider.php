@@ -3,7 +3,6 @@
 namespace LaravelCommon\App\Providers;
 
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use LaravelCommon\App\Console\Commands\CreateLoggingName;
 use LaravelCommon\App\Console\Commands\CreateScope;
@@ -17,6 +16,7 @@ use LaravelCommon\App\Http\Middleware\Hydrators\UserHydrator;
 use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
 use Illuminate\Contracts\Http\Kernel;
+use LaravelCommon\Utilities\Database\ModelUnit as DatabaseModelUnit;
 
 class CommonAppServiceProvider extends ServiceProvider
 {
@@ -31,7 +31,9 @@ class CommonAppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(DatabaseModelUnit::class, function ($app) {
+            return new DatabaseModelUnit();
+        });
     }
 
     /**
