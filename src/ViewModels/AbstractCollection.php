@@ -40,7 +40,7 @@ abstract class AbstractCollection
         return $this;
     }
 
-    public function finalProcceed()
+    public function finalArray()
     {
         return $this->proceed()->getElements();
     }

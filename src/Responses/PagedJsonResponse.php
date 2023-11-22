@@ -39,7 +39,7 @@ class PagedJsonResponse extends CollectionResponse
     {
         $this->collection->filterAndSortFromRequest();
 
-        $data = $this->collection->finalProcceed();
+        $data = $this->collection->finalArray();
         $this->setData($data);
         if (!is_null($data)) {
             $awarePaginator = $this->collection->getAwarePaginator();
