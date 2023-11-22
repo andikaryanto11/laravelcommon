@@ -23,7 +23,7 @@ abstract class AbstractCollection
     /**
      * Eloquent to View Model
      */
-    abstract public function shape(Model $model);
+    abstract public function shape(Model $model): ?AbstractViewModel;
 
     /**
      * proceed shaping to view model
@@ -32,7 +32,10 @@ abstract class AbstractCollection
     {
         $this->collection = $this->query->getIterator();
         foreach ($this->collection as $item) {
-            $this->shape($item);
+            $viewModel = $this->shape($item);
+            if ($viewModel instanceof AbstractViewModel) {
+                $this->addItem($viewModel);
+            }
         }
         return $this;
     }

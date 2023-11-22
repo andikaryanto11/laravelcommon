@@ -2,6 +2,7 @@
 
 namespace LaravelCommon\App\ViewModels\User;
 
+use Doctrine\Common\Lexer\Token;
 use Illuminate\Database\Eloquent\Model;
 use LaravelCommon\ViewModels\PaggedCollection;
 
@@ -10,8 +11,10 @@ class TokenCollection extends PaggedCollection
     /**
      * @inheritdoc
      */
-    public function shape(Model $model)
+    public function shape(Model $model): ?TokenViewModel
     {
-        $this->addItem(new TokenViewModel($model, $this->request));
+        if ($model instanceof Token) {
+            return new TokenViewModel($model, $this->request);
+        }
     }
 }
