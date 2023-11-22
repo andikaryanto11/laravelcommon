@@ -37,7 +37,7 @@ class GroupuserQuery extends Query
 
     public function whereUserCreatedBefore(Carbon $date): GroupuserQuery
     {
-        $this->joinWith('users', 'groupuser.id', '=', 'users.groupuser_id')
+        $this->joinWith('users', 'groupusers.id', '=', 'users.groupuser_id')
             ->where('users.created_at', '<', $date->format('Y-m-d H:i:s'));
         return $this;
     }
@@ -51,7 +51,6 @@ class GroupuserQuery extends Query
 
     public function whereUserScope(Scope $scope): GroupuserQuery
     {
-
         $this->joinWith('users', 'groupusers.id', '=', 'users.groupuser_id')
             ->joinWith('user_scopes', 'users.id', '=', 'user_scopes.user_id')
             ->joinWith('scopes', 'user_scopes.scope_id', '=', 'scopes.id')

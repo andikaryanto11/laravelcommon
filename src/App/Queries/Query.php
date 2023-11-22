@@ -27,7 +27,7 @@ class Query extends Builder
     //     ConnectionInterface $connection,
     //     Grammar $grammar = null,
     //     Processor $processor = null
-    // ) {        
+    // ) {
     //     $grammar = $connection->query()->getGrammar();
     //     parent::__construct($connection, $grammar, $processor);
 
@@ -112,11 +112,13 @@ class Query extends Builder
             $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
 
             $newBuilder->fromSelect()
-                ->whereIdIn($ids->toArray())
-                ->paging(
+                ->whereIdIn($ids->toArray());
+            if ($this->getPage() &&  $this->getPerPage()) {
+                $newBuilder->paging(
                     $this->getPerPage(),
                     $this->getPage()
                 );
+            }
 
             $newBuilder->orders = $this->orders;
 
