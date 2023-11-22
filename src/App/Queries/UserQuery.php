@@ -25,12 +25,9 @@ class UserQuery extends Query
      * @return void
      */
     public function __construct(
-        User $user,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        User $user
     ) {
-        parent::__construct($user, $connection, $grammar, $processor);
+        parent::__construct($user);
     }
 
     public function collectionClass()

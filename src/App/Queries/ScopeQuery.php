@@ -21,12 +21,9 @@ class ScopeQuery extends Query
      * @return void
      */
     public function __construct(
-        Scope $scope,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        Scope $scope
     ) {
-        parent::__construct($scope, $connection, $grammar, $processor);
+        parent::__construct($scope);
     }
 
 

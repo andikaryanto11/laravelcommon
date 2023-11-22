@@ -80,7 +80,7 @@ abstract class AbstractViewModel
             if ($value instanceof AbstractViewModel) {
                 $this->resource[$key] = $value->finalArray();
             }
-            
+
             if ($value instanceof Collection) {
                 $viewModelArray = [];
                 foreach ($value as $viewmodel) {

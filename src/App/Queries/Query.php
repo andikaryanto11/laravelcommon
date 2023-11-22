@@ -20,24 +20,28 @@ class Query extends Builder
     protected ?LengthAwarePaginator $lengthAwarePaginator = null;
     // protected ConnectionInterface $connection;
     // protected ?Grammar $grammar = null;
-    // protected ?Processor $processor = null;
+    // protected ?Processor $processor = null;]
+
+    // NOTE: we used to do have issue on grammar on laravel 9.xx
+    // when use DB::connection()->query()->getGrammar() the grammar is always incorrect while querying the database
+    // public function __construct(
+    //     Model $model,
+    //     ConnectionInterface $connection,
+    //     Grammar $grammar = null,
+    //     Processor $processor = null
+    // ) {
 
     /**
      * Create a new query builder instance.
      *
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
-     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
      * @return void
      */
     public function __construct(
-        Model $model,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        Model $model
     ) {
+        $connection = DB::connection();
         $grammar = $connection->query()->getGrammar();
-        parent::__construct($connection, $grammar, $processor);
+        parent::__construct($connection, $grammar);
 
         $this->model = $model;
         $this->table = $model->getTable();

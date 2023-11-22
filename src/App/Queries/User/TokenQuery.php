@@ -23,12 +23,9 @@ class TokenQuery extends Query
      * @return void
      */
     public function __construct(
-        Token $token,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        Token $token
     ) {
-        parent::__construct($token, $connection, $grammar, $processor);
+        parent::__construct($token);
     }
 
     public function collectionClass()

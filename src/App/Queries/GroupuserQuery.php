@@ -25,12 +25,9 @@ class GroupuserQuery extends Query
      * @return void
      */
     public function __construct(
-        Groupuser $groupuser,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        Groupuser $groupuser
     ) {
-        parent::__construct($groupuser, $connection, $grammar, $processor);
+        parent::__construct($groupuser);
     }
 
     public function collectionClass()

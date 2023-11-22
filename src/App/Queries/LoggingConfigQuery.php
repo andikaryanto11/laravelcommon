@@ -20,12 +20,9 @@ class LoggingConfigQuery extends Query
      * @return void
      */
     public function __construct(
-        LoggingConfig $loggingConfig,
-        ConnectionInterface $connection,
-        Grammar $grammar = null,
-        Processor $processor = null
+        LoggingConfig $loggingConfig
     ) {
-        parent::__construct($loggingConfig, $connection, $grammar, $processor);
+        parent::__construct($loggingConfig);
     }
 
     public function collectionClass()
