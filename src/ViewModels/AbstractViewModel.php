@@ -46,9 +46,7 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        $this->resource['id'] = $this->model->getId();
-
-        $this->resource = array_merge($this->resource, $this->toArray());
+        $this->resource = $this->toArray();
 
         $this->resource['created_at'] =  !is_null($this->model->created_at)
             ? $this->model->created_at->format('Y-m-d H:i:s')

@@ -40,6 +40,7 @@ class UserViewModel extends AbstractViewModel
         }
 
         if (
+            $this->request &&
             $this->request->get('embed') &&
             in_array('scope', $this->request->get('embed'))
         ) {
@@ -62,6 +63,7 @@ class UserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
+            'id' => $this->model->getId(),
             'username' => $this->model->getUsername(),
             "is_active" => (bool)$this->model->getIsActive(),
             "email" => $this->model->getEmail(),

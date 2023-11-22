@@ -37,8 +37,9 @@ class TokenViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'token' => $this->model->token,
-            'expired_at' => $this->model->expired_at
+            'id' => $this->model->getId(),
+            'token' => $this->model->getToken(),
+            'expired_at' => $this->model->getExpiredAt()
         ];
     }
 }

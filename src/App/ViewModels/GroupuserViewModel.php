@@ -32,6 +32,7 @@ class GroupuserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
+            'id' => $this->model->getId(),
             'group_name' => $this->model->getGroupName(),
             'description' => $this->model->getDescription()
         ];

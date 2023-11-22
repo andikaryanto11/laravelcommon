@@ -233,10 +233,10 @@ class User extends Authenticatable
 
     /**
      *
-     * @param Carbon $deleted_at
+     * @param ?Carbon $deleted_at
      * @return Token
      */
-    public function setDeletedAt(Carbon $deletedAt): User
+    public function setDeletedAt(?Carbon $deletedAt): User
     {
         $this->deleted_at = $deletedAt;
         return $this;
