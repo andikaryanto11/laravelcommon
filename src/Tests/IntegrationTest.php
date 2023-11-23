@@ -14,22 +14,8 @@ class IntegrationTest extends TestCase
     {
         parent::setUp();
 
-        // Set the database connection to sqlite for testing
-        // DB::connection('sqlite');
-
-        // Run your migrations
         $this->artisan('migrate');
-
-        // Seed your database
+        
         $this->seed();
-    }
-
-    public function tearDown(): void
-    {
-        // DB::connection('sqlite');
-
-        $this->artisan('migrate:rollback');
-
-        parent::tearDown();
     }
 }
