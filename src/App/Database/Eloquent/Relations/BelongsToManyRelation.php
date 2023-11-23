@@ -79,10 +79,10 @@ class BelongsToManyRelation implements IteratorAggregate
         $existCollection = $this->getBelongsToMany()->get();
         $alreadyIn = $existCollection->filter(
             function ($existModel) use ($model) {
-                return !$existModel->isEqualTo($model);
+                return $existModel->isEqualTo($model);
             }
         )->count() > 0;
-
+            
         if (!$alreadyIn) {
             $this->addModelCollection->add($model);
         }
