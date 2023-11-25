@@ -15,9 +15,9 @@ use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\UnauthorizedResponse;
 use LaravelCommon\System\Http\Request;
 
-class CheckToken
+class CheckTokenMiddleware
 {
-    public const NAME = 'common.app.middlware.check-token';
+    public const NAME = 'common.app.middlware.check-token-middleware';
 
     /**
      *

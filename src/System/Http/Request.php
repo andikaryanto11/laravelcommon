@@ -5,7 +5,7 @@ namespace LaravelCommon\System\Http;
 use LaravelCommon\App\Repositories\User\TokenRepository;
 use Illuminate\Http\Request as HttpRequest;
 use LaravelCommon\App\Models\User\Token;
-use LaravelCommon\App\Http\Middleware\Hydrator;
+use LaravelCommon\App\Http\Middleware\HydratorMiddleware;
 
 class Request extends HttpRequest
 {
@@ -24,9 +24,9 @@ class Request extends HttpRequest
     /**
      * Undocumented variable
      *
-     * @var Hydrator
+     * @var HydratorMiddleware
      */
-    protected Hydrator $hydrator;
+    protected HydratorMiddleware $hydrator;
 
     /**
      *
@@ -81,10 +81,10 @@ class Request extends HttpRequest
     /**
      * Set hydrator
      *
-     * @param Hydrator $hydrator
+     * @param HydratorMiddleware $hydrator
      * @return self
      */
-    public function setHydrator(Hydrator $hydrator)
+    public function setHydratorMiddleware(HydratorMiddleware $hydrator)
     {
         $this->hydrator = $hydrator;
         return $this;
@@ -93,9 +93,9 @@ class Request extends HttpRequest
     /**
      * Get hydrator
      *
-     * @return Hydrator
+     * @return HydratorMiddleware
      */
-    public function getHydrator()
+    public function getHydratorMiddleware()
     {
         return $this->hydrator;
     }

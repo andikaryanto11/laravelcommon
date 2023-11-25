@@ -5,10 +5,9 @@ namespace LaravelCommon\App\Http\Middleware;
 use Illuminate\Http\Request;
 use Closure;
 use LaravelCommon\App\Consts\ResponseConst;
-use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\UnauthorizedResponse;
 
-class CheckScope
+class CheckScopeMiddleware
 {
     public const NAME = 'common.app.middleware.check-scope';
 

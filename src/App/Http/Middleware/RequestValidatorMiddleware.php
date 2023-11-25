@@ -9,7 +9,7 @@ use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Responses\JsonResponse;
 use LaravelCommon\System\Http\Request;
 
-class RequestValidator
+class RequestValidatorMiddleware
 {
     /**
      * Handle an incoming request.

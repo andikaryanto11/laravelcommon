@@ -15,7 +15,7 @@ use ReflectionProperty;
  * we need to this singleton to share between classes while this class is injected
  * it is responsible to do data transaction in entire application.
  */
-class ModelUnit
+class UnitOfWork
 {
     private bool $isTransactionStarted = false;
 
@@ -28,7 +28,7 @@ class ModelUnit
      * @param Model $model
      * @param bool $needValidate - validate entity that will be persisted
      * @throws ValidationException
-     * @return ModelUnit
+     * @return UnitOfWork
      */
     public function persist(Model $model)
     {
@@ -67,7 +67,7 @@ class ModelUnit
      * Prepare entity that will be removed. Will removed after entity unit flush
      *
      * @param Model $model
-     * @return ModelUnit
+     * @return UnitOfWork
      */
     public function remove(Model $model)
     {
