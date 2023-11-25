@@ -11,7 +11,7 @@ use LaravelCommon\App\Console\Commands\GenerateEntity;
 use LaravelCommon\App\Http\Middleware\CheckScopeMiddleware;
 use LaravelCommon\App\Http\Middleware\CheckTokenMiddleware;
 use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
-use LaravelCommon\App\Http\Middleware\UnitOfWork;
+use LaravelCommon\App\Http\Middleware\UnitOfWorkMiddleware;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydratorMiddleware;
 use LaravelCommon\App\Http\Middleware\ResourceValidation;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
@@ -87,7 +87,7 @@ class CommonAppServiceProvider extends ServiceProvider
         $router->aliasMiddleware(ApiResponseMiddleware::NAME, ApiResponseMiddleware::class);
         $router->aliasMiddleware(CheckTokenMiddleware::NAME, CheckTokenMiddleware::class);
         $router->aliasMiddleware(CheckScopeMiddleware::NAME, CheckScopeMiddleware::class);
-        $router->aliasMiddleware(UnitOfWork::NAME, UnitOfWork::class);
+        $router->aliasMiddleware(UnitOfWorkMiddleware::NAME, UnitOfWorkMiddleware::class);
         $router->aliasMiddleware(ResourceValidation::NAME, ResourceValidation::class);
         $router->aliasMiddleware(UserHydratorMiddleware::NAME, UserHydratorMiddleware::class);
 
