@@ -9,7 +9,7 @@ use LaravelCommon\Responses\UnauthorizedResponse;
 
 class CheckScopeMiddleware
 {
-    public const NAME = 'common.app.middleware.check-scope';
+    public const NAME = 'common.app.middleware.check-scope-middleware';
 
     /**
      * Handle an incoming request.
