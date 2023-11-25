@@ -13,7 +13,7 @@ use LaravelCommon\App\Http\Middleware\CheckTokenMiddleware;
 use LaravelCommon\App\Http\Middleware\ApiResponseMiddleware;
 use LaravelCommon\App\Http\Middleware\UnitOfWorkMiddleware;
 use LaravelCommon\App\Http\Middleware\Hydrators\UserHydratorMiddleware;
-use LaravelCommon\App\Http\Middleware\ResourceValidation;
+use LaravelCommon\App\Http\Middleware\ResourceValidationMiddleware;
 use LaravelCommon\System\Database\Schema\Blueprint as SchemaBlueprint;
 use Illuminate\Contracts\Http\Kernel;
 use LaravelCommon\Utilities\Database\UnitOfWork as DatabaseUnitOfWork;
@@ -88,7 +88,7 @@ class CommonAppServiceProvider extends ServiceProvider
         $router->aliasMiddleware(CheckTokenMiddleware::NAME, CheckTokenMiddleware::class);
         $router->aliasMiddleware(CheckScopeMiddleware::NAME, CheckScopeMiddleware::class);
         $router->aliasMiddleware(UnitOfWorkMiddleware::NAME, UnitOfWorkMiddleware::class);
-        $router->aliasMiddleware(ResourceValidation::NAME, ResourceValidation::class);
+        $router->aliasMiddleware(ResourceValidationMiddleware::NAME, ResourceValidationMiddleware::class);
         $router->aliasMiddleware(UserHydratorMiddleware::NAME, UserHydratorMiddleware::class);
 
         // Apply middleware to the 'api' middleware group
