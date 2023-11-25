@@ -8,26 +8,26 @@ use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\System\Http\Request;
-use LaravelCommon\Utilities\Database\ModelUnit as DatabaseModelUnit;
+use LaravelCommon\Utilities\Database\UnitOfWork as DatabaseUnitOfWork;
 
-class ModelUnit
+class UnitOfWorkMiddleware
 {
-    public const NAME = 'common.app.middlware.model-unit';
+    public const NAME = 'common.app.middlware.unit-of-work-middleware';
 
     /**
      *
-     * @var DatabaseModelUnit
+     * @var DatabaseUnitOfWork
      */
-    protected DatabaseModelUnit $modelUnit;
+    protected DatabaseUnitOfWork $unitOfWork;
 
     /**
      *
-     * @param DatabaseModelUnit $modelUnit
+     * @param DatabaseUnitOfWork $unitOfWork
      */
     public function __construct(
-        DatabaseModelUnit $modelUnit
+        DatabaseUnitOfWork $unitOfWork
     ) {
-        $this->modelUnit = $modelUnit;
+        $this->unitOfWork = $unitOfWork;
     }
 
     /**
@@ -55,8 +55,8 @@ class ModelUnit
     {
         try {
             $resource = $request->getResource();
-            $this->modelUnit->persist($resource);
-            $this->modelUnit->flush();
+            $this->unitOfWork->persist($resource);
+            $this->unitOfWork->flush();
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }
@@ -66,8 +66,8 @@ class ModelUnit
     {
         try {
             $resource = $request->getResource();
-            $this->modelUnit->remove($resource);
-            $this->modelUnit->flush();
+            $this->unitOfWork->remove($resource);
+            $this->unitOfWork->flush();
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }
@@ -76,7 +76,7 @@ class ModelUnit
     private function commit($request)
     {
         try {
-            $this->modelUnit->flush();
+            $this->unitOfWork->flush();
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }

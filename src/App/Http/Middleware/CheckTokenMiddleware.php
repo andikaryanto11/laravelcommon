@@ -9,15 +9,14 @@ use Exception;
 use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Models\User\Token;
 use LaravelCommon\App\Queries\User\TokenQuery;
-use LaravelCommon\App\Repositories\User\TokenRepository;
 use LaravelCommon\App\Services\Jwt;
 use LaravelCommon\Responses\BadRequestResponse;
 use LaravelCommon\Responses\UnauthorizedResponse;
 use LaravelCommon\System\Http\Request;
 
-class CheckToken
+class CheckTokenMiddleware
 {
-    public const NAME = 'common.app.middlware.check-token';
+    public const NAME = 'common.app.middlware.check-token-middleware';
 
     /**
      *

@@ -14,7 +14,7 @@ use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\App\Exceptions\ModelException;
 use LaravelCommon\Responses\BadRequestResponse;
 
-class Hydrator
+class HydratorMiddleware
 {
     protected array $hydrateKeys = [];
 
@@ -29,7 +29,7 @@ class Hydrator
     protected Request $request;
 
     /**
-     * Hydrator constructor
+     * HydratorMiddleware constructor
      *
      * @param string $key
      * @param Repository $repository
@@ -199,9 +199,9 @@ class Hydrator
      * @param string $key
      * @param array $modelSetter
      * @param array $relatedObjectGetter
-     * @return Hydrator
+     * @return HydratorMiddleware
      */
-    public function when(string $key, array $modelSetter, array $relatedObjectGetter = []): Hydrator
+    public function when(string $key, array $modelSetter, array $relatedObjectGetter = []): HydratorMiddleware
     {
         $input = $this->request->input();
 

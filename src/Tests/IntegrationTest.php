@@ -15,7 +15,7 @@ class IntegrationTest extends TestCase
         parent::setUp();
 
         $this->artisan('migrate');
-        
+
         $this->seed();
     }
 }
