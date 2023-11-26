@@ -154,6 +154,12 @@ class BelongsToManyRelation implements IteratorAggregate
      */
     private function getCollection(): Collection
     {
+        // if we have set collection, means we sync it.
+        // so all added model wont be returned.
+        if ($this->syncModelColection->count() > 0) {
+            return $this->syncModelColection;
+        }
+
         $allCollection = new Collection();
         $existCollection = $this->getBelongsToMany()->get();
 
