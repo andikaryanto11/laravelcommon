@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
-class AlterUsers2022_10_02_134833 extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -29,4 +29,4 @@ class AlterUsers2022_10_02_134833 extends Migration
         //
         Schema::dropColumns('users', 'password_changed_at');
     }
-}
+};
