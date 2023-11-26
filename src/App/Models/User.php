@@ -19,18 +19,10 @@ class User extends Authenticatable
     use Notifiable;
     use TraitModel;
 
-    protected bool $is_active = true;
-    protected bool $is_deleted = false;
-
-    protected BelongsToManyRelation $scopes;
-    protected BelongsToRelation $groupuser;
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->scopes = new BelongsToManyRelation($this, Scope::class, 'user_scopes');
-        $this->groupuser = new BelongsToRelation($this, Groupuser::class, 'groupuser_id');
-    }
+    protected $attributes = [
+        'is_active' => true,
+        'is_deleted' => false
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -60,7 +52,18 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password_changed_at' => 'datetime'
     ];
+
+    protected BelongsToManyRelation $scopes;
+    protected BelongsToRelation $groupuser;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->scopes = new BelongsToManyRelation($this, Scope::class, 'user_scopes');
+        $this->groupuser = new BelongsToRelation($this, Groupuser::class, 'groupuser_id');
+    }
 
     /**
      *
@@ -239,6 +242,26 @@ class User extends Authenticatable
     public function setDeletedAt(?Carbon $deletedAt): User
     {
         $this->deleted_at = $deletedAt;
+        return $this;
+    }
+
+    /**
+     * Get the value of password_changed_at
+     */
+    public function getPasswordChangedAt(): Carbon
+    {
+        return $this->password_changed_at;
+    }
+
+    /**
+     * Set the value of password_changed_at
+     *
+     * @return  self
+     */
+    public function setPasswordChangedAt(Carbon $passwordChangedAt)
+    {
+        $this->password_changed_at = $passwordChangedAt;
+
         return $this;
     }
 }

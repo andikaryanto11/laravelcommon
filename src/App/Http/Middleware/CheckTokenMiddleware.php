@@ -81,10 +81,8 @@ class CheckTokenMiddleware
                 }
                 $user = $userToken->getUser();
 
-                $jwtPayload = $this->jwt->decodeUserToken($authorization);
-
-                if ($user->getPassword() != $jwtPayload->password) {
-                    return new BadRequestResponse('Invalid Token', ResponseConst::INVALID_CREDENTIAL);
+                if ($userToken->getCreatedAtUtc() < $user->getPasswordChangedAt()) {
+                    return new BadRequestResponse('Invalid Token Changed', ResponseConst::INVALID_CREDENTIAL);
                 }
 
                 $request->setUserToken($userToken);

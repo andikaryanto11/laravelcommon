@@ -19,7 +19,7 @@ class Token extends Model
     protected $table = 'user_tokens';
 
     protected $casts = [
-        'expired_at' => 'datetime'
+        'expired_at' => 'datetime',
     ];
 
     protected BelongsToRelation $user;
@@ -34,7 +34,7 @@ class Token extends Model
      *
      * @return
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user->get();
     }

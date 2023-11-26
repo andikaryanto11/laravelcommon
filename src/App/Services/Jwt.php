@@ -24,10 +24,7 @@ class Jwt
 
         $payload =
             [
-                "user_id" => $user->getId(),
-                "user_name" => $user->getUsername(),
-                "password" => $user->getPassword(),
-                "expired_at" => $jwtExpiredDate->format('YmdHis')
+                "user_id" => $user->getId()
             ];
 
         $token = JWTJWT::encode($payload, env('APP_KEY'), 'HS256');
