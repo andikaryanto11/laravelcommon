@@ -33,34 +33,60 @@ class UnitOfWork
     public function persist(Model $model)
     {
         // $modelScope = ModelScope::getInstance();
+        $this->startTransaction();
+        try {
+
+            $model->save();
+
+            $reflectionClass = new ReflectionClass($model);
+            $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
+
+            foreach ($properties as $property) {
+                if (
+                    $property->getType() &&
+                    $property->getType()->getName() == BelongsToManyRelation::class
+                ) {
+                    $value = $property->getValue($model);
+                    $value->setParentModel($model);
+
+                    if ($value->getSyncedCollection()->count() > 0) {
+                        $value->doSync();
+                    } else {
+                        $value->doAttach();
+                        $value->doDetach();
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->rollback();
+            throw $e;
+        }
+
+        return $this;
+    }
+
+    protected function startTransaction()
+    {
         if (!$this->isTransactionStarted) {
             DB::beginTransaction();
             $this->isTransactionStarted = true;
         }
+    }
 
-        $model->save();
-
-        $reflectionClass = new ReflectionClass($model);
-        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
-
-        foreach ($properties as $property) {
-            if (
-                $property->getType() &&
-                $property->getType()->getName() == BelongsToManyRelation::class
-            ) {
-                $value = $property->getValue($model);
-                $value->setParentModel($model);
-
-                if ($value->getSyncedCollection()->count() > 0) {
-                    $value->doSync();
-                } else {
-                    $value->doAttach();
-                    $value->doDetach();
-                }
-            }
+    protected function commit()
+    {
+        if ($this->isTransactionStarted) {
+            $this->isTransactionStarted = false;
+            DB::commit();
         }
+    }
 
-        return $this;
+    protected function rollback()
+    {
+        if ($this->isTransactionStarted) {
+            $this->isTransactionStarted = false;
+            DB::rollBack();
+        }
     }
 
     /**
@@ -95,13 +121,9 @@ class UnitOfWork
     public function flush()
     {
         try {
-            if ($this->isTransactionStarted) {
-                DB::commit();
-            }
+            $this->commit();
         } catch (Exception $e) {
-            if ($this->isTransactionStarted) {
-                DB::rollBack();
-            }
+            $this->rollback();
             throw $e;
         }
     }
