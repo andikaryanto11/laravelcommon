@@ -2,7 +2,7 @@
 
 return [
     'api' => [
-        'use_resource_key' => false
+        'use_resource_key' => true
     ],
     'collection_paging' => [
         'size' => 100
