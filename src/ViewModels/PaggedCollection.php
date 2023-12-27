@@ -58,9 +58,11 @@ abstract class PaggedCollection extends AbstractCollection
         if (isset($request->keyword) && !$this->disableKeywordSearch) {
             $keyword = $request->keyword;
             $searchColumns = Schema::getColumnListing($this->query->getTable());
-            foreach ($searchColumns as $column) {
-                $this->query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
-            }
+            $this->query->where(function ($query) use ($searchColumns, $keyword, $table) {
+                foreach ($searchColumns as $column) {
+                    $query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
+                }
+            });
         } else {
             if (isset($request->search_by) && isset($request->search_value)) {
                 $searchBy = $request->search_by;

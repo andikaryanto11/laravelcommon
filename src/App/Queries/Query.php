@@ -42,14 +42,17 @@ class Query extends Builder
      * @return void
      */
     public function __construct(
-        Model $model
+        ConnectionInterface $connection = null,
+        Grammar $grammar = null,
+        Processor $processor = null
     ) {
         $connection = DB::connection();
         $grammar = $connection->query()->getGrammar();
         parent::__construct($connection, $grammar);
 
-        $this->model = $model;
-        $this->table = $model->getTable();
+        $identity = $this->identityClass();
+        $this->model = new $identity();
+        $this->table = $this->model->getTable();
         $this->fromSelect();
     }
 

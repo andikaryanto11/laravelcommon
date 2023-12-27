@@ -17,7 +17,7 @@ class ScopeQueryTest extends IntegrationTest
     public function test()
     {
         $this->beforeSpecify(function () {
-            $this->scopeQuery = new ScopeQuery(new Scope());
+            $this->scopeQuery = new ScopeQuery();
         });
 
         $this->describe('->getIterator()', function () {

@@ -35,7 +35,6 @@ class UnitOfWork
         // $modelScope = ModelScope::getInstance();
         $this->startTransaction();
         try {
-
             $model->save();
 
             $reflectionClass = new ReflectionClass($model);

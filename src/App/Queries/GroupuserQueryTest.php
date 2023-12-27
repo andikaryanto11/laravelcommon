@@ -18,7 +18,7 @@ class GroupuserQueryTest extends IntegrationTest
     public function test()
     {
         $this->beforeSpecify(function () {
-            $this->groupuserQuery = new GroupuserQuery(new Groupuser());
+            $this->groupuserQuery = new GroupuserQuery();
         });
 
         $this->describe('->getIterator()', function () {

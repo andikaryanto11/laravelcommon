@@ -11,21 +11,10 @@ use LaravelCommon\App\ViewModels\ScopeCollection;
 
 class ScopeQuery extends Query
 {
-    /**
-     * Create a new query builder instance.
-     *
-     * @param  Scope  $scope
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
-     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
-     * @return void
-     */
-    public function __construct(
-        Scope $scope
-    ) {
-        parent::__construct($scope);
+    public function identityClass(): string
+    {
+        return Scope::class;
     }
-
 
     public function collectionClass()
     {

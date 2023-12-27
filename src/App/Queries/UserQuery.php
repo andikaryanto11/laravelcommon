@@ -15,19 +15,9 @@ use LaravelCommon\App\ViewModels\UserCollection;
 
 class UserQuery extends Query
 {
-    /**
-     * Create a new query builder instance.
-     *
-     * @param  User  $user
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
-     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
-     * @return void
-     */
-    public function __construct(
-        User $user
-    ) {
-        parent::__construct($user);
+    public function identityClass(): string
+    {
+        return User::class;
     }
 
     public function collectionClass()

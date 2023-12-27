@@ -210,7 +210,7 @@ class HydratorMiddleware
         $modelSetterFunction = $modelSetter[1];
         $field = $keyArr[0];
 
-        if($callback != null) {
+        if ($callback != null) {
             $callback($input[$field]);
             return $this;
         }

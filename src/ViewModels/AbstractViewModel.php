@@ -94,11 +94,11 @@ abstract class AbstractViewModel
         } else {
             $useResourceKey = config('common-config')['api']['use_resource_key'];
             if ($value instanceof AbstractViewModel) {
-                if($useResourceKey) {
+                if ($useResourceKey) {
                     $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalArray();
                 } else {
                     $this->resource[$key] = $value->finalArray();
-                }                
+                }
             }
 
             if ($value instanceof Collection) {
@@ -109,8 +109,8 @@ abstract class AbstractViewModel
                      */
                     $viewModelArray[] = $viewmodel->finalArray();
                 }
-                
-                if($useResourceKey) {
+
+                if ($useResourceKey) {
                     $this->resource[BaseResponse::RESOURCES_KEY][$key] = $viewModelArray;
                 } else {
                     $this->resource[$key] = $viewModelArray;
