@@ -17,7 +17,7 @@ class UserQueryTest extends IntegrationTest
     public function test()
     {
         $this->beforeSpecify(function () {
-            $this->userQuery = new UserQuery(new User());
+            $this->userQuery = new UserQuery();
         });
 
         $this->describe('->getIterator()', function () {

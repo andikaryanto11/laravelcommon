@@ -2,13 +2,22 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use LaravelCommon\App\Queries\Query;
 
 abstract class PaggedCollection extends AbstractCollection
 {
     protected ?int $page = null;
     protected ?int $size = null;
     protected ?int $totalRecord = null;
+    protected bool $disableKeywordSearch;
+
+    public function __construct(Query $query, ?Request $request = null, bool $disableKeywordSearch = false)
+    {
+        parent::__construct($query, $request);
+        $this->disableKeywordSearch = $disableKeywordSearch;
+    }
 
 
     /**
@@ -46,12 +55,14 @@ abstract class PaggedCollection extends AbstractCollection
             $page = $request->page;
         }
 
-        if (isset($request->keyword)) {
+        if (isset($request->keyword) && !$this->disableKeywordSearch) {
             $keyword = $request->keyword;
             $searchColumns = Schema::getColumnListing($this->query->getTable());
-            foreach ($searchColumns as $column) {
-                $this->query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
-            }
+            $this->query->where(function ($query) use ($searchColumns, $keyword, $table) {
+                foreach ($searchColumns as $column) {
+                    $query->orWhere($table . '.' . $column, 'like', '%' . $keyword . '%');
+                }
+            });
         } else {
             if (isset($request->search_by) && isset($request->search_value)) {
                 $searchBy = $request->search_by;

@@ -15,19 +15,9 @@ use LaravelCommon\App\ViewModels\UserCollection;
 
 class GroupuserQuery extends Query
 {
-    /**
-     * Create a new query builder instance.
-     *
-     * @param  Groupuser  $groupuser
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
-     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
-     * @return void
-     */
-    public function __construct(
-        Groupuser $groupuser
-    ) {
-        parent::__construct($groupuser);
+    public function identityClass(): string
+    {
+        return Groupuser::class;
     }
 
     public function collectionClass()

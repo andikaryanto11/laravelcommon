@@ -1,16 +1,16 @@
 <?php
 
 return [
+    'api' => [
+        'use_resource_key' => true
+    ],
+    'collection_paging' => [
+        'size' => 100
+    ],
     'entity' => [
         'mapping' => [
             'app' => base_path() . '/app/Entities/Mapping'
         ]
-    ],
-    'jwt' => [
-        'expired_in_days' => 90
-    ],
-    'collection_paging' => [
-        'size' => 100
     ],
     'env' => [
         'local' => [
@@ -25,5 +25,8 @@ return [
         'production' => [
             'rollbar_access_token' => '',
         ]
-    ]
+        ],
+    'jwt' => [
+        'expired_in_days' => 90
+    ],
 ];

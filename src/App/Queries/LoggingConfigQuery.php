@@ -11,18 +11,9 @@ use Illuminate\Database\Query\Grammars\Grammar;
 
 class LoggingConfigQuery extends Query
 {
-    /**
-     * Create a new query builder instance.
-     *
-     * @param  \Illuminate\Database\ConnectionInterface  $connection
-     * @param  \Illuminate\Database\Query\Grammars\Grammar|null  $grammar
-     * @param  \Illuminate\Database\Query\Processors\Processor|null  $processor
-     * @return void
-     */
-    public function __construct(
-        LoggingConfig $loggingConfig
-    ) {
-        parent::__construct($loggingConfig);
+    public function identityClass(): string
+    {
+        return LoggingConfig::class;
     }
 
     public function collectionClass()

@@ -17,7 +17,7 @@ class TokenQueryTest extends IntegrationTest
     public function test()
     {
         $this->beforeSpecify(function () {
-            $this->tokenQuery = new TokenQuery(new Token());
+            $this->tokenQuery = new TokenQuery();
         });
 
         $this->describe('->getIterator()', function () {

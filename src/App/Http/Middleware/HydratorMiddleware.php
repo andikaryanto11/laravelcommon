@@ -201,7 +201,7 @@ class HydratorMiddleware
      * @param array $relatedObjectGetter
      * @return HydratorMiddleware
      */
-    public function when(string $key, array $modelSetter, array $relatedObjectGetter = []): HydratorMiddleware
+    public function when(string $key, array $modelSetter, array $relatedObjectGetter = [], $callback = null): HydratorMiddleware
     {
         $input = $this->request->input();
 
@@ -209,6 +209,11 @@ class HydratorMiddleware
         $model = $modelSetter[0];
         $modelSetterFunction = $modelSetter[1];
         $field = $keyArr[0];
+
+        if ($callback != null) {
+            $callback($input[$field]);
+            return $this;
+        }
 
         if (isset($input[$field]) && !empty($relatedObjectGetter)) {
             $id = $keyArr[1];
