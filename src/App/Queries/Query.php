@@ -109,7 +109,7 @@ class Query extends Builder
     public function onModelContext()
     {
         if (!empty($this->joins)) {
-            $newBuilder = new self($this->model, $this->connection, $this->grammar, $this->getProcessor());
+            $newBuilder = new static($this->connection, $this->grammar, $this->getProcessor());
             $this->limit = null;
             $this->offset = null;
             $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
@@ -218,9 +218,9 @@ class Query extends Builder
      *
      * @return string
      */
-    public function identityClass(): string
+    public function identityClass()
     {
-        return get_class($this->model);
+        // return get_class($this->model);
     }
 
 
