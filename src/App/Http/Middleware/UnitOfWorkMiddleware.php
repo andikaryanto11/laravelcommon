@@ -7,6 +7,8 @@ use Exception;
 use LaravelCommon\App\Consts\ResponseConst;
 use LaravelCommon\Exceptions\ResponsableException;
 use LaravelCommon\Responses\BadRequestResponse;
+use LaravelCommon\Responses\BaseResponse;
+use LaravelCommon\Responses\ResourceCreatedResponse;
 use LaravelCommon\System\Http\Request;
 use LaravelCommon\Utilities\Database\UnitOfWork as DatabaseUnitOfWork;
 
@@ -43,7 +45,11 @@ class UnitOfWorkMiddleware
         $response = $next($request);
 
         try {
-            $this->$method($request);
+            if($response instanceof BaseResponse) {
+                if($response->getCode() < 300) {
+                    $this->$method($request, $response);
+                }
+            }
         } catch (Exception $e) {
             throw new ResponsableException($e->getMessage(), new BadRequestResponse($e->getMessage(), ResponseConst::DATA_EXIST));
         }

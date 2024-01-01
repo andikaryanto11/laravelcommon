@@ -80,10 +80,15 @@ class BaseResponse extends HttpResponse implements ResponseInterface
     /**
      * Get response message
      *
-     * @return void
+     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
+    }
+
+    public function getCode(): int
+    {
+        return $this->code;
     }
 }
