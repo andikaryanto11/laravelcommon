@@ -245,4 +245,9 @@ class Query extends Builder
         $this->whereIn('id', $ids);
         return $this;
     }
+
+    public function noResult() {
+        $this->whereRaw('1 = 0');
+        return $this;
+    }
 }
