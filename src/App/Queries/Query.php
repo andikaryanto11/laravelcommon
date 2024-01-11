@@ -138,13 +138,7 @@ class Query extends Builder
      */
     public function reset()
     {
-        $this->groups = [];
-        $this->wheres = [];
-        $this->joins = [];
-        $this->columns = [];
-        $this->from = null;
-        $this->lengthAwarePaginator = null;
-        return $this;
+        return $this->newQuery();
     }
 
     /**
@@ -246,7 +240,8 @@ class Query extends Builder
         return $this;
     }
 
-    public function noResult() {
+    public function noResult()
+    {
         $this->whereRaw('1 = 0');
         return $this;
     }

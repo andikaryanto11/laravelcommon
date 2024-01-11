@@ -25,7 +25,7 @@ class Jwt
         $payload =
             [
                 "user_id" => $user->getId(),
-                "created_at" =>Carbon::now()->format('Y-m-d H:i:s')
+                "created_at" => Carbon::now()->format('Y-m-d H:i:s')
             ];
 
         $token = JWTJWT::encode($payload, env('APP_KEY'), 'HS256');

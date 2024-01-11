@@ -45,8 +45,8 @@ class UnitOfWorkMiddleware
         $response = $next($request);
 
         try {
-            if($response instanceof BaseResponse) {
-                if($response->getCode() < 300) {
+            if ($response instanceof BaseResponse) {
+                if ($response->getCode() < 300) {
                     $this->$method($request, $response);
                 }
             }
