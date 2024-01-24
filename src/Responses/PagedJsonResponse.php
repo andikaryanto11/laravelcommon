@@ -2,60 +2,61 @@
 
 namespace LaravelCommon\Responses;
 
+use Illuminate\Http\Request;
 use LaravelCommon\App\Queries\Query;
-use LaravelCommon\App\Repositories\Repository;
-use LaravelCommon\App\Services\UrlLink;
+use LaravelCommon\Responses\CollectionResponse;
 use LaravelCommon\ViewModels\PaggedCollection;
 
 class PagedJsonResponse extends CollectionResponse
 {
-    public function __construct(string $message, $responseCode = [], $data = null)
+    protected PaggedCollection $collection;
+    protected ?Query $query = null;
+    protected ?Request $request = null;
+
+    public function __construct(string $message, $responseCode = [], PaggedCollection $collection)
     {
 
-        $newData = $this->buildData($data);
-        $json = [];
-        if (!is_null($newData)) {
-            $json = [
-                '_paging' => [
-                    'next_page' => $newData->getNextPage(),
-                    'prev_page' => $newData->getPreviousPage(),
-                    'total_page' => $newData->getTotalPage(),
-                    'page' => $newData->getPage(),
-                    'size' => $newData->getSize(),
-                    'total_record' => $newData->getTotalRecord()
-                ]
-            ];
+        $this->collection = $collection;
 
-            $links = UrlLink::createLinks($newData);
-
-            $json['_links'] = $links;
-        }
-
-        parent::__construct($message, 200, $responseCode, $newData, $json);
+        parent::__construct($message, 200, $responseCode);
     }
 
     /**
-     * Undocumented function
      *
-     * @return PaggedCollection
+     * @return Query|null
      */
-    private function buildData($data = null)
+    public function getQuery(): ?Query
     {
+        return $this->query;
+    }
 
-        if (is_null($data)) {
-            return null;
+    /**
+     * getPagedCollection
+     *
+     * @return PagedCollection
+     */
+    public function buildData()
+    {
+        $this->collection->filterAndSortFromRequest();
+
+        $data = $this->collection->finalArray();
+        $this->setData($data);
+        if (!is_null($data)) {
+            $awarePaginator = $this->collection->getAwarePaginator();
+            $json = [
+                '_paging' => [
+                    'page' =>  $this->collection->getPage(),
+                    'limit' => $this->collection->getSize(),
+                    'total_data' => $this->collection->getTotalRecord()
+                ]
+            ];
+
+            $json['_links'] = [
+                'next_page' => $awarePaginator->nextPageUrl(),
+                'prev_page' => $awarePaginator->previousPageUrl(),
+                'current_page' => $awarePaginator->url($awarePaginator->currentPage())
+            ];
+            $this->setAdditional($json);
         }
-
-        $newData = null;
-        if ($data instanceof Repository) {
-            $filters = $data->getFilters();
-            $newData = $data->gather($filters);
-        }
-
-        if ($data instanceof Query) {
-            $newData = $data->getPagedCollection();
-        }
-
-        return $newData;
     }
 }

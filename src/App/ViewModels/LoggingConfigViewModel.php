@@ -2,7 +2,7 @@
 
 namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\App\Entities\LoggingConfig;
+use LaravelCommon\App\Models\LoggingConfig;
 use LaravelCommon\ViewModels\AbstractViewModel;
 use stdClass;
 
@@ -14,9 +14,9 @@ class LoggingConfigViewModel extends AbstractViewModel
     protected $isAutoAddResource = true;
 
     /**
-     * @var LoggingConfig $entity
+     * @var LoggingConfig $model
      */
-    protected $entity;
+    protected $model;
 
     /**
      * @inheritdoc
@@ -32,9 +32,9 @@ class LoggingConfigViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'id' => $this->entity->getId(),
-            'username' => $this->entity->getName(),
-            "is_enabled" => (bool)$this->entity->getIsEnabled()
+            'id' => $this->model->getId(),
+            'name' => $this->model->getName(),
+            "is_enabled" => (bool)$this->model->getIsEnabled()
         ];
     }
 }

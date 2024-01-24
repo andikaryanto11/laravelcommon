@@ -2,13 +2,9 @@
 
 namespace LaravelCommon\Responses;
 
-use LaravelCommon\App\Services\UrlLink;
-use LaravelCommon\ViewModels\AbstractCollection;
-use LaravelCommon\ViewModels\AbstractViewModel;
-use LaravelCommon\ViewModels\PaggedCollection;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response as HttpResponse;
 
-class BaseResponse extends Response implements ResponseInterface
+class BaseResponse extends HttpResponse implements ResponseInterface
 {
     public const RESOURCES_KEY = '_resources';
 
@@ -47,6 +43,16 @@ class BaseResponse extends Response implements ResponseInterface
         parent::__construct(json_encode($data), $code);
     }
 
+    public function setData($data = null)
+    {
+        $this->data = $data;
+    }
+
+    public function setAdditional($additionalData)
+    {
+        $this->additionalData = $additionalData;
+    }
+
     /**
      * Get data
      */
@@ -58,7 +64,7 @@ class BaseResponse extends Response implements ResponseInterface
     /**
      * @inheritdoc
      */
-    public function send()
+    public function sendJson()
     {
 
         $data = [BaseResponse::RESOURCES_KEY => $this->data];
@@ -74,10 +80,15 @@ class BaseResponse extends Response implements ResponseInterface
     /**
      * Get response message
      *
-     * @return void
+     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
+    }
+
+    public function getCode(): int
+    {
+        return $this->code;
     }
 }

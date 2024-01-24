@@ -2,29 +2,27 @@
 
 namespace LaravelCommon\App\Services;
 
-use DateTime;
-use LaravelCommon\App\Entities\User;
-use LaravelCommon\App\Repositories\GroupuserRepository;
-use LaravelCommon\App\Repositories\UserRepository;
+use LaravelCommon\App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use LaravelCommon\App\Entities\User\Token;
-use LaravelOrm\Entities\EntityManager;
+use LaravelCommon\App\Models\User\Token;
+use LaravelCommon\App\Queries\UserQuery;
+use LaravelCommon\Utilities\Database\UnitOfWork;
 
 class UserService
 {
     /**
      * Undocumented variable
      *
-     * @var UserRepository
+     * @var UserQuery
      */
-    protected UserRepository $userRepository;
+    protected UserQuery $userQuery;
 
     /**
      * Undocumented variable
      *
-     * @var EntityManager
+     * @var UnitOfWork
      */
-    protected EntityManager $entityManager;
+    protected UnitOfWork $unitOfWork;
 
     /**
      * Undocumented variable
@@ -36,17 +34,17 @@ class UserService
     /**
      *
      *
-     * @param UserRepository $userRepository
-     * @param EntityManager $entityManager
+     * @param UserQuery $userRepository
+     * @param UnitOfWork $entityManager
      * @param Jwt $jwt
      */
     public function __construct(
-        UserRepository $userRepository,
-        EntityManager $entityManager,
+        UserQuery $userQuery,
+        UnitOfWork $unitOfWork,
         Jwt $jwt
     ) {
-        $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
+        $this->userQuery = $userQuery;
+        $this->unitOfWork = $unitOfWork;
         $this->jwt = $jwt;
     }
 
@@ -55,20 +53,15 @@ class UserService
      *
      * @param string $username
      * @param string $password
-     * @return User
+     * @return Token
      */
-    public function generateToken(string $username, string $password)
+    public function generateToken(string $email, string $password)
     {
-        $param = [
-            'where' => [
-                ['username', '=', $username]
-            ]
-        ];
 
         /**
          * @var User
          */
-        $user = $this->userRepository->findOne($param);
+        $user = $this->userQuery->whereEmail($email)->getIterator()->first();
 
         if (empty($user)) {
             return null;
@@ -78,9 +71,22 @@ class UserService
             return null;
         }
 
+        return $this->getToken($user);
+    }
+
+    /**
+     * generate user token
+     *
+     * @param User
+     * @return Token
+     */
+    public function getToken(User $user): Token
+    {
+
         $userToken = $this->jwt->createUserToken($user);
 
-        $this->entityManager->persist($userToken);
+        $this->unitOfWork->persist($userToken);
+        $this->unitOfWork->flush();
 
         return $userToken;
     }

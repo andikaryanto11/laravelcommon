@@ -2,10 +2,10 @@
 
 namespace LaravelCommon\ViewModels;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use LaravelCommon\Responses\BaseResponse;
-use LaravelOrm\Entities\EntityList;
-use LaravelOrm\Interfaces\IEntity;
 
 abstract class AbstractViewModel
 {
@@ -14,7 +14,7 @@ abstract class AbstractViewModel
      */
     protected $isAutoAddResource = true;
 
-    protected $entity;
+    protected $model;
 
     /**
      * @var ?Request
@@ -25,15 +25,20 @@ abstract class AbstractViewModel
      *
      * @var array
      */
-    protected $resource;
+    protected $resource = [];
 
     /**
-     * @param IEntity $entity
+     * @param Model $model
      */
-    public function __construct(IEntity $entity, ?Request $request = null)
+    public function __construct(Model $model, ?Request $request = null)
     {
-        $this->entity = $entity;
+        $this->model = $model;
         $this->request = $request;
+    }
+
+    public function link()
+    {
+        return '#unimplemented';
     }
 
     /**
@@ -41,23 +46,17 @@ abstract class AbstractViewModel
      */
     public function finalArray()
     {
-        if (method_exists($this->entity, 'getId')) {
-            $this->resource['id'] = $this->entity->getId();
-        }
+        $this->resource = $this->toArray();
 
-        $this->resource = array_merge($this->resource, $this->toArray());
-
-        if (method_exists($this->entity, 'getCreatedAt')) {
-            $this->resource['created_at'] =  !is_null($this->entity->getCreatedAt())
-            ? $this->entity->getCreatedAt()->format('Y-m-d H:i:s')
+        $this->resource['created_at'] =  !is_null($this->model->created_at)
+            ? $this->model->created_at->format('Y-m-d H:i:s')
             : null;
-        }
 
-        if (method_exists($this->entity, 'getUpdatedAt')) {
-            $this->resource['updated_at'] = !is_null($this->entity->getUpdatedAt())
-                ? $this->entity->getUpdatedAt()->format('Y-m-d H:i:s')
-                : null;
-        }
+        $this->resource['updated_at'] = !is_null($this->model->updated_at)
+            ? $this->model->updated_at->format('Y-m-d H:i:s')
+            : null;
+
+        $this->resource['_link']['self'] =  config('app.url') . $this->link();
 
         if ($this->getIsAutoAddResource()) {
             $this->addResource();
@@ -74,7 +73,7 @@ abstract class AbstractViewModel
      */
     public function embedResource(
         string $key,
-        AbstractViewModel|AbstractCollection $value
+        AbstractViewModel|Collection $value
     ) {
 
         if ($this->request != null && $this->request->getPathInfo() == '/graphql') {
@@ -82,16 +81,40 @@ abstract class AbstractViewModel
                 $this->resource[$key] = $value->finalArray();
             }
 
-            if ($value instanceof AbstractCollection) {
-                $this->resource[$key] = $value->finalProcceed();
+            if ($value instanceof Collection) {
+                $viewModelArray = [];
+                foreach ($value as $viewmodel) {
+                    /**
+                     * @var AbstractViewModel $viewmodel
+                     */
+                    $viewModelArray[] = $viewmodel->finalArray();
+                }
+                $this->resource[$key] = $viewModelArray;
             }
         } else {
+            $useResourceKey = config('common-config')['api']['use_resource_key'];
             if ($value instanceof AbstractViewModel) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalArray()];
+                if ($useResourceKey) {
+                    $this->resource[BaseResponse::RESOURCES_KEY][$key] = $value->finalArray();
+                } else {
+                    $this->resource[$key] = $value->finalArray();
+                }
             }
 
-            if ($value instanceof AbstractCollection) {
-                $this->resource[BaseResponse::RESOURCES_KEY] = [$key => $value->finalProcceed()];
+            if ($value instanceof Collection) {
+                $viewModelArray = [];
+                foreach ($value as $viewmodel) {
+                    /**
+                     * @var AbstractViewModel $viewmodel
+                     */
+                    $viewModelArray[] = $viewmodel->finalArray();
+                }
+
+                if ($useResourceKey) {
+                    $this->resource[BaseResponse::RESOURCES_KEY][$key] = $viewModelArray;
+                } else {
+                    $this->resource[$key] = $viewModelArray;
+                }
             }
         }
     }
@@ -125,12 +148,12 @@ abstract class AbstractViewModel
     }
 
     /**
-     * Get entity instance
+     * Get model instance
      *
      * @return mixed
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->model;
     }
 }

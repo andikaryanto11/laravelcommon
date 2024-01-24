@@ -2,10 +2,8 @@
 
 namespace LaravelCommon\App\ViewModels;
 
-use LaravelCommon\App\Entities\Groupuser;
+use LaravelCommon\App\Models\Groupuser;
 use LaravelCommon\ViewModels\AbstractViewModel;
-use LaravelOrm\Entities\EntityList;
-use stdClass;
 
 class GroupuserViewModel extends AbstractViewModel
 {
@@ -17,7 +15,7 @@ class GroupuserViewModel extends AbstractViewModel
     /**
      * @var Groupuser
      */
-    protected $entity;
+    protected $model;
 
     /**
      * @inheritdoc
@@ -34,8 +32,9 @@ class GroupuserViewModel extends AbstractViewModel
     public function toArray()
     {
         return [
-            'id' => $this->entity->getId(),
-            'groupname' => $this->entity->getGroupname()
+            'id' => $this->model->getId(),
+            'group_name' => $this->model->getGroupName(),
+            'description' => $this->model->getDescription()
         ];
     }
 }

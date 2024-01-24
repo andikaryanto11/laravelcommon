@@ -3,88 +3,246 @@
 namespace LaravelCommon\App\Queries;
 
 use Exception;
-use LaravelOrm\Entities\EntityList;
-use LaravelOrm\Queries\Query as QueriesQuery;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Processors\Processor;
+use Illuminate\Database\Query\Grammars\Grammar;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-abstract class Query extends QueriesQuery
+class Query extends Builder
 {
+    protected $model;
+    protected string $table;
+    protected ?LengthAwarePaginator $lengthAwarePaginator = null;
+
+    // NOTE: we used to do have issue on grammar on laravel 9.xx
+    // when use DB::connection()->query()->getGrammar() the grammar is always incorrect while querying the database
+    // this is constructor that fix the issue on laravel 9.xx
+    // public function __construct(
+    //     Model $model,
+    //     ConnectionInterface $connection,
+    //     Grammar $grammar = null,
+    //     Processor $processor = null
+    // ) {
+    //     $grammar = $connection->query()->getGrammar();
+    //     parent::__construct($connection, $grammar, $processor);
+
+    //     $this->model = $model;
+    //     $this->table = $model->getTable();
+    //     $this->fromSelect();
+    // }
+
     /**
+     * Create a new query builder instance.
+     *
+     * @return void
+     */
+    public function __construct(
+        ConnectionInterface $connection = null,
+        Grammar $grammar = null,
+        Processor $processor = null
+    ) {
+        $connection = DB::connection();
+        $grammar = $connection->query()->getGrammar();
+        parent::__construct($connection, $grammar);
+
+        $identity = $this->identityClass();
+        $this->model = new $identity();
+        $this->table = $this->model->getTable();
+        $this->fromSelect();
+    }
+
+    protected function getSelectColumns()
+    {
+        $columns = Schema::getColumnListing($this->model->getTable());
+        $columnsWithAlias = [];
+        foreach ($columns as $column) {
+            $columnsWithAlias[] = $this->table . '.' . $column; // . ' as ' .  $this->table . '_' . $column;
+        }
+
+        return $columnsWithAlias;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $columns
+     * @return Collection
+     */
+    public function getIterator($columns = ['*'])
+    {
+        $this->onModelContext();
+        $models = null;
+        if (!is_null($this->lengthAwarePaginator)) {
+            $models = $this->lengthAwarePaginator->items();
+        } else {
+            $models = $this->get($columns)->all();
+        }
+
+        $identityClass = get_class($this->model);
+        return $identityClass::hydrate($models);
+    }
+
+    public function joinWith($table, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+    {
+        if (!empty($this->joins)) {
+            foreach ($this->joins as $join) {
+                if ($join->table == $table) {
+                    return $this;
+                }
+            }
+        }
+
+        // echo 'jasasdsaoin';
+        return  $this->join($table, $first, $operator, $second, $type, $where);
+    }
+
+    public function fromSelect()
+    {
+        return $this->from($this->table, $this->table)->select($this->getSelectColumns());
+    }
+
+    public function onModelContext()
+    {
+        if (!empty($this->joins)) {
+            $newBuilder = new static($this->connection, $this->grammar, $this->getProcessor());
+            $this->limit = null;
+            $this->offset = null;
+            $ids = $this->distinct()->pluck($this->table . '.' . $this->model->getKeyName());
+
+            $newBuilder->fromSelect()
+                ->whereIdIn($ids->toArray());
+            if ($this->getPage() &&  $this->getPerPage()) {
+                $newBuilder->paging(
+                    $this->getPerPage(),
+                    $this->getPage()
+                );
+            }
+
+            $newBuilder->orders = $this->orders;
+
+            $this->lengthAwarePaginator = $newBuilder->lengthAwarePaginator;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Reset Query
+     *
+     * @return $this
+     */
+    public function reset()
+    {
+        return $this->newQuery();
+    }
+
+    /**
+     * paginate
+     *
+     * @param integer $perPage
+     * @param integer|null $page
+     * @param array $columns
+     * @param string $pageName
+     * @return Query
+     */
+    public function paging(
+        int $perPage = 15,
+        ?int $page = null,
+        array $columns = ['*'],
+        string $pageName = 'page'
+    ): Query {
+        $this->lengthAwarePaginator = $this->paginate($perPage, $columns, $pageName, $page);
+        return $this;
+    }
+
+    /**
+     *
+     * @return LengthAwarePaginator|null
+     */
+    public function getAwarePaginator(): ?LengthAwarePaginator
+    {
+        return $this->lengthAwarePaginator;
+    }
+
+    /**
+     * get table name
+     *
      * @return string
      */
-    abstract public function collectionClass();
-
-    /**
-     * Get paged collection data
-     *
-     * @return PaggedCollection
-     */
-    public function getPagedCollection()
+    public function getTable(): string
     {
-        $page = 0;
-        $size = 0;
-        $this->filterDefaultRequestParameter();
-        $totalRecord = $this->count();
-
-        $this->limitDefaultReuqestParameter($page, $size);
-
-        $collection = $this->getIterator();
-
-        $collectionClass = $this->collectionClass();
-        $collection = new $collectionClass($collection, request());
-        $collection->setPage($page);
-        $collection->setSize($size);
-        $collection->setTotalRecord($totalRecord);
-        return $collection;
+        return $this->model->getTable();
     }
 
     /**
-     * Default limit by using request page and size query params
+     * get current page
      *
-     * @param integer $page
-     * @param integer $size
-     * @return void
+     * @return int|null
      */
-    private function limitDefaultReuqestParameter(int &$page, int &$size)
+    public function getPage(): ?int
     {
-        $colelctionPagingConfig = app('config')->get('common-config');
-        $size = $colelctionPagingConfig['collection_paging']['size'];
+        return $this->lengthAwarePaginator?->currentPage();
+    }
 
-        $this->limit($size);
+    /** Get total data
+     *
+     * @return int|null
+     */
+    public function getTotal(): ?int
+    {
+        return $this->lengthAwarePaginator?->total();
+    }
 
-        if (isset(request()->size)) {
-            $size = request()->size;
-            $this->limit($size);
-        }
-        if (isset(request()->page)) {
-            $page = request()->page;
-            $this->offset((request()->page - 1) * $size);
-        }
+    /** Get total data
+     *
+     * @return int|null
+     */
+    public function getPerPage(): ?int
+    {
+        return $this->lengthAwarePaginator?->perPage();
     }
 
     /**
-     * Default limit by using request order_by, order_direction, search_by, search_value query params
      *
-     * @return void
+     *
+     * @return string
      */
-    private function filterDefaultRequestParameter()
+    public function identityClass()
     {
-
-        if (isset(request()->order_by)) {
-            $column = request()->order_by;
-            $this->orderBy($column);
-        }
-
-        if (isset(request()->order_by) && isset(request()->order_direction)) {
-            $column = request()->order_by;
-            $direction = strtoupper(request()->order_direction) == 'DESC' ? 'DESC' : 'ASC';
-            $this->orderBy($column, $direction);
-        }
+        // return get_class($this->model);
+    }
 
 
-        if (isset(request()->search_by) && isset(request()->search_value)) {
-            $column = request()->search_by;
-            $value = request()->search_value;
-            $this->where($column, 'like', '%' . $value . '%');
-        }
+
+    /**
+     * get view model collection class
+     *
+     * @return string
+     */
+    public function collectionClass()
+    {
+        throw new Exception('"Query::collectionClass needs to be overridden"');
+    }
+
+    /**
+     *
+     * @param array $ids
+     * @return $this
+     */
+    public function whereIdIn(array $ids)
+    {
+        $this->whereIn('id', $ids);
+        return $this;
+    }
+
+    public function noResult()
+    {
+        $this->whereRaw('1 = 0');
+        return $this;
     }
 }
